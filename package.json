@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.2",
+    "mongodb": "^7.2.0",
+    "xlsx": "^0.18.5"
+  },
+  "name": "attendance-server",
+  "version": "1.0.0",
+  "description": "Attendance app server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
