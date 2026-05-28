@@ -507,16 +507,10 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
             <div class="utxt" style="font-size:12px;margin-top:4px">Supports BOF monthly shift schedule (.xlsx)</div>
           </div>
           <div id="xl-status"></div>
-          <div class="banner banner-b" style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-weight:600">🗑 Clear Month Schedule:</span>
-            <input type="month" id="clear-month" style="background:var(--s1);border:1px solid var(--bdr);border-radius:7px;padding:6px 10px;color:var(--t1);font-size:12.5px;outline:none">
-            <button class="btn br2 bsm" onclick="clearMonthSchedule()">Delete Schedule</button>
-            <span style="font-size:12px;color:var(--t2)">Removes all shift data for selected month before re-upload</span>
-          </div>
-          <div class="banner banner-r" style="margin-top:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-weight:600">🧹 Clean Duplicate Users:</span>
-            <button class="btn br2 bsm" onclick="cleanDuplicateUsers()">Remove Duplicates</button>
-            <span style="font-size:12px;color:var(--t2)">Finds &amp; removes duplicate employee accounts (same name+area)</span>
+          <div class="banner banner-r" style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 16px">
+            <span style="font-weight:600;font-size:14px">⚠️ Force Clean &amp; Reset:</span>
+            <button class="btn br2 bsm" onclick="forceCleanUpload()" style="font-weight:700;padding:8px 18px">DELETE &amp; RESET ALL SCHEDULE DATA</button>
+            <span style="font-size:12px;color:var(--t2);flex:1">Removes ALL shift data + duplicate users, then reloads page</span>
           </div>
           <div class="tw" style="margin-top:16px"><div class="th">Shift Code Reference</div>
             <table><thead><tr><th>Code</th><th>Shift Name</th><th>Timing</th><th>Color</th></tr></thead>
@@ -3313,30 +3307,18 @@ function renderAILeaveView() {
 /* ══════════════════════════════════════════════════════
    EXCEL UPLOAD
 ══════════════════════════════════════════════════════ */
-function clearMonthSchedule() {
-  const monthVal = document.getElementById('clear-month').value;
-  if (!monthVal) { showToast('Please select a month first.', 'warn'); return; }
-  if (!confirm(`Delete all shift schedule data for ${monthVal}? This cannot be undone.`)) return;
-  const [year, month] = monthVal.split('-').map(Number);
-  // Build date range for the selected month
-  const daysInMonth = new Date(year, month, 0).getDate();
-  const dates = [];
-  for (let d = 1; d <= daysInMonth; d++) {
-    dates.push(`${monthVal}-${String(d).padStart(2,'0')}`);
-  }
-  // Count and remove fromExcel shifts for this month
-  const before = db.shifts.length;
-  db.shifts = db.shifts.filter(s => !(s.fromExcel && dates.includes(s.date)));
-  const removed = before - db.shifts.length;
-  saveDb();
-  const st = document.getElementById('xl-status');
-  st.innerHTML = `<div class="al al-s" style="margin-top:12px">🗑 Cleared <strong>${removed}</strong> shift entries for <strong>${monthVal}</strong>. You can now upload a new schedule.</div>`;
-  showToast(`Cleared ${removed} shift entries for ${monthVal}`, 'ok');
-}
-function cleanDuplicateUsers() {
-  // Find and remove duplicate employee-type users with same first+last name + area
+function forceCleanUpload() {
+  if (!confirm('⚠️ This will DELETE all shift schedule data AND remove duplicate user accounts. Continue?')) return;
+  if (!confirm('Are you sure? All schedule data will be permanently deleted.')) return;
+
+  // Step 1: Remove ALL fromExcel shift data
+  const beforeShift = db.shifts.length;
+  db.shifts = db.shifts.filter(s => !s.fromExcel);
+  const removedShifts = beforeShift - db.shifts.length;
+
+  // Step 2: Remove duplicate users (same first+last name + area + role)
   const dupMap = {};
-  let removed = 0;
+  let removedUsers = 0;
   db.users.forEach(u => {
     if (u.role === '__deleted__' || u.role === 'admin') return;
     const words = normName(u.name).split(' ');
@@ -3344,23 +3326,27 @@ function cleanDuplicateUsers() {
     if (!nameKey.trim()) return;
     const key = `${nameKey}|${u.area || ''}|${u.role}`;
     if (dupMap[key]) {
-      // This is a duplicate — mark as deleted
       u.role = '__deleted__';
-      removed++;
-      // Also remove any fromExcel shift data for this duplicate
-      db.shifts = db.shifts.filter(s => !(s.fromExcel && s.userId === u.id));
+      removedUsers++;
     } else {
       dupMap[key] = u.id;
     }
   });
-  saveDb();
-  const st = document.getElementById('xl-status');
-  if (removed > 0) {
-    st.innerHTML = `<div class="al al-s" style="margin-top:12px">🧹 Removed <strong>${removed}</strong> duplicate user(s). <a href="#" onclick="location.reload()" style="color:var(--blue)">Refresh page</a> to see changes.</div>`;
-    showToast(`Removed ${removed} duplicate users`, 'ok');
-  } else {
-    st.innerHTML = `<div class="al al-i" style="margin-top:12px">✅ No duplicate users found.</div>`;
+
+  // Step 3: Delete attendance/requests for removed users (cleanup)
+  const deletedIds = new Set(db.users.filter(u => u.role === '__deleted__').map(u => u.id));
+  if (deletedIds.size) {
+    db.attendance = db.attendance.filter(a => !deletedIds.has(a.userId));
+    db.requests = db.requests.filter(r => !deletedIds.has(r.userId));
   }
+
+  saveDb();
+  document.getElementById('xl-status').innerHTML = `<div class="al al-s" style="margin-top:12px">
+    ✅ Force clean complete! Removed <strong>${removedShifts}</strong> shift entries,
+    <strong>${removedUsers}</strong> duplicate user(s).
+    <br><small style="color:var(--t2)">Refresh page now, then upload your Excel file.</small>
+  </div>`;
+  showToast(`Cleaned: ${removedShifts} shifts, ${removedUsers} duplicates removed`, 'ok');
 }
 function handleXL(event) {
   const file = event.target.files[0]; if (!file) return;
