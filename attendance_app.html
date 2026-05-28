@@ -513,6 +513,11 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
             <button class="btn br2 bsm" onclick="clearMonthSchedule()">Delete Schedule</button>
             <span style="font-size:12px;color:var(--t2)">Removes all shift data for selected month before re-upload</span>
           </div>
+          <div class="banner banner-r" style="margin-top:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span style="font-weight:600">🧹 Clean Duplicate Users:</span>
+            <button class="btn br2 bsm" onclick="cleanDuplicateUsers()">Remove Duplicates</button>
+            <span style="font-size:12px;color:var(--t2)">Finds &amp; removes duplicate employee accounts (same name+area)</span>
+          </div>
           <div class="tw" style="margin-top:16px"><div class="th">Shift Code Reference</div>
             <table><thead><tr><th>Code</th><th>Shift Name</th><th>Timing</th><th>Color</th></tr></thead>
             <tbody>
@@ -3327,6 +3332,35 @@ function clearMonthSchedule() {
   const st = document.getElementById('xl-status');
   st.innerHTML = `<div class="al al-s" style="margin-top:12px">🗑 Cleared <strong>${removed}</strong> shift entries for <strong>${monthVal}</strong>. You can now upload a new schedule.</div>`;
   showToast(`Cleared ${removed} shift entries for ${monthVal}`, 'ok');
+}
+function cleanDuplicateUsers() {
+  // Find and remove duplicate employee-type users with same first-2-words name + area
+  const employeeRoles = ['employee','shift_incharge','assistant_shift_incharge','area_incharge','assistant_area_incharge','deputy_site_manager','site_manager'];
+  const dupMap = {};
+  let removed = 0;
+  db.users.forEach(u => {
+    if (u.role === '__deleted__' || u.role === 'admin') return;
+    const nameKey = normName(u.name).split(' ').slice(0,2).join(' ');
+    if (!nameKey) return;
+    const key = `${nameKey}|${u.area || ''}|${u.role}`;
+    if (dupMap[key]) {
+      // This is a duplicate — mark as deleted
+      u.role = '__deleted__';
+      removed++;
+      // Also remove any fromExcel shift data for this duplicate
+      db.shifts = db.shifts.filter(s => !(s.fromExcel && s.userId === u.id));
+    } else {
+      dupMap[key] = u.id;
+    }
+  });
+  saveDb();
+  const st = document.getElementById('xl-status');
+  if (removed > 0) {
+    st.innerHTML = `<div class="al al-s" style="margin-top:12px">🧹 Removed <strong>${removed}</strong> duplicate user(s). <a href="#" onclick="location.reload()" style="color:var(--blue)">Refresh page</a> to see changes.</div>`;
+    showToast(`Removed ${removed} duplicate users`, 'ok');
+  } else {
+    st.innerHTML = `<div class="al al-i" style="margin-top:12px">✅ No duplicate users found.</div>`;
+  }
 }
 function handleXL(event) {
   const file = event.target.files[0]; if (!file) return;
