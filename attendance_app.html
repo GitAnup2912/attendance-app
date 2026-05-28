@@ -3401,9 +3401,15 @@ function parseXL(raw, stEl) {
     return normName(a) === normName(b);
   }
 
-  // ── Step 6: Parse all employee rows ──
+  // ── Step 6: Clear old shift data for this month, then parse all employee rows ──
+  // CRITICAL: Delete all existing fromExcel shift data for this month BEFORE importing.
+  // This prevents stale/duplicate data when a revised schedule is re-uploaded.
+  const monthDates = Object.values(dateCols);
+  db.shifts = db.shifts.filter(s => !(s.fromExcel && monthDates.includes(s.date)));
+
   let created=0, updated=0, codesSet=0;
   const createdNames=[], preview=[];
+  const processedIds = new Set();
 
   for (let ri = 3; ri < raw.length; ri++) {
     const row = raw[ri];
@@ -3446,6 +3452,17 @@ function parseXL(raw, stEl) {
       if (nw && excelArea) {
         user = db.users.find(u => u.role !== '__deleted__' && u.area === excelArea && u.role === excelRole
           && normName(u.name).split(' ').slice(0,2).join(' ') === nw);
+      }
+    }
+
+    if (!user) {
+      // Fallback: match by first name + same area + same role (catches initials, extra words, formatting diffs)
+      if (excelArea && excelRole) {
+        const fName = normName(nameCell).split(' ')[0];
+        if (fName) {
+          user = db.users.find(u => u.role !== '__deleted__' && u.role === excelRole
+            && u.area === excelArea && normName(u.name).split(' ')[0] === fName);
+        }
       }
     }
 
@@ -3520,6 +3537,7 @@ function parseXL(raw, stEl) {
 
     if (preview.length < 12)
       preview.push({name:nameCell, cat:rawCat, area:excelArea, shift:dominantShift, days, isNew:user.mustChangePw && created > (updated||0)});
+    processedIds.add(user.id);
   }
 
   // ── Post-import: sync assignments & remap all employee-type users ──
@@ -3537,6 +3555,31 @@ function parseXL(raw, stEl) {
     if (u.area && u.assignedShift) {
       const a = getSIA(u.area, u.assignedShift, u.role);
       if (a) { u.siId = a.siId; u.aiId = a.aiId; }
+    }
+  });
+
+  // ── Clean up orphaned shift data for users not in this import ──
+  let orphanedRemoved = 0;
+  db.shifts = db.shifts.filter(s => {
+    if (s.fromExcel && monthDates.includes(s.date) && !processedIds.has(s.userId)) {
+      orphanedRemoved++;
+      return false;
+    }
+    return true;
+  });
+  if (orphanedRemoved) console.log(`Cleaned ${orphanedRemoved} orphaned shift entries for this month.`);
+
+  // ── Deduplicate: remove employee-type users with same name+area not in this import ──
+  // This cleans up duplicates created by previous imports where name matching failed.
+  const seenKeys = {};
+  db.users.forEach(u => {
+    if (u.role === '__deleted__') return;
+    const key = `${normName(u.name)}|${u.area}|${u.role}`;
+    if (seenKeys[key] && !processedIds.has(u.id)) {
+      // This user has the same name+area+role as another user AND wasn't in this import → likely a duplicate
+      u.role = '__deleted__';
+    } else {
+      seenKeys[key] = u.id;
     }
   });
 
