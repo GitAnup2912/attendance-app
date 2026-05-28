@@ -3308,30 +3308,32 @@ function renderAILeaveView() {
    EXCEL UPLOAD
 ══════════════════════════════════════════════════════ */
 function forceCleanUpload() {
-  if (!confirm('⚠️ This will DELETE ALL employee users, ALL shift schedules, ALL attendance records. Only admin + managers remain. Continue?')) return;
-  if (!confirm('Final warning: All employee accounts will be permanently deleted. They will be recreated when you upload the Excel.')) return;
+  if (!confirm('⚠️ This will DELETE ALL users (except admin), ALL shifts, ALL attendance. Everything resets to factory. Continue?')) return;
+  if (!confirm('Final warning: All data will be permanently deleted. Upload Excel after to recreate.')) return;
 
-  // Count before
-  const empCount = db.users.filter(u => u.role === 'employee').length;
-  const shiftCount = db.shifts.filter(s => s.fromExcel).length;
+  const totalUsers = db.users.length;
+  const shiftCount = db.shifts.length;
   const attCount = db.attendance.length;
 
-  // Delete ALL employee users
-  db.users = db.users.filter(u => u.role !== 'employee');
-  // Delete ALL shift data
+  // Keep ONLY the main admin user (id=1)
+  db.users = db.users.filter(u => u.id === 1);
+  // Ensure admin exists
+  if (!db.users.length) db.users.push({id:1, name:'Admin', username:'admin', password:'admin123', role:'admin', area:'', assignedShift:'', category:'IT', reportsTo:null, mustChangePw:false});
+  // Delete ALL shifts, attendance, requests, assignments
   db.shifts = [];
-  // Delete ALL attendance
   db.attendance = [];
-  // Delete ALL requests from employees
   db.requests = [];
+  db.siAssignments = [];
+  _uid = 300;
+  _rid = 1;
 
   saveDb();
   document.getElementById('xl-status').innerHTML = `<div class="al al-s" style="margin-top:12px">
-    ✅ Nuclear reset complete! Removed <strong>${empCount}</strong> employees,
-    <strong>${shiftCount}</strong> shift entries, <strong>${attCount}</strong> attendance records.
+    ✅ Factory reset complete! Removed <strong>${totalUsers-1}</strong> users,
+    <strong>${shiftCount}</strong> shifts, <strong>${attCount}</strong> attendance records.
     <br><small style="color:var(--t2)"><a href="/" style="color:var(--blue)">Click here to reload page</a>, then upload your Excel file fresh.</small>
   </div>`;
-  showToast(`Nuclear reset: ${empCount} employees, ${shiftCount} shifts removed`, 'ok');
+  showToast(`Factory reset done. Upload Excel now.`, 'ok');
 }
 function handleXL(event) {
   const file = event.target.files[0]; if (!file) return;
