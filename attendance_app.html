@@ -2039,8 +2039,14 @@ function renderOverview() {
     return !att && code !== 'O' && code !== 'L';
   });
 
+  // Compute month-specific manpower: count employees scheduled in the selected month
+  const monthManpower = emps.filter(u => {
+    const mp = date.substring(0, 7);
+    return db.shifts.some(s => s.userId === u.id && s.date && s.date.startsWith(mp));
+  });
+
   setHTML('ov-stats', `
-    <div class="sc" style="--ca:var(--blue)"><div class="sv">${emps.length}</div><div class="sl">Total Manpower</div></div>
+    <div class="sc" style="--ca:var(--blue)"><div class="sv">${monthManpower.length}</div><div class="sl">Total Manpower</div></div>
     <div class="sc" style="--ca:var(--green)"><div class="sv">${present}</div><div class="sl">Present</div></div>
     <div class="sc" style="--ca:var(--red)"><div class="sv">${absent}</div><div class="sl">Absent</div></div>
     <div class="sc" style="--ca:var(--purple)"><div class="sv">${leave}</div><div class="sl">Leave / C-off</div></div>
