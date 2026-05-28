@@ -3498,12 +3498,19 @@ function parseXL(raw, stEl) {
     }
 
     if (!user) {
-      // Fallback: match by first name + same area + same role (catches initials, extra words, formatting diffs)
+      // Fallback: match by last name + first initial + area + role
+      // Handles "A. Diwakar" → "Ajay Diwakar" but NOT "Ajay Mandal" → "Ajay Diwakar"
       if (excelArea && excelRole) {
-        const fName = normName(nameCell).split(' ')[0];
-        if (fName) {
-          user = db.users.find(u => u.role !== '__deleted__' && u.role === excelRole
-            && u.area === excelArea && normName(u.name).split(' ')[0] === fName);
+        const eWords = normName(nameCell).split(' ');
+        const eFirst = eWords[0] || '';
+        const eLast = eWords[eWords.length-1] || '';
+        if (eFirst && eLast) {
+          user = db.users.find(u => {
+            if (u.role === '__deleted__' || u.role !== excelRole || u.area !== excelArea) return false;
+            const dWords = normName(u.name).split(' ');
+            const dLast = dWords[dWords.length-1] || '';
+            return dLast === eLast && (dWords[0] || '')[0] === eFirst[0];
+          });
         }
       }
     }
