@@ -3334,14 +3334,14 @@ function clearMonthSchedule() {
   showToast(`Cleared ${removed} shift entries for ${monthVal}`, 'ok');
 }
 function cleanDuplicateUsers() {
-  // Find and remove duplicate employee-type users with same first-2-words name + area
-  const employeeRoles = ['employee','shift_incharge','assistant_shift_incharge','area_incharge','assistant_area_incharge','deputy_site_manager','site_manager'];
+  // Find and remove duplicate employee-type users with same first+last name + area
   const dupMap = {};
   let removed = 0;
   db.users.forEach(u => {
     if (u.role === '__deleted__' || u.role === 'admin') return;
-    const nameKey = normName(u.name).split(' ').slice(0,2).join(' ');
-    if (!nameKey) return;
+    const words = normName(u.name).split(' ');
+    const nameKey = (words[0] || '') + ' ' + (words[words.length-1] || '');
+    if (!nameKey.trim()) return;
     const key = `${nameKey}|${u.area || ''}|${u.role}`;
     if (dupMap[key]) {
       // This is a duplicate — mark as deleted
@@ -3636,8 +3636,9 @@ function parseXL(raw, stEl) {
   const seenKeys = {};
   db.users.forEach(u => {
     if (u.role === '__deleted__') return;
-    const nameKey = normName(u.name).split(' ').slice(0,2).join(' ');
-    if (!nameKey) return;
+    const words = normName(u.name).split(' ');
+    const nameKey = (words[0] || '') + ' ' + (words[words.length-1] || '');
+    if (!nameKey.trim()) return;
     const key = `${nameKey}|${u.area || ''}|${u.role}`;
     if (seenKeys[key] && !processedIds.has(u.id)) {
       u.role = '__deleted__';
