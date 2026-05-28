@@ -3571,13 +3571,16 @@ function parseXL(raw, stEl) {
 
   // ── Deduplicate: remove employee-type users with same name+area not in this import ──
   // This cleans up duplicates created by previous imports where name matching failed.
-  const seenKeys = {};
+  // Uses first 2 name words + area + role as key (lenient enough to catch formatting diffs).
+  const dedupCount = {removed: 0};
   db.users.forEach(u => {
     if (u.role === '__deleted__') return;
-    const key = `${normName(u.name)}|${u.area}|${u.role}`;
+    const nameKey = normName(u.name).split(' ').slice(0,2).join(' ');
+    if (!nameKey) return;
+    const key = `${nameKey}|${u.area || ''}|${u.role}`;
     if (seenKeys[key] && !processedIds.has(u.id)) {
-      // This user has the same name+area+role as another user AND wasn't in this import → likely a duplicate
       u.role = '__deleted__';
+      dedupCount.removed++;
     } else {
       seenKeys[key] = u.id;
     }
@@ -3592,6 +3595,7 @@ function parseXL(raw, stEl) {
     &nbsp;|&nbsp; 🔄 Existing updated: <strong>${updated}</strong>
     &nbsp;|&nbsp; 📅 Shift codes set: <strong>${codesSet}</strong> across <strong>${Object.keys(dateCols).length}</strong> days.
     ${created > 0 ? `<br><span style="font-size:12px;color:var(--t2)">New accounts use password <strong>123</strong> — employees must change on first login.</span>` : ''}
+    ${dedupCount.removed > 0 ? `<br><span style="font-size:12px;color:var(--t2)">🧹 Removed <strong>${dedupCount.removed}</strong> duplicate user(s) with same name+area.</span>` : ''}
   </div>`;
 
   if (preview.length) {
