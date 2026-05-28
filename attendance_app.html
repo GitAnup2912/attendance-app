@@ -3573,6 +3573,7 @@ function parseXL(raw, stEl) {
   // This cleans up duplicates created by previous imports where name matching failed.
   // Uses first 2 name words + area + role as key (lenient enough to catch formatting diffs).
   const dedupCount = {removed: 0};
+  const seenKeys = {};
   db.users.forEach(u => {
     if (u.role === '__deleted__') return;
     const nameKey = normName(u.name).split(' ').slice(0,2).join(' ');
