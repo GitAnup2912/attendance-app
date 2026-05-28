@@ -3308,45 +3308,30 @@ function renderAILeaveView() {
    EXCEL UPLOAD
 ══════════════════════════════════════════════════════ */
 function forceCleanUpload() {
-  if (!confirm('⚠️ This will DELETE all shift schedule data AND remove duplicate user accounts. Continue?')) return;
-  if (!confirm('Are you sure? All schedule data will be permanently deleted.')) return;
+  if (!confirm('⚠️ This will DELETE ALL employee users, ALL shift schedules, ALL attendance records. Only admin + managers remain. Continue?')) return;
+  if (!confirm('Final warning: All employee accounts will be permanently deleted. They will be recreated when you upload the Excel.')) return;
 
-  // Step 1: Remove ALL fromExcel shift data
-  const beforeShift = db.shifts.length;
-  db.shifts = db.shifts.filter(s => !s.fromExcel);
-  const removedShifts = beforeShift - db.shifts.length;
+  // Count before
+  const empCount = db.users.filter(u => u.role === 'employee').length;
+  const shiftCount = db.shifts.filter(s => s.fromExcel).length;
+  const attCount = db.attendance.length;
 
-  // Step 2: Remove duplicate users (same first+last name + area + role)
-  const dupMap = {};
-  let removedUsers = 0;
-  db.users.forEach(u => {
-    if (u.role === '__deleted__' || u.role === 'admin') return;
-    const words = normName(u.name).split(' ');
-    const nameKey = (words[0] || '') + ' ' + (words[words.length-1] || '');
-    if (!nameKey.trim()) return;
-    const key = `${nameKey}|${u.area || ''}|${u.role}`;
-    if (dupMap[key]) {
-      u.role = '__deleted__';
-      removedUsers++;
-    } else {
-      dupMap[key] = u.id;
-    }
-  });
-
-  // Step 3: Delete attendance/requests for removed users (cleanup)
-  const deletedIds = new Set(db.users.filter(u => u.role === '__deleted__').map(u => u.id));
-  if (deletedIds.size) {
-    db.attendance = db.attendance.filter(a => !deletedIds.has(a.userId));
-    db.requests = db.requests.filter(r => !deletedIds.has(r.userId));
-  }
+  // Delete ALL employee users
+  db.users = db.users.filter(u => u.role !== 'employee');
+  // Delete ALL shift data
+  db.shifts = [];
+  // Delete ALL attendance
+  db.attendance = [];
+  // Delete ALL requests from employees
+  db.requests = [];
 
   saveDb();
   document.getElementById('xl-status').innerHTML = `<div class="al al-s" style="margin-top:12px">
-    ✅ Force clean complete! Removed <strong>${removedShifts}</strong> shift entries,
-    <strong>${removedUsers}</strong> duplicate user(s).
-    <br><small style="color:var(--t2)">Refresh page now, then upload your Excel file.</small>
+    ✅ Nuclear reset complete! Removed <strong>${empCount}</strong> employees,
+    <strong>${shiftCount}</strong> shift entries, <strong>${attCount}</strong> attendance records.
+    <br><small style="color:var(--t2)"><a href="/" style="color:var(--blue)">Click here to reload page</a>, then upload your Excel file fresh.</small>
   </div>`;
-  showToast(`Cleaned: ${removedShifts} shifts, ${removedUsers} duplicates removed`, 'ok');
+  showToast(`Nuclear reset: ${empCount} employees, ${shiftCount} shifts removed`, 'ok');
 }
 function handleXL(event) {
   const file = event.target.files[0]; if (!file) return;
