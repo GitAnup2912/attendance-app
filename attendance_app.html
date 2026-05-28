@@ -2014,8 +2014,8 @@ function renderOverview() {
   } else if (curUser.role === 'area_incharge' || curUser.role === 'assistant_area_incharge') {
     emps = db.users.filter(u => u.area === curUser.area);
   } else {
-    // DSM, SM and Admin see ALL (excluding the system admin user)
-    emps = db.users.filter(u => u.role !== 'admin');
+    // DSM, SM and Admin see ALL (excluding the system admin user and deleted duplicates)
+    emps = db.users.filter(u => u.role !== 'admin' && u.role !== '__deleted__');
   }
   // Apply manual filter dropdowns within the role-based scope
   if (areaF)  emps = emps.filter(u => u.area === areaF);
