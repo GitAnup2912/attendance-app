@@ -1201,6 +1201,12 @@ function getActivePage() {
 let _uid = 300;
 let _rid = 1;
 // Restore persisted data (async for server mode)
+const APP_VERSION = '1';
+if (localStorage.getItem('app_version') !== APP_VERSION) {
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.setItem('app_version', APP_VERSION);
+  console.log('Cleared stale localStorage data');
+}
 (async () => { await loadDb(); })();
 
 /* ══════════════════════════════════════════════════════
