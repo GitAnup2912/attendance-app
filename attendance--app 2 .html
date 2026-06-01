@@ -1201,7 +1201,7 @@ function getActivePage() {
 let _uid = 300;
 let _rid = 1;
 // Restore persisted data (async for server mode)
-const APP_VERSION = '2';
+const APP_VERSION = '3';
 if (localStorage.getItem('app_version') !== APP_VERSION) {
   localStorage.removeItem(STORAGE_KEY);
   localStorage.setItem('app_version', APP_VERSION);
@@ -4821,6 +4821,10 @@ function parseXL(raw, stEl) {
       }
     }
 
+    if (!user) {
+      // Final fallback: match by name ONLY (ignore area/role) to prevent duplicates
+      user = db.users.find(u => u.role !== '__deleted__' && u.name && normName(u.name) === normName(nameCell));
+    }
     if (!user) {
       // Create new user account from Excel roster
       let uname = normName(nameCell).split(' ')[0].replace(/[^a-z]/g,'') || 'emp';
