@@ -1,21 +1,35 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const fs = require('fs');
 const path = require('path');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://admin:Anup2912@cluster0.k1eyfco.mongodb.net/?appName=Cluster0';
-const DB_NAME = 'attendance_app';
-const COLLECTION = 'data';
+const DATA_FILE = path.join(__dirname, 'attendance_data.json');
 
-let db;
+// Load persisted data on startup
+let dataCache = {};
+if (fs.existsSync(DATA_FILE)) {
+  try {
+    dataCache = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+    console.log('Loaded saved data from disk');
+  } catch (e) {
+    console.warn('Could not read data file, starting fresh');
+  }
+}
+// Ensure all fields exist
+if (!dataCache.users) dataCache.users = [];
+if (!dataCache.shifts) dataCache.shifts = [];
+if (!dataCache.attendance) dataCache.attendance = [];
+if (!dataCache.requests) dataCache.requests = [];
+if (!dataCache.siAssignments) dataCache.siAssignments = [];
+if (!dataCache.monthlyGrids) dataCache.monthlyGrids = {};
+if (!dataCache.quotas) dataCache.quotas = [];
 
-async function connectDB() {
-  const client = new MongoClient(MONGO_URI);
-  await client.connect();
-  db = client.db(DB_NAME);
-  console.log('Connected to MongoDB Atlas');
+// Save data to disk
+function saveData(data) {
+  dataCache = data;
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
 // Serve the attendance app (no cache so HTML/JS updates are picked up)
@@ -26,36 +40,23 @@ app.use(express.static(__dirname, {
 }));
 
 // GET /api/data — returns the full app data
-app.get('/api/data', async (req, res) => {
-  try {
-    const data = await db.collection(COLLECTION).findOne({ _id: 'main' });
-    if (!data) {
-      return res.json({ users: [], shifts: [], attendance: [], requests: [], siAssignments: [], monthlyGrids: {}, quotas: [] });
-    }
-    const { _id, ...rest } = data;
-    res.json(rest);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.get('/api/data', (req, res) => {
+  res.json(dataCache);
 });
 
 // POST /api/data — saves the full app data (replaces everything)
-app.post('/api/data', async (req, res) => {
+app.post('/api/data', (req, res) => {
   try {
     const { users, shifts, attendance, requests, siAssignments, monthlyGrids, quotas } = req.body;
-    await db.collection(COLLECTION).updateOne(
-      { _id: 'main' },
-      { $set: {
-        users: users || [],
-        shifts: shifts || [],
-        attendance: attendance || [],
-        requests: requests || [],
-        siAssignments: siAssignments || [],
-        monthlyGrids: monthlyGrids || {},
-        quotas: quotas || [],
-      }},
-      { upsert: true }
-    );
+    saveData({
+      users: users || [],
+      shifts: shifts || [],
+      attendance: attendance || [],
+      requests: requests || [],
+      siAssignments: siAssignments || [],
+      monthlyGrids: monthlyGrids || {},
+      quotas: quotas || [],
+    });
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -68,11 +69,7 @@ app.get('/*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-connectDB().then(() => {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
-}).catch(err => {
-  console.error('MongoDB connection failed:', err);
-  process.exit(1);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Data stored in ${DATA_FILE}`);
 });
