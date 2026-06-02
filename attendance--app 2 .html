@@ -4905,14 +4905,15 @@ function parseXL(raw, stEl) {
   if (orphanedRemoved) console.log(`Cleaned ${orphanedRemoved} orphaned shift entries for this month.`);
 
   // ── Mark users removed from this month's schedule as __deleted__ ──
-  // Users who had shifts in this month during a previous import but are NOT
-  // in the new Excel data get marked __deleted__. This ensures the user list
-  // exactly matches the current month's schedule. Cross-month users who are
-  // removed from this month are hidden rather than permanently deleted.
+  // Users who were part of a previous Excel import but are NOT in the new
+  // schedule get marked __deleted__. This covers two cases:
+  //   (a) had shifts in this month before — caught via prevUserIds
+  //   (b) created/updated by a previous import but had NO shifts — caught via excelOrder
   let removedFromMonth = 0;
   db.users.forEach(u => {
     if (u.role === 'admin' || u.role === '__deleted__') return;
-    if (prevUserIds.has(u.id) && !processedIds.has(u.id)) {
+    const wasInPreviousImport = (prevUserIds.has(u.id) || u.excelOrder);
+    if (wasInPreviousImport && !processedIds.has(u.id)) {
       u.role = '__deleted__';
       removedFromMonth++;
     }
