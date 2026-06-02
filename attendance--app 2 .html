@@ -4836,6 +4836,7 @@ function parseXL(raw, stEl) {
       if (rawCat)    user.category = rawCat;
       if (excelArea) user.area = excelArea;
       if (excelRole) user.role = excelRole;
+      user.month = monthKey;
       updated++;
     }
 
@@ -4905,15 +4906,18 @@ function parseXL(raw, stEl) {
   if (orphanedRemoved) console.log(`Cleaned ${orphanedRemoved} orphaned shift entries for this month.`);
 
   // ── Mark users removed from this month's schedule as __deleted__ ──
-  // Users who were part of a previous Excel import but are NOT in the new
-  // schedule get marked __deleted__. This covers two cases:
+  // Users who were part of a previous Excel import for THIS month but are
+  // NOT in the new schedule get marked __deleted__. Three cases covered:
   //   (a) had shifts in this month before — caught via prevUserIds
-  //   (b) created/updated by a previous import but had NO shifts — caught via excelOrder
+  //   (b) created/updated by new code for THIS month — caught via month field
+  //   (c) created by old code (no month field) — caught via excelOrder fallback
+  // Users from OTHER months are not affected — their month field is different
+  // and they have no excelOrder from this month's import.
   let removedFromMonth = 0;
   db.users.forEach(u => {
     if (u.role === 'admin' || u.role === '__deleted__') return;
-    const wasInPreviousImport = (prevUserIds.has(u.id) || u.excelOrder);
-    if (wasInPreviousImport && !processedIds.has(u.id)) {
+    const wasInThisMonth = prevUserIds.has(u.id) || u.month === monthKey || (u.excelOrder && !u.month);
+    if (wasInThisMonth && !processedIds.has(u.id)) {
       u.role = '__deleted__';
       removedFromMonth++;
     }
