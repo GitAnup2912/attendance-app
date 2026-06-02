@@ -1,58 +1,58 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
 
 // MongoDB connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://admin:Anup2912@atten.wliwwci.mongodb.net/attendance-app?retryWrites=true&w=majority';
-
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
-
-// Schema — single document stores the entire app state
-const appDataSchema = new mongoose.Schema({}, { strict: false, collection: 'appdata' });
-const AppData = mongoose.model('AppData', appDataSchema);
-
 const DATA_KEY = 'main';
+
+let db = null;
+let dataCache = null;
 
 // Default data structure
 function defaultData() {
-  return {
-    users: [],
-    shifts: [],
-    attendance: [],
-    requests: [],
-    siAssignments: [],
-    monthlyGrids: {},
-    quotas: [],
-  };
+  return { users: [], shifts: [], attendance: [], requests: [], siAssignments: [], monthlyGrids: {}, quotas: [] };
 }
 
-// Load data from MongoDB
-async function loadData() {
+// Connect to MongoDB (non-blocking — server starts listening regardless)
+async function connectDB() {
   try {
-    const doc = await mongoose.connection.collection('appdata').findOne({ _id: DATA_KEY });
-    if (doc) {
-      delete doc._id;
-      // Ensure all fields exist
-      const def = defaultData();
-      for (const key of Object.keys(def)) {
-        if (!doc[key]) doc[key] = def[key];
+    const client = new MongoClient(MONGO_URI, { serverSelectionTimeoutMS: 15000 });
+    await client.connect();
+    db = client.db();
+    console.log('Connected to MongoDB');
+
+    // Load data after connection
+    try {
+      const doc = await db.collection('appdata').findOne({ _id: DATA_KEY });
+      if (doc) {
+        delete doc._id;
+        const def = defaultData();
+        for (const key of Object.keys(def)) {
+          if (!doc[key]) doc[key] = def[key];
+        }
+        dataCache = doc;
+        console.log('Data loaded from MongoDB');
+      } else {
+        dataCache = defaultData();
+        console.log('No existing data, starting fresh');
       }
-      return doc;
+    } catch (e) {
+      console.warn('Could not load data:', e.message);
+      dataCache = defaultData();
     }
   } catch (e) {
-    console.warn('Could not load from MongoDB, starting fresh:', e.message);
+    console.warn('MongoDB connection failed, running with empty data:', e.message);
+    dataCache = defaultData();
   }
-  return defaultData();
 }
 
-// Save data to MongoDB
 async function saveData(data) {
+  if (!db) return;
   try {
-    await mongoose.connection.collection('appdata').replaceOne(
+    await db.collection('appdata').replaceOne(
       { _id: DATA_KEY },
       { _id: DATA_KEY, ...data },
       { upsert: true }
@@ -62,13 +62,8 @@ async function saveData(data) {
   }
 }
 
-let dataCache = null;
-
-// Initialize cache on startup
-(async () => {
-  dataCache = await loadData();
-  console.log('Data loaded from MongoDB');
-})();
+// Start connection (non-blocking)
+connectDB();
 
 // Serve static files
 app.use(express.static(__dirname, {
@@ -77,13 +72,13 @@ app.use(express.static(__dirname, {
   }
 }));
 
-// GET /api/data — returns full app data
+// GET /api/data
 app.get('/api/data', (req, res) => {
-  if (!dataCache) return res.status(503).json({ error: 'Still loading' });
+  if (!dataCache) return res.json(defaultData());
   res.json(dataCache);
 });
 
-// POST /api/data — saves full app data
+// POST /api/data
 app.post('/api/data', async (req, res) => {
   try {
     const { users, shifts, attendance, requests, siAssignments, monthlyGrids, quotas } = req.body;
@@ -104,7 +99,7 @@ app.post('/api/data', async (req, res) => {
   }
 });
 
-// Serve the HTML for any other route
+// Serve HTML
 app.get('/*', (req, res) => {
   res.sendFile(__dirname + '/attendance--app 2 .html');
 });
