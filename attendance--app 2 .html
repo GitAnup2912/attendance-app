@@ -1614,6 +1614,7 @@ async function enterApp() {
         const f = db.users.find(u => u.id === curUser.id);
         if (f) curUser = f;
         goTo(active);
+        showToast('Data updated from server', 'info');
       }
     } catch(e) { /* ignore check errors */ }
   }, 15000);
