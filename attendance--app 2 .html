@@ -1137,7 +1137,7 @@ async function saveDb() {
       const sr = await fetch('/api/data?_=' + Date.now());
       if (sr.ok) {
         const sd = await sr.json();
-        if (sd && sd._lastSaved) {
+        if (sd && sd._lastSaved !== undefined) {
           mergedLocal = {
             users: mergeArr(db.users, sd.users || [], u => u.id),
             shifts: mergeArr(db.shifts, sd.shifts || [], s => s.userId+'|'+s.date),
@@ -1614,32 +1614,14 @@ async function enterApp() {
   if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
   async function _syncFromServer() {
     const active = getActivePage();
-    if (!active) return;
-    if (!IS_SERVER) return;
-    try {
-      const res = await fetch('/api/data?_=' + Date.now());
-      if (!res.ok) return;
-      const data = await res.json();
-      let changed = false;
-      if (data.users && JSON.stringify(data.users) !== JSON.stringify(db.users)) { db.users = data.users; changed = true; }
-      if (data.shifts && JSON.stringify(data.shifts) !== JSON.stringify(db.shifts)) { db.shifts = data.shifts; changed = true; }
-      if (data.attendance && JSON.stringify(data.attendance) !== JSON.stringify(db.attendance)) { db.attendance = data.attendance; changed = true; }
-      if (data.siAssignments) db.siAssignments = data.siAssignments;
-      if (data.requests) db.requests = data.requests;
-      if (data.quotas) db.quotas = data.quotas;
-      if (data.monthlyGrids) db.monthlyGrids = data.monthlyGrids;
-      if (changed) {
-        const mu = db.users.reduce((m,u)=>Math.max(m,u.id||0),0);
-        if (mu >= 300) _uid = mu + 10;
-        const mr = db.requests.reduce((m,r)=>Math.max(m,r.id||0),0);
-        if (mr >= 1) _rid = mr + 10;
-        runSIAAutoSync();
-        repairRevokedShifts();
-        const f = db.users.find(u => u.id === curUser.id);
-        if (f) curUser = f;
-        goTo(active);
-      }
-    } catch(e) { /* sync fetch failed, skip */ }
+    if (!active || !IS_SERVER) return;
+    const prev = JSON.stringify(db);
+    await loadDb();
+    if (JSON.stringify(db) !== prev) {
+      const f = db.users.find(u => u.id === curUser.id);
+      if (f) curUser = f;
+      goTo(active);
+    }
   }
   window._autoSyncInterval = setInterval(_syncFromServer, 30000);
   // Also sync when tab becomes visible again (user switches back)
@@ -1650,35 +1632,19 @@ async function enterApp() {
 
 // Manual refresh button — sync data from server
 async function manualSync() {
-  if (!IS_SERVER) return;
-  try {
-    const res = await fetch('/api/data?_=' + Date.now());
-    if (!res.ok) return;
-    const data = await res.json();
-    let changed = false;
-    if (data.users && JSON.stringify(data.users) !== JSON.stringify(db.users)) { db.users = data.users; changed = true; }
-    if (data.shifts && JSON.stringify(data.shifts) !== JSON.stringify(db.shifts)) { db.shifts = data.shifts; changed = true; }
-    if (data.attendance && JSON.stringify(data.attendance) !== JSON.stringify(db.attendance)) { db.attendance = data.attendance; changed = true; }
-    if (data.siAssignments) db.siAssignments = data.siAssignments;
-    if (data.requests) db.requests = data.requests;
-    if (data.quotas) db.quotas = data.quotas;
-    if (data.monthlyGrids) db.monthlyGrids = data.monthlyGrids;
-    const active = getActivePage();
-    if (changed && active) {
-      const mu = db.users.reduce((m,u)=>Math.max(m,u.id||0),0);
-      if (mu >= 300) _uid = mu + 10;
-      const mr = db.requests.reduce((m,r)=>Math.max(m,r.id||0),0);
-      if (mr >= 1) _rid = mr + 10;
-      runSIAAutoSync();
-      repairRevokedShifts();
-      const f = db.users.find(u => u.id === curUser.id);
-      if (f) curUser = f;
-      goTo(active);
-      showToast('Data refreshed from server', 'ok');
-    } else if (!changed) {
-      showToast('Data is up to date', 'ok');
-    }
-  } catch(e) { showToast('Refresh failed', 'err'); }
+  if (!IS_SERVER) { showToast('Not connected to server', 'warn'); return; }
+  const active = getActivePage();
+  if (!active) return;
+  const prev = JSON.stringify(db);
+  await loadDb();
+  if (JSON.stringify(db) !== prev) {
+    const f = db.users.find(u => u.id === curUser.id);
+    if (f) curUser = f;
+    goTo(active);
+    showToast('Data refreshed from server', 'ok');
+  } else {
+    showToast('Data is up to date', 'ok');
+  }
 }
 
 function doLogout() {
