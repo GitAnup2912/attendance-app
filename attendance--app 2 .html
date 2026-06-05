@@ -27,7 +27,7 @@ input,select,textarea,button{font-family:var(--fb);}
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:3px;}
-@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
 .dn{display:none!important;}
 
 /* ── AUTH ──────────────────────────── */
@@ -1276,12 +1276,12 @@ function showToast(msg, type='info') {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toast-container';
-    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:8px;max-width:320px';
+    toast.style.cssText = 'position:fixed;bottom:20px;left:20px;z-index:999;display:flex;flex-direction:column;gap:4px;max-width:160px';
     document.body.appendChild(toast);
   }
   const el = document.createElement('div');
   const colors = {err:'rgba(240,90,90,.95)',warn:'rgba(240,192,64,.95)',info:'rgba(79,124,255,.95)',ok:'rgba(34,201,122,.95)'};
-  el.style.cssText = `background:${colors[type]||colors.info};color:#fff;padding:11px 16px;border-radius:9px;font-size:13px;font-family:var(--fb);box-shadow:0 4px 16px rgba(0,0,0,.4);animation:slideIn .2s ease;cursor:pointer`;
+  el.style.cssText = `background:${colors[type]||colors.info};color:#fff;padding:6px 8px;border-radius:5px;font-size:10px;font-family:var(--fb);box-shadow:0 2px 8px rgba(0,0,0,.3);animation:slideIn .2s ease;cursor:pointer`;
   el.textContent = msg;
   el.onclick = () => el.remove();
   toast.appendChild(el);
