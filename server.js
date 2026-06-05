@@ -149,6 +149,7 @@ app.use(express.static(__dirname, {
 
 // GET /api/data
 app.get('/api/data', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   if (!dataCache) return res.json(defaultData());
   // Always ensure admin password is 000000
   if (dataCache.users) {
