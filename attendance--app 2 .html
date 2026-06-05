@@ -1122,18 +1122,18 @@ async function saveDb() {
     users: db.users, shifts: db.shifts, attendance: db.attendance,
     siAssignments: db.siAssignments, requests: db.requests,
     quotas: db.quotas,
-    monthlyGrids: db.monthlyGrids || {},
-    _lastSaved: Date.now()
+    monthlyGrids: db.monthlyGrids || {}
   };
   // Always save to localStorage first
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch(e) { console.warn('localStorage save failed:', e); }
   if (IS_SERVER) {
     try {
+      showToast('Saving to server...', 'info');
       const res = await fetch('/api/data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
-      if (result.persisted === false) showToast('Data saved (server pending)', 'warn');
-      else showToast('Data saved', 'ok');
+      if (result.persisted === false) showToast('Data saved to server (MongoDB pending)', 'warn');
+      else showToast('Data saved to server', 'ok');
       return true;
     } catch(e) {
       console.warn('Server save failed:', e);
@@ -1141,7 +1141,6 @@ async function saveDb() {
       return false;
     }
   }
-  showToast('Data saved', 'ok');
   return true;
 }
 async function loadDb() {
@@ -1197,6 +1196,19 @@ let _dbReady = false;
 (async () => {
   await loadDb();
   _dbReady = true;
+  // Only push localStorage to server if server has no real data (prevent overwriting other PC changes)
+  try {
+    const lr = localStorage.getItem(STORAGE_KEY);
+    if (lr) {
+      const ld = JSON.parse(lr);
+      if (ld && ld.users && ld.users.length > 1 && db.users.length <= 1) {
+        console.log('Pushing localStorage data to server...');
+        const ok = await saveDb();
+        if (ok) { console.log('Server sync complete'); await loadDb(); }
+        else console.warn('Server sync failed, data localStorage mein safe hai');
+      }
+    }
+  } catch(e) { console.warn('Auto-sync error:', e); }
 })();
 
 /* ══════════════════════════════════════════════════════
@@ -1264,7 +1276,7 @@ function showToast(msg, type='info') {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toast-container';
-    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:320px';
+    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:8px;max-width:320px';
     document.body.appendChild(toast);
   }
   const el = document.createElement('div');
@@ -1583,23 +1595,17 @@ async function enterApp() {
     admin:                'pg-overview',
   };
   goTo(def[curUser.role] || 'pg-overview');
-}
-
-// Manual refresh button — sync data from server
-async function manualSync() {
-  if (!IS_SERVER) { showToast('Not connected to server', 'warn'); return; }
-  const active = getActivePage();
-  if (!active) return;
-  const prev = JSON.stringify(db);
-  await loadDb();
-  if (JSON.stringify(db) !== prev) {
+  // Auto-sync from server every 30 seconds
+  if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
+  window._autoSyncInterval = setInterval(async () => {
+    const active = getActivePage();
+    if (!active) return;
+    await loadDb();
+    // Re-sync curUser
     const f = db.users.find(u => u.id === curUser.id);
     if (f) curUser = f;
-    goTo(active);
-    showToast('Data refreshed from server', 'ok');
-  } else {
-    showToast('Data is up to date', 'ok');
-  }
+    if (active) goTo(active);
+  }, 30000);
 }
 
 function doLogout() {
@@ -5362,6 +5368,23 @@ function seSaveToDb(mk){
   if(!db.monthlyGrids) db.monthlyGrids={};
   db.monthlyGrids[mk]=JSON.parse(JSON.stringify(seGrids[mk]));
   seDirty[mk]=false; saveDb(); seUpdateStatus();
+}
+
+// Manual refresh button — sync data from server
+async function manualSync() {
+  if (!IS_SERVER) { showToast('Not connected to server', 'warn'); return; }
+  const active = getActivePage();
+  if (!active) return;
+  const prev = JSON.stringify(db);
+  await loadDb();
+  if (JSON.stringify(db) !== prev) {
+    const f = db.users.find(u => u.id === curUser.id);
+    if (f) curUser = f;
+    goTo(active);
+    showToast('Data refreshed from server', 'ok');
+  } else {
+    showToast('Data is up to date', 'ok');
+  }
 }
 
 </script>
