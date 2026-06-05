@@ -1206,7 +1206,21 @@ if (localStorage.getItem('app_version') !== APP_VERSION) {
   localStorage.setItem('app_version', APP_VERSION);
   console.log('Cleared stale localStorage data');
 }
-(async () => { await loadDb(); })();
+(async () => {
+  await loadDb();
+  // Auto-sync: if localStorage has full data but server is empty, push it
+  try {
+    const lr = localStorage.getItem(STORAGE_KEY);
+    if (lr) {
+      const ld = JSON.parse(lr);
+      if (ld && ld.users && ld.users.length > 1 && (db.shifts.length === 0 || db.users.length <= 1)) {
+        console.log('Auto-syncing localStorage data to server...');
+        await saveDb();
+        await loadDb();
+      }
+    }
+  } catch(e) { /* auto-sync failed, non-critical */ }
+})();
 
 /* ══════════════════════════════════════════════════════
    STATE
