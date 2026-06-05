@@ -1206,8 +1206,10 @@ if (localStorage.getItem('app_version') !== APP_VERSION) {
   localStorage.setItem('app_version', APP_VERSION);
   console.log('Cleared stale localStorage data');
 }
+let _dbReady = false;
 (async () => {
   await loadDb();
+  _dbReady = true;
   // Auto-sync: if localStorage has full data but server is empty, push it
   try {
     const lr = localStorage.getItem(STORAGE_KEY);
@@ -1499,6 +1501,12 @@ function coloredName(u) {
    AUTH
 ══════════════════════════════════════════════════════ */
 async function doLogin() {
+  if (!_dbReady) {
+    showErr('li-err','Loading data, please wait...');
+    await loadDb();
+    _dbReady = true;
+    hideEl('li-err');
+  }
   const un = document.getElementById('li-u').value.trim();
   const pw = document.getElementById('li-p').value;
   hideEl('li-err');
