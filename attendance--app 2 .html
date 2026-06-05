@@ -1273,7 +1273,7 @@ function showToast(msg, type='info') {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toast-container';
-    toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;width:90%;max-width:360px';
+    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:320px';
     document.body.appendChild(toast);
   }
   const el = document.createElement('div');
@@ -1592,17 +1592,23 @@ async function enterApp() {
     admin:                'pg-overview',
   };
   goTo(def[curUser.role] || 'pg-overview');
-  // Auto-sync from server every 60 seconds (balance between responsiveness and bandwidth)
+  // Auto-sync from server every 30 seconds (only re-render if data actually changed)
   if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
   window._autoSyncInterval = setInterval(async () => {
     const active = getActivePage();
     if (!active) return;
+    // Snapshot current data to detect changes
+    const prevShifts = db.shifts.length;
+    const prevAtt = db.attendance.length;
+    const prevUsers = db.users.length;
     await loadDb();
-    // Re-sync curUser
-    const f = db.users.find(u => u.id === curUser.id);
-    if (f) curUser = f;
-    if (active) goTo(active);
-  }, 60000);
+    // Only re-render if data changed
+    if (db.shifts.length !== prevShifts || db.attendance.length !== prevAtt || db.users.length !== prevUsers) {
+      const f = db.users.find(u => u.id === curUser.id);
+      if (f) curUser = f;
+      goTo(active);
+    }
+  }, 30000);
 }
 
 function doLogout() {
