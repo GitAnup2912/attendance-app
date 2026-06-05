@@ -1594,6 +1594,17 @@ async function enterApp() {
     admin:                'pg-overview',
   };
   goTo(def[curUser.role] || 'pg-overview');
+  // Auto-sync from server every 30 seconds
+  if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
+  window._autoSyncInterval = setInterval(async () => {
+    const active = getActivePage();
+    if (!active) return;
+    await loadDb();
+    // Re-sync curUser
+    const f = db.users.find(u => u.id === curUser.id);
+    if (f) curUser = f;
+    if (active) goTo(active);
+  }, 30000);
 }
 
 function doLogout() {
