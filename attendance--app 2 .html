@@ -399,7 +399,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
               <option value="A">A–Morning</option><option value="B">B–Afternoon</option><option value="C">C–Night</option>
             </select>
           </div>
-          <table><thead><tr><th>Employee</th><th>Area</th><th>Shift</th><th>Incharge</th>
+          <table><thead><tr><th>Employee</th><th>Area</th><th>Shift</th>
             <th>Attendance</th><th>Marked By</th><th>Edit</th></tr></thead>
           <tbody id="adm-att-body"></tbody></table>
         </div>
@@ -3031,7 +3031,7 @@ function renderAdminAtt() {
   emps = sortByExcelOrder(emps);
   const body = document.getElementById('adm-att-body');
   if (!emps.length) {
-    body.innerHTML = emptyRow(7, searchQ ? `No employees matching "${searchQ}".` : 'No employees for selected filters.','👤');
+    body.innerHTML = emptyRow(6, searchQ ? `No employees matching "${searchQ}".` : 'No employees for selected filters.','👤');
     return;
   }
 
@@ -3039,14 +3039,10 @@ function renderAdminAtt() {
     const shiftCode  = getEffectiveShiftCode(u.id, date) || 'G';
     const att       = getAtt(u.id, date);
     const markerName = att?.markedBy ? (getUser(att.markedBy)?.name || '?') : '—';
-    // Incharge priority: SI/ASI (siId) → AI/AAI (aiId) → fallback u.siId
-    const asgn = u.area ? getSIA(u.area, shiftCode, u.role) : null;
-    const si = asgn ? (getUser(asgn.siId) || getUser(asgn.aiId)) : (u.siId ? getUser(u.siId) : null);
     return `<tr>
       <td><div>${coloredName(u)}</div><div style="font-size:11px;color:var(--t2)">${u.username||''}</div></td>
       <td style="font-size:12.5px">${AL[u.area]||u.area||'—'}</td>
       <td>${sBadge(shiftCode)}</td>
-      <td style="font-size:12px;color:var(--t2)">${si?si.name:'—'}</td>
       <td>${aBadge(att?att.status:'')}</td>
       <td style="font-size:11.5px;color:var(--t2)">${markerName}</td>
       <td><button class="btn bo2 bsm" onclick="openAdmAttModal(${u.id},'${date}')">✏️ Edit</button></td>
