@@ -1131,6 +1131,7 @@ async function saveDb() {
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
       if (result.persisted === false) showToast('Data saved (server pending)', 'warn');
+      else showToast('Data saved', 'ok');
       return true;
     } catch(e) {
       console.warn('Server save failed:', e);
@@ -1138,6 +1139,7 @@ async function saveDb() {
       return false;
     }
   }
+  showToast('Data saved', 'ok');
   return true;
 }
 async function loadDb() {
@@ -1597,13 +1599,10 @@ async function enterApp() {
   window._autoSyncInterval = setInterval(async () => {
     const active = getActivePage();
     if (!active) return;
-    // Snapshot current data to detect changes
-    const prevShifts = db.shifts.length;
-    const prevAtt = db.attendance.length;
-    const prevUsers = db.users.length;
+    // Snapshot current data to detect ANY change
+    const prev = JSON.stringify(db);
     await loadDb();
-    // Only re-render if data changed
-    if (db.shifts.length !== prevShifts || db.attendance.length !== prevAtt || db.users.length !== prevUsers) {
+    if (JSON.stringify(db) !== prev) {
       const f = db.users.find(u => u.id === curUser.id);
       if (f) curUser = f;
       goTo(active);
