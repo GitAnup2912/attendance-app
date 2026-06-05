@@ -1610,24 +1610,6 @@ async function enterApp() {
     admin:                'pg-overview',
   };
   goTo(def[curUser.role] || 'pg-overview');
-  // Auto-sync — check server for changes every 30 seconds
-  if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
-  async function _syncFromServer() {
-    const active = getActivePage();
-    if (!active || !IS_SERVER) return;
-    const prev = JSON.stringify(db);
-    await loadDb();
-    if (JSON.stringify(db) !== prev) {
-      const f = db.users.find(u => u.id === curUser.id);
-      if (f) curUser = f;
-      goTo(active);
-    }
-  }
-  window._autoSyncInterval = setInterval(_syncFromServer, 30000);
-  // Also sync when tab becomes visible again (user switches back)
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) _syncFromServer();
-  });
 }
 
 // Manual refresh button — sync data from server
