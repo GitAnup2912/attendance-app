@@ -1506,8 +1506,16 @@ async function doLogin() {
       const lr = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:un,password:pw}) });
       const lrData = await lr.json();
       if (!lrData.ok) {
-        showErr('li-err', lrData.message || 'Login failed');
-        return;
+        if (lrData.alreadyLoggedIn) {
+          // Stale session from page refresh — force logout and retry
+          const localUser = db.users.find(u => u.role!=='__deleted__' && u.username===un);
+          if (localUser) {
+            await fetch('/api/logout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userId:localUser.id}) });
+            const retry = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:un,password:pw}) });
+            const retryData = await retry.json();
+            if (!retryData.ok) { showErr('li-err', retryData.message || 'Login failed'); return; }
+          } else { showErr('li-err', lrData.message); return; }
+        } else { showErr('li-err', lrData.message || 'Login failed'); return; }
       }
     } catch(e) {
       // Server not reachable, fall through to client-side login
