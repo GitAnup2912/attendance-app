@@ -1123,17 +1123,18 @@ async function saveDb() {
     quotas: db.quotas,
     monthlyGrids: db.monthlyGrids || {}
   };
-  // Always save to localStorage as the authoritative copy
+  // Always save to localStorage first
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch(e) { console.warn('localStorage save failed:', e); }
   if (IS_SERVER) {
     try {
       const res = await fetch('/api/data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
-      if (result.persisted === false) console.warn('Server save: MongoDB write failed');
+      if (result.persisted === false) showToast('Data saved to server (MongoDB pending)', 'warn');
       return true;
     } catch(e) {
-      console.warn('Server save failed (localStorage copy is safe):', e);
+      console.warn('Server save failed:', e);
+      showToast('Server save failed! Data only on this device.', 'err');
       return false;
     }
   }
