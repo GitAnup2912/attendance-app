@@ -1156,29 +1156,6 @@ async function loadDb() {
       if (raw) data = JSON.parse(raw);
     }
     if (data) {
-      // Merge localStorage on top of server data — localStorage always has latest writes
-      const localRaw = localStorage.getItem(STORAGE_KEY);
-      if (localRaw) {
-        try {
-          const localData = JSON.parse(localRaw);
-          if (localData) {
-            // Merge users by id: localStorage copy wins (has latest password etc.)
-            if (localData.users && localData.users.length) {
-              const userMap = new Map();
-              data.users.forEach(u => userMap.set(u.id, u));
-              localData.users.forEach(u => userMap.set(u.id, u));
-              data.users = Array.from(userMap.values());
-            }
-            // Other fields: localStorage fully overrides
-            if (localData.shifts) data.shifts = localData.shifts;
-            if (localData.attendance) data.attendance = localData.attendance;
-            if (localData.siAssignments) data.siAssignments = localData.siAssignments;
-            if (localData.requests) data.requests = localData.requests;
-            if (localData.quotas) data.quotas = localData.quotas;
-            if (localData.monthlyGrids) data.monthlyGrids = localData.monthlyGrids;
-          }
-        } catch(e) { /* localStorage parse failed, use server data */ }
-      }
       if (data.users && data.users.length) db.users = data.users;
       if (data.shifts) db.shifts = data.shifts;
       if (data.attendance) db.attendance = data.attendance;
@@ -1215,12 +1192,12 @@ let _dbReady = false;
 (async () => {
   await loadDb();
   _dbReady = true;
-  // Always push localStorage data to server on page load
+  // Only push localStorage to server if server has no real data (prevent overwriting other PC changes)
   try {
     const lr = localStorage.getItem(STORAGE_KEY);
     if (lr) {
       const ld = JSON.parse(lr);
-      if (ld && ld.users && ld.users.length > 1) {
+      if (ld && ld.users && ld.users.length > 1 && db.users.length <= 1) {
         console.log('Pushing localStorage data to server...');
         const ok = await saveDb();
         if (ok) { console.log('Server sync complete'); await loadDb(); }
