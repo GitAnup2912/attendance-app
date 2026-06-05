@@ -67,7 +67,8 @@ async function connectDB() {
         }
         dataCache = doc;
         console.log('Data loaded from MongoDB');
-      } else if (!dataCache) {
+      }
+      if (!dataCache) {
         dataCache = defaultData();
         console.log('No existing data, starting fresh');
       }
@@ -78,6 +79,11 @@ async function connectDB() {
   } catch (e) {
     console.warn('MongoDB connection failed:', e.message);
     if (!dataCache) dataCache = defaultData();
+  }
+  // Always ensure admin password is 000000 regardless of data source
+  if (dataCache && dataCache.users) {
+    const admin = dataCache.users.find(u => u.id === 1);
+    if (admin) admin.password = '000000';
   }
 }
 
