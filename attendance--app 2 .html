@@ -1127,12 +1127,10 @@ async function saveDb() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch(e) { console.warn('localStorage save failed:', e); }
   if (IS_SERVER) {
     try {
-      showToast('Saving to server...', 'info');
       const res = await fetch('/api/data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
-      if (result.persisted === false) showToast('Data saved to server (MongoDB pending)', 'warn');
-      else showToast('Data saved to server', 'ok');
+      if (result.persisted === false) showToast('Data saved (server pending)', 'warn');
       return true;
     } catch(e) {
       console.warn('Server save failed:', e);
@@ -1275,7 +1273,7 @@ function showToast(msg, type='info') {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toast-container';
-    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:8px;max-width:320px';
+    toast.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;width:90%;max-width:360px';
     document.body.appendChild(toast);
   }
   const el = document.createElement('div');
