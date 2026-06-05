@@ -173,8 +173,9 @@ app.post('/api/data', async (req, res) => {
   }
 });
 
-// Serve HTML
+// Serve HTML — always prevent caching so other PCs get latest version
 app.get('/*', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(__dirname + '/attendance--app 2 .html');
 });
 
