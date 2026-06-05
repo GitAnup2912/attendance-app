@@ -1127,10 +1127,12 @@ async function saveDb() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch(e) { console.warn('localStorage save failed:', e); }
   if (IS_SERVER) {
     try {
+      showToast('Saving to server...', 'info');
       const res = await fetch('/api/data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
       if (result.persisted === false) showToast('Data saved to server (MongoDB pending)', 'warn');
+      else showToast('Data saved to server', 'ok');
       return true;
     } catch(e) {
       console.warn('Server save failed:', e);
