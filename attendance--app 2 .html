@@ -507,7 +507,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
         </div>
         <div class="tw"><div class="th" id="usr-count">All Accounts</div>
           <table><thead><tr>
-            <th>Name &amp; Username</th><th>Role</th><th>Area</th><th>Shift</th>
+            <th>Name &amp; Username</th><th>Role</th><th>Area</th>
             <th>Reports To</th><th>Category</th><th>PW</th><th>Actions</th>
           </tr></thead>
           <tbody id="users-body"></tbody></table>
@@ -4070,7 +4070,7 @@ function renderUsers() {
   const cnt = document.getElementById('usr-count');
   if (cnt) cnt.textContent = `All Accounts (${users.length})`;
   const body = document.getElementById('users-body');
-  if (!users.length) { body.innerHTML = emptyRow(9,'No users match filters.','👤'); return; }
+  if (!users.length) { body.innerHTML = emptyRow(8,'No users match filters.','👤'); return; }
 
   body.innerHTML = users.map(u => {
     const reportsUser = u.reportsTo ? db.users.find(x=>x.id===u.reportsTo) : null;
@@ -4090,7 +4090,6 @@ function renderUsers() {
       </td>
       <td>${rBadge(u.role)}</td>
       <td style="font-size:12.5px">${AL[u.area]||u.area||'—'}</td>
-      <td style="font-size:12.5px">${u.assignedShift || '—'}</td>
       <td style="font-size:12px;color:var(--t2)">${reportLabel}</td>
       <td style="font-size:12px;color:var(--t2)">${u.category||'—'}</td>
       <td>${u.mustChangePw
