@@ -13,6 +13,7 @@ const BACKUP_FILE = path.join(__dirname, 'attendance_data.json');
 
 let db = null;
 let dataCache = null;
+const activeSessions = new Map(); // userId -> lastHeartbeat timestamp
 
 // Default data structure
 function defaultData() {
@@ -198,6 +199,47 @@ app.post('/api/data', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// ── Session management: prevent same user login on multiple terminals ──
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  if (!dataCache || !dataCache.users) return res.json({ ok: false, message: 'Server not ready' });
+  if (!username || !password) return res.json({ ok: false, message: 'Username and password required' });
+  // Admin password override
+  const user = dataCache.users.find(u =>
+    u.role !== '__deleted__' && u.username === username && u.password === password
+  );
+  if (!user) return res.json({ ok: false, message: 'Invalid credentials' });
+
+  // Check if user already has an active session (heartbeat within last 90s)
+  const last = activeSessions.get(user.id);
+  const now = Date.now();
+  if (last && (now - last) < 90000) {
+    return res.json({ ok: false, message: 'This user is already logged in on another device. Logout from there first.', alreadyLoggedIn: true });
+  }
+  activeSessions.set(user.id, now);
+  res.json({ ok: true, userId: user.id, userName: user.name, userRole: user.role });
+});
+
+app.post('/api/logout', (req, res) => {
+  const { userId } = req.body;
+  if (userId) activeSessions.delete(userId);
+  res.json({ ok: true });
+});
+
+app.post('/api/heartbeat', (req, res) => {
+  const { userId } = req.body;
+  if (userId) activeSessions.set(userId, Date.now());
+  res.json({ ok: true });
+});
+
+// Cleanup stale sessions every 60 seconds
+setInterval(() => {
+  const cutoff = Date.now() - 120000; // 2 min stale threshold
+  for (const [uid, ts] of activeSessions) {
+    if (ts < cutoff) activeSessions.delete(uid);
+  }
+}, 60000);
 
 // Serve HTML — always prevent caching so other PCs get latest version
 app.get('/*', (req, res) => {

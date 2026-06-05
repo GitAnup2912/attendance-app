@@ -1500,6 +1500,21 @@ async function doLogin() {
   if (!un) { showErr('li-err','Please enter your username.'); return; }
   if (!pw) { showErr('li-err','Please enter your password.'); return; }
 
+  // Server-side session check — prevent same user login on multiple terminals
+  if (IS_SERVER) {
+    try {
+      const lr = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:un,password:pw}) });
+      const lrData = await lr.json();
+      if (!lrData.ok) {
+        showErr('li-err', lrData.message || 'Login failed');
+        return;
+      }
+    } catch(e) {
+      // Server not reachable, fall through to client-side login
+      console.warn('Server login check failed, using local auth');
+    }
+  }
+
   // Find user by username (exact match first), then by full name (case-insensitive)
   let user = db.users.find(u =>
     u.role !== '__deleted__' && u.username === un && u.password === pw
@@ -1510,13 +1525,9 @@ async function doLogin() {
     );
   }
   if (!user) {
-    // Check if username exists but password is wrong
     const exists = db.users.find(u => u.role !== '__deleted__' && (u.username === un || u.name.toLowerCase() === un.toLowerCase()));
-    if (exists) {
-      showErr('li-err','Incorrect password. Please try again.');
-    } else {
-      showErr('li-err','Username not found. Please check and try again.');
-    }
+    if (exists) showErr('li-err','Incorrect password. Please try again.');
+    else showErr('li-err','Username not found. Please check and try again.');
     return;
   }
 
@@ -1595,6 +1606,15 @@ async function enterApp() {
     admin:                'pg-overview',
   };
   goTo(def[curUser.role] || 'pg-overview');
+
+  // Start heartbeat to prevent duplicate login on other terminals
+  if (IS_SERVER) {
+    if (window._hbInterval) clearInterval(window._hbInterval);
+    window._hbInterval = setInterval(() => {
+      fetch('/api/heartbeat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userId:curUser.id}) }).catch(()=>{});
+    }, 60000);
+  }
+
   // Auto-sync from server every 30 seconds
   if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
   window._autoSyncInterval = setInterval(async () => {
@@ -1609,6 +1629,7 @@ async function enterApp() {
 }
 
 function doLogout() {
+  const uid = curUser ? curUser.id : null;
   curUser = null;
   document.getElementById('auth-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
@@ -1616,6 +1637,11 @@ function doLogout() {
   document.getElementById('auth-sub').textContent = 'Attendance Management System — Industrial Shift Tracking';
   setVal('li-u',''); setVal('li-p','');
   empCalYear = new Date().getFullYear(); empCalMonth = new Date().getMonth();
+  // Clear session on server
+  if (IS_SERVER && uid) {
+    if (window._hbInterval) { clearInterval(window._hbInterval); window._hbInterval = null; }
+    fetch('/api/logout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userId:uid}) }).catch(()=>{});
+  }
 }
 
 /* ══════════════════════════════════════════════════════
