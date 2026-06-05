@@ -1131,7 +1131,6 @@ async function saveDb() {
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
       if (result.persisted === false) showToast('Data saved (server pending)', 'warn');
-      else showToast('Data saved', 'ok');
       return true;
     } catch(e) {
       console.warn('Server save failed:', e);
@@ -1139,7 +1138,6 @@ async function saveDb() {
       return false;
     }
   }
-  showToast('Data saved', 'ok');
   return true;
 }
 async function loadDb() {
