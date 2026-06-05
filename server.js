@@ -50,15 +50,32 @@ async function connectDB() {
 }
 
 async function saveData(data) {
-  if (!db) return;
+  if (!db) return false;
   try {
     await db.collection('appdata').replaceOne(
       { _id: DATA_KEY },
       { _id: DATA_KEY, ...data },
       { upsert: true }
     );
+    return true;
   } catch (e) {
     console.error('MongoDB save error:', e.message);
+    // Connection may be stale — try reconnecting once
+    try {
+      const client = new MongoClient(MONGO_URI, { serverSelectionTimeoutMS: 15000 });
+      await client.connect();
+      db = client.db();
+      await db.collection('appdata').replaceOne(
+        { _id: DATA_KEY },
+        { _id: DATA_KEY, ...data },
+        { upsert: true }
+      );
+      console.log('Data saved after reconnection');
+      return true;
+    } catch (e2) {
+      console.error('MongoDB reconnect+save failed:', e2.message);
+      return false;
+    }
   }
 }
 
@@ -99,8 +116,8 @@ app.post('/api/data', async (req, res) => {
       quotas: quotas || [],
     };
     dataCache = newData;
-    await saveData(newData);
-    res.json({ ok: true });
+    const saved = await saveData(newData);
+    res.json({ ok: true, persisted: saved });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
