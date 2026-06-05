@@ -371,8 +371,8 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <div id="pg-overview" class="page">
         <div class="sh"><div class="st">Attendance Overview<small>Full shift-wise attendance dashboard</small></div></div>
         <div class="fb">
-          <select id="ov-area" onchange="renderOverview()"><option value="">All Areas</option></select>
-          <select id="ov-shift" onchange="renderOverview()">
+          <select id="ov-area" onchange="syncOvFilters()"><option value="">All Areas</option></select>
+          <select id="ov-shift" onchange="syncOvFilters()">
             <option value="">All Shifts</option><option value="G">G–General</option>
             <option value="A">A–Morning</option><option value="B">B–Afternoon</option><option value="C">C–Night</option>
           </select>
@@ -393,8 +393,8 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
           <div class="fb">
             <input type="text" id="adm-search" placeholder="🔍 Search by name or username…"
               oninput="renderAdminAtt()" style="min-width:230px">
-            <select id="adm-area" onchange="renderAdminAtt()"><option value="">All Areas</option></select>
-            <select id="adm-shift" onchange="renderAdminAtt()">
+            <select id="adm-area" onchange="syncOvFilters()"><option value="">All Areas</option></select>
+            <select id="adm-shift" onchange="syncOvFilters()">
               <option value="">All Shifts</option><option value="G">G–General</option>
               <option value="A">A–Morning</option><option value="B">B–Afternoon</option><option value="C">C–Night</option>
             </select>
@@ -2984,6 +2984,21 @@ function renderApproveForRole() {
   if (['deputy_site_manager','site_manager','admin'].includes(curUser.role)) {
     renderApprove();
   }
+}
+
+// Sync overview + edit-attendance filters
+function syncOvFilters() {
+  const src = document.activeElement;
+  ['area','shift'].forEach(k => {
+    const ov = document.getElementById(`ov-${k}`);
+    const adm = document.getElementById(`adm-${k}`);
+    if (!ov || !adm) return;
+    if (src === ov) adm.value = ov.value;
+    else if (src === adm) ov.value = adm.value;
+    else { ov.value = adm.value = ov.value || adm.value || ''; }
+  });
+  renderOverview();
+  renderAdminAtt();
 }
 
 /* ══════════════════════════════════════════════════════
