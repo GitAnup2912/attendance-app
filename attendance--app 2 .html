@@ -1121,7 +1121,8 @@ async function saveDb() {
     users: db.users, shifts: db.shifts, attendance: db.attendance,
     siAssignments: db.siAssignments, requests: db.requests,
     quotas: db.quotas,
-    monthlyGrids: db.monthlyGrids || {}
+    monthlyGrids: db.monthlyGrids || {},
+    _lastSaved: Date.now()
   };
   // Always save to localStorage first
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch(e) { console.warn('localStorage save failed:', e); }
@@ -1195,19 +1196,6 @@ let _dbReady = false;
 (async () => {
   await loadDb();
   _dbReady = true;
-  // Only push localStorage to server if server has no real data (prevent overwriting other PC changes)
-  try {
-    const lr = localStorage.getItem(STORAGE_KEY);
-    if (lr) {
-      const ld = JSON.parse(lr);
-      if (ld && ld.users && ld.users.length > 1 && db.users.length <= 1) {
-        console.log('Pushing localStorage data to server...');
-        const ok = await saveDb();
-        if (ok) { console.log('Server sync complete'); await loadDb(); }
-        else console.warn('Server sync failed, data localStorage mein safe hai');
-      }
-    }
-  } catch(e) { console.warn('Auto-sync error:', e); }
 })();
 
 /* ══════════════════════════════════════════════════════

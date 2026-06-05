@@ -16,7 +16,7 @@ let dataCache = null;
 
 // Default data structure
 function defaultData() {
-  return { users: [], shifts: [], attendance: [], requests: [], siAssignments: [], monthlyGrids: {}, quotas: [] };
+  return { users: [], shifts: [], attendance: [], requests: [], siAssignments: [], monthlyGrids: {}, quotas: [], _lastSaved: 0 };
 }
 
 // Load/save JSON file fallback
@@ -175,7 +175,7 @@ app.get('/api/debug', (req, res) => {
 // POST /api/data
 app.post('/api/data', async (req, res) => {
   try {
-    const { users, shifts, attendance, requests, siAssignments, monthlyGrids, quotas } = req.body;
+    const { users, shifts, attendance, requests, siAssignments, monthlyGrids, quotas, _lastSaved } = req.body;
     const newData = {
       users: users || [],
       shifts: shifts || [],
@@ -184,6 +184,7 @@ app.post('/api/data', async (req, res) => {
       siAssignments: siAssignments || [],
       monthlyGrids: monthlyGrids || {},
       quotas: quotas || [],
+      _lastSaved: _lastSaved || 0,
     };
     dataCache = newData;
     // Always ensure admin password is 000000
