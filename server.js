@@ -13,6 +13,7 @@ const BACKUP_FILE = path.join(__dirname, 'attendance_data.json');
 
 let db = null;
 let dataCache = null;
+let dataVersion = 0;
 
 // Default data structure
 function defaultData() {
@@ -159,6 +160,11 @@ app.get('/api/data', (req, res) => {
   res.json(dataCache);
 });
 
+// GET /api/check — lightweight version check (no full data)
+app.get('/api/check', (req, res) => {
+  res.json({ v: dataVersion });
+});
+
 // GET /api/debug — check MongoDB connection
 app.get('/api/debug', (req, res) => {
   res.json({
@@ -190,6 +196,7 @@ app.post('/api/data', async (req, res) => {
       if (admin) admin.password = '000000';
     }
     const saved = await saveData(dataCache);
+    dataVersion++;
     res.json({ ok: true, persisted: saved });
   } catch (err) {
     res.status(500).json({ error: err.message });

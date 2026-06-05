@@ -1596,17 +1596,26 @@ async function enterApp() {
   goTo(def[curUser.role] || 'pg-overview');
   // Auto-sync from server every 30 seconds (only re-render if data actually changed)
   if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
+  let _knownVersion = 0;
   window._autoSyncInterval = setInterval(async () => {
     const active = getActivePage();
     if (!active) return;
-    // Snapshot current data to detect ANY change
-    const prev = JSON.stringify(db);
-    await loadDb();
-    if (JSON.stringify(db) !== prev) {
-      const f = db.users.find(u => u.id === curUser.id);
-      if (f) curUser = f;
-      goTo(active);
-    }
+    try {
+      if (!IS_SERVER) return;
+      // Lightweight version check first
+      const ch = await fetch('/api/check?_=' + Date.now());
+      const cv = await ch.json();
+      if (cv.v === _knownVersion) return; // no change, skip full fetch
+      _knownVersion = cv.v;
+      // Data changed on server — fetch full data
+      const prev = JSON.stringify(db);
+      await loadDb();
+      if (JSON.stringify(db) !== prev) {
+        const f = db.users.find(u => u.id === curUser.id);
+        if (f) curUser = f;
+        goTo(active);
+      }
+    } catch(e) { /* ignore check errors */ }
   }, 15000);
 }
 
