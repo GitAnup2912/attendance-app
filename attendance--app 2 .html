@@ -2982,6 +2982,8 @@ function renderApproveForRole() {
    ADMIN / MANAGER — EDIT ATTENDANCE
 ══════════════════════════════════════════════════════ */
 function renderAdminAtt() {
+  // Ensure siAssignments is built from current users (runs once per session)
+  if (!window._admAutoSynced) { runSIAAutoSync(); window._admAutoSynced = true; }
   const date = getVal('ov-date') || today();
   const areaF   = getVal('adm-area');
   const shiftF  = getVal('adm-shift');
@@ -3026,10 +3028,12 @@ function renderAdminAtt() {
   }
 
   body.innerHTML = emps.map(u => {
-    const si        = u.siId ? getUser(u.siId) : null;
+    const shiftCode  = getEffectiveShiftCode(u.id, date) || 'G';
     const att       = getAtt(u.id, date);
     const markerName = att?.markedBy ? (getUser(att.markedBy)?.name || '?') : '—';
-    const shiftCode  = getEffectiveShiftCode(u.id, date) || 'G';
+    // Incharge priority: SI/ASI (siId) → AI/AAI (aiId) → fallback u.siId
+    const asgn = u.area ? getSIA(u.area, shiftCode, u.role) : null;
+    const si = asgn ? (getUser(asgn.siId) || getUser(asgn.aiId)) : (u.siId ? getUser(u.siId) : null);
     return `<tr>
       <td><div>${coloredName(u)}</div><div style="font-size:11px;color:var(--t2)">${u.username||''}</div></td>
       <td style="font-size:12.5px">${AL[u.area]||u.area||'—'}</td>
