@@ -55,7 +55,7 @@ async function connectDB() {
     const client = new MongoClient(MONGO_URI, { serverSelectionTimeoutMS: 15000 });
     await client.connect();
     db = client.db();
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB, database:', db.databaseName);
 
     try {
       const doc = await db.collection('appdata').findOne({ _id: DATA_KEY });
@@ -71,6 +71,17 @@ async function connectDB() {
       if (!dataCache) {
         dataCache = defaultData();
         console.log('No existing data, starting fresh');
+      }
+      // Verify MongoDB persistence: do a test write
+      try {
+        await db.collection('appdata').updateOne(
+          { _id: '_ping' },
+          { $set: { ping: Date.now() } },
+          { upsert: true }
+        );
+        console.log('MongoDB write test OK');
+      } catch (e) {
+        console.warn('MongoDB write test FAILED:', e.message);
       }
     } catch (e) {
       console.warn('Could not load data from MongoDB:', e.message);
@@ -145,6 +156,17 @@ app.get('/api/data', (req, res) => {
     if (admin) admin.password = '000000';
   }
   res.json(dataCache);
+});
+
+// GET /api/debug — check MongoDB connection
+app.get('/api/debug', (req, res) => {
+  res.json({
+    dbConnected: db !== null,
+    dataCacheKeys: dataCache ? Object.keys(dataCache).filter(k => k !== 'users') : null,
+    userCount: dataCache?.users?.length || 0,
+    shiftCount: dataCache?.shifts?.length || 0,
+    mongoUriMasked: (process.env.MONGO_URI || '(using default)').replace(/\/\/[^:]+:[^@]+@/, '//USER:PASS@'),
+  });
 });
 
 // POST /api/data
