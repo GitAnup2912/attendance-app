@@ -1131,6 +1131,7 @@ async function saveDb() {
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
       if (result.persisted === false) showToast('Data saved (server pending)', 'warn');
+      else showToast('Data saved', 'ok');
       return true;
     } catch(e) {
       console.warn('Server save failed:', e);
@@ -1138,6 +1139,7 @@ async function saveDb() {
       return false;
     }
   }
+  showToast('Data saved', 'ok');
   return true;
 }
 async function loadDb() {
@@ -1592,25 +1594,19 @@ async function enterApp() {
     admin:                'pg-overview',
   };
   goTo(def[curUser.role] || 'pg-overview');
-  // Auto-sync via SSE — real-time, no polling
-  if (window._sseSource) window._sseSource.close();
-  if (IS_SERVER) {
-    const sse = new EventSource('/api/events');
-    sse.onmessage = async (e) => {
-      if (e.data === 'connected') return;
-      const active = getActivePage();
-      if (!active) return;
-      const prev = JSON.stringify(db);
-      await loadDb();
-      if (JSON.stringify(db) !== prev) {
-        const f = db.users.find(u => u.id === curUser.id);
-        if (f) curUser = f;
-        goTo(active);
-        showToast('Data updated from server', 'info');
-      }
-    };
-    window._sseSource = sse;
-  }
+  // Auto-sync — check server for changes every 30 seconds
+  if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
+  window._autoSyncInterval = setInterval(async () => {
+    const active = getActivePage();
+    if (!active) return;
+    const prev = JSON.stringify(db);
+    await loadDb();
+    if (JSON.stringify(db) !== prev) {
+      const f = db.users.find(u => u.id === curUser.id);
+      if (f) curUser = f;
+      goTo(active);
+    }
+  }, 30000);
 }
 
 function doLogout() {
