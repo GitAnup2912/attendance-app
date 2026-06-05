@@ -16,7 +16,7 @@ function defaultData() {
   return { users: [], shifts: [], attendance: [], requests: [], siAssignments: [], monthlyGrids: {}, quotas: [] };
 }
 
-// Connect to MongoDB (non-blocking — server starts listening regardless)
+// Connect to MongoDB and populate dataCache before accepting requests
 async function connectDB() {
   try {
     const client = new MongoClient(MONGO_URI, { serverSelectionTimeoutMS: 15000 });
@@ -62,8 +62,15 @@ async function saveData(data) {
   }
 }
 
-// Start connection (non-blocking)
-connectDB();
+// Wait for MongoDB connection, then start server
+async function start() {
+  await connectDB();
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
+start();
 
 // Serve static files
 app.use(express.static(__dirname, {
@@ -104,7 +111,3 @@ app.get('/*', (req, res) => {
   res.sendFile(__dirname + '/attendance--app 2 .html');
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
