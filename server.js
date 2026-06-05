@@ -14,6 +14,7 @@ const BACKUP_FILE = path.join(__dirname, 'attendance_data.json');
 let db = null;
 let dataCache = null;
 let dataVersion = 0;
+const sseClients = [];
 
 // Default data structure
 function defaultData() {
@@ -165,6 +166,29 @@ app.get('/api/check', (req, res) => {
   res.json({ v: dataVersion });
 });
 
+// GET /api/events — Server-Sent Events: push notifications when data changes
+app.get('/api/events', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+  res.write('data: connected\n\n');
+  sseClients.push(res);
+  // Keep-alive every 25s (Render's proxy timeout is ~30s)
+  const keepAlive = setInterval(() => res.write(':ka\n\n'), 25000);
+  req.on('close', () => {
+    clearInterval(keepAlive);
+    const idx = sseClients.indexOf(res);
+    if (idx >= 0) sseClients.splice(idx, 1);
+  });
+});
+
+function notifySSEClients() {
+  dataVersion++;
+  const msg = `data: ${dataVersion}\n\n`;
+  sseClients.forEach(c => c.write(msg));
+}
+
 // GET /api/debug — check MongoDB connection
 app.get('/api/debug', (req, res) => {
   res.json({
@@ -196,7 +220,7 @@ app.post('/api/data', async (req, res) => {
       if (admin) admin.password = '000000';
     }
     const saved = await saveData(dataCache);
-    dataVersion++;
+    notifySSEClients();
     res.json({ ok: true, persisted: saved });
   } catch (err) {
     res.status(500).json({ error: err.message });

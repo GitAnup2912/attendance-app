@@ -1594,20 +1594,14 @@ async function enterApp() {
     admin:                'pg-overview',
   };
   goTo(def[curUser.role] || 'pg-overview');
-  // Auto-sync from server every 30 seconds (only re-render if data actually changed)
-  if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
-  let _knownVersion = 0;
-  window._autoSyncInterval = setInterval(async () => {
-    const active = getActivePage();
-    if (!active) return;
-    try {
-      if (!IS_SERVER) return;
-      // Lightweight version check first
-      const ch = await fetch('/api/check?_=' + Date.now());
-      const cv = await ch.json();
-      if (cv.v === _knownVersion) return; // no change, skip full fetch
-      _knownVersion = cv.v;
-      // Data changed on server — fetch full data
+  // Auto-sync via SSE — real-time, no polling
+  if (window._sseSource) window._sseSource.close();
+  if (IS_SERVER) {
+    const sse = new EventSource('/api/events');
+    sse.onmessage = async (e) => {
+      if (e.data === 'connected') return;
+      const active = getActivePage();
+      if (!active) return;
       const prev = JSON.stringify(db);
       await loadDb();
       if (JSON.stringify(db) !== prev) {
@@ -1616,8 +1610,9 @@ async function enterApp() {
         goTo(active);
         showToast('Data updated from server', 'info');
       }
-    } catch(e) { /* ignore check errors */ }
-  }, 15000);
+    };
+    window._sseSource = sse;
+  }
 }
 
 function doLogout() {
