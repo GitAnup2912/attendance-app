@@ -1128,11 +1128,16 @@ async function saveDb() {
   if (IS_SERVER) {
     try {
       const res = await fetch('/api/data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
+      if (result.persisted === false) console.warn('Server save: MongoDB write failed');
+      return true;
     } catch(e) {
       console.warn('Server save failed (localStorage copy is safe):', e);
+      return false;
     }
   }
+  return true;
 }
 async function loadDb() {
   try {
@@ -1210,18 +1215,19 @@ let _dbReady = false;
 (async () => {
   await loadDb();
   _dbReady = true;
-  // Auto-sync: if localStorage has full data but server is empty, push it
+  // Always push localStorage data to server on page load
   try {
     const lr = localStorage.getItem(STORAGE_KEY);
     if (lr) {
       const ld = JSON.parse(lr);
-      if (ld && ld.users && ld.users.length > 1 && (db.shifts.length === 0 || db.users.length <= 1)) {
-        console.log('Auto-syncing localStorage data to server...');
-        await saveDb();
-        await loadDb();
+      if (ld && ld.users && ld.users.length > 1) {
+        console.log('Pushing localStorage data to server...');
+        const ok = await saveDb();
+        if (ok) { console.log('Server sync complete'); await loadDb(); }
+        else console.warn('Server sync failed, data localStorage mein safe hai');
       }
     }
-  } catch(e) { /* auto-sync failed, non-critical */ }
+  } catch(e) { console.warn('Auto-sync error:', e); }
 })();
 
 /* ══════════════════════════════════════════════════════
