@@ -1117,13 +1117,40 @@ const db = {
   quotas:     [], // {userId, year, sl, cl, coff} — yearly leave quota
 };
 async function saveDb() {
-  const payload = {
-    users: db.users, shifts: db.shifts, attendance: db.attendance,
-    siAssignments: db.siAssignments, requests: db.requests,
-    quotas: db.quotas,
-    monthlyGrids: db.monthlyGrids || {},
-    _lastSaved: Date.now()
-  };
+  // Helper: merge two arrays, local items take priority over server items
+  function mergeArr(local, server, keyFn) {
+    const merged = [...server];
+    const sKeys = new Set(server.map(keyFn));
+    for (const item of local) {
+      const k = keyFn(item);
+      const idx = merged.findIndex(x => keyFn(x) === k);
+      if (idx >= 0) merged[idx] = item; // replace with local (user's latest)
+      else merged.push(item);           // new item from local
+    }
+    return merged;
+  }
+  // Fetch latest server data and merge before saving (prevents overwriting other terminals)
+  let mergedLocal = { users: db.users, shifts: db.shifts, attendance: db.attendance, siAssignments: db.siAssignments, requests: db.requests, quotas: db.quotas, monthlyGrids: db.monthlyGrids || {} };
+  if (IS_SERVER) {
+    try {
+      const sr = await fetch('/api/data?_=' + Date.now());
+      if (sr.ok) {
+        const sd = await sr.json();
+        if (sd && sd._lastSaved) {
+          mergedLocal = {
+            users: mergeArr(db.users, sd.users || [], u => u.id),
+            shifts: mergeArr(db.shifts, sd.shifts || [], s => s.userId+'|'+s.date),
+            attendance: mergeArr(db.attendance, sd.attendance || [], a => a.userId+'|'+a.date),
+            requests: mergeArr(db.requests, sd.requests || [], r => r.id),
+            siAssignments: mergeArr(db.siAssignments, sd.siAssignments || [], s => s.area+'|'+s.shift),
+            quotas: mergeArr(db.quotas, sd.quotas || [], q => q.userId+'|'+q.year),
+            monthlyGrids: { ...sd.monthlyGrids, ...db.monthlyGrids },
+          };
+        }
+      }
+    } catch(e) { /* merge failed, use local data */ }
+  }
+  const payload = { ...mergedLocal, _lastSaved: Date.now() };
   // Always save to localStorage first
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch(e) { console.warn('localStorage save failed:', e); }
   if (IS_SERVER) {
