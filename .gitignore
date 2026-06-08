@@ -3,10 +3,5 @@ node_modules
 database.json
 npx
 *.log
-attendance--app 2 .html
-attendance_app.html
-attendance_data.json
-before.json
-curr.json
-data*.json
-fix.json
+
+.vercel

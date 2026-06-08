@@ -81,7 +81,7 @@ app.post('/api/login', async (req, res) => {
               area: user.area, assignedShift: user.assignedShift, category: user.category }
     });
   } catch (e) {
-    res.status(500).json({ ok: false, message: 'Server error' });
+    res.status(500).json({ ok: false, message: 'Server error', error: e.message });
   }
 });
 
