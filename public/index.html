@@ -1129,7 +1129,9 @@ async function saveDb() {
   if (IS_SERVER) {
     try {
       showToast('Saving to server...', 'info');
-      const res = await fetch('/api/data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      const hdrs = {'Content-Type':'application/json'};
+if (authToken) hdrs['Authorization'] = 'Bearer ' + authToken;
+const res = await fetch('/api/data', { method:'POST', headers:hdrs, body:JSON.stringify(payload) });
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
       if (result.persisted === false) showToast('Data saved to server (MongoDB pending)', 'warn');
@@ -1148,7 +1150,9 @@ async function loadDb() {
     let data;
     if (IS_SERVER) {
       try {
-        const res = await fetch('/api/data?_=' + Date.now());
+        const gHdrs = {};
+        if (authToken) gHdrs['Authorization'] = 'Bearer ' + authToken;
+        const res = await fetch('/api/data?_=' + Date.now(), { headers: gHdrs });
         data = await res.json();
       } catch(e) {
         console.warn('Server API not available, falling back to localStorage');
@@ -1215,6 +1219,7 @@ let _dbReady = false;
    STATE
 ══════════════════════════════════════════════════════ */
 let curUser = null;
+let authToken = null; // JWT token for server API calls
 let editReqId = null, editAttKey = null, editUserId = null, editSIAIdx = null;
 let empCalYear = new Date().getFullYear(), empCalMonth = new Date().getMonth();
 
@@ -1515,6 +1520,7 @@ async function doLogin() {
             const retryData = await retry.json();
             if (!retryData.ok) { showErr('li-err', retryData.message || 'Login failed'); return; }
             // Retry succeeded
+            authToken = retryData.token;
             curUser = retryData.user;
             await enterApp();
             return;
@@ -1522,6 +1528,7 @@ async function doLogin() {
         } else { showErr('li-err', lrData.message || 'Login failed'); return; }
       }
       // Server login succeeded — use server user data
+      authToken = lrData.token;
       curUser = lrData.user;
       await enterApp();
       return;
