@@ -142,7 +142,24 @@ app.get('/api/data', authenticate, async (req, res) => {
 app.post('/api/data', authenticate, async (req, res) => {
   try {
     const body = req.body;
-    const types = ['users', 'shifts', 'attendance', 'requests', 'monthlyGrids'];
+    const types = ['shifts', 'attendance', 'requests', 'monthlyGrids'];
+
+    // Handle users separately — protect bcrypt password hashes
+    if (body.users !== undefined) {
+      const existing = await AppData.findOne({ type: 'users' });
+      const existingUsers = (existing?.data || []).reduce((map, u) => {
+        map[u.id] = u.password;
+        return map;
+      }, {});
+      for (const u of body.users) {
+        // If password is plaintext but existing has bcrypt, preserve bcrypt
+        if (u.password && !u.password.startsWith('$2') && existingUsers[u.id] && existingUsers[u.id].startsWith('$2')) {
+          u.password = existingUsers[u.id];
+        }
+      }
+      await AppData.updateOne({ type: 'users' }, { $set: { data: body.users } }, { upsert: true });
+    }
+
     for (const type of types) {
       if (body[type] !== undefined) {
         await AppData.updateOne(
