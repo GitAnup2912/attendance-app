@@ -2,9 +2,11 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
 const path = require('path');
+const compression = require('compression');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
+app.use(compression());
 
 // MongoDB connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://admin:Anup2912@atten.wliwwci.mongodb.net/attendance-app?retryWrites=true&w=majority';
@@ -148,7 +150,7 @@ app.use(express.static(__dirname, {
   }
 }));
 
-// GET /api/data
+// GET /api/data with optional pagination
 app.get('/api/data', (req, res) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
   res.setHeader('Pragma', 'no-cache');
@@ -159,7 +161,27 @@ app.get('/api/data', (req, res) => {
     const admin = dataCache.users.find(u => u.id === 1);
     if (admin) admin.password = '000000';
   }
-  res.json(dataCache);
+
+  const { limit, offset } = req.query;
+  const l = parseInt(limit, 10);
+  const o = parseInt(offset, 10);
+  const isNum = !isNaN(l) && !isNaN(o);
+
+  if (isNum) {
+    // paginate arrays only; keep other objects whole
+    const paginated = { ...dataCache };
+    if (Array.isArray(paginated.attendance)) {
+      paginated.attendance = paginated.attendance.slice(o, o + l);
+    }
+    if (Array.isArray(paginated.requests)) {
+      paginated.requests = paginated.requests.slice(o, o + l);
+    }
+    // optionally paginate users/shifts if needed
+    res.json(paginated);
+  } else {
+    // return full data (but warn large)
+    res.json(dataCache);
+  }
 });
 
 // GET /api/debug — check MongoDB connection
