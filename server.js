@@ -132,6 +132,36 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// ─── Repair: force-reset admin password (call if you're locked out) ───
+app.post('/api/repair', async (req, res) => {
+  try {
+    await connectDB();
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ ok: false, message: 'Database not connected' });
+    }
+    const record = await AppData.findOne({ type: 'users' });
+    const users = record?.data || [];
+    const admin = users.find(u => u.username === 'admin' || u.name === 'System Admin');
+    if (admin) {
+      admin.password = await bcrypt.hash('admin123', 10);
+      await AppData.updateOne({ type: 'users' }, { $set: { data: users } }, { upsert: true });
+      console.log('Admin password repaired');
+      return res.json({ ok: true, message: 'Admin password reset to admin123' });
+    }
+    // Create admin if missing
+    const hashed = await bcrypt.hash('admin123', 10);
+    users.push({
+      id: '1', name: 'System Admin', username: 'admin', password: hashed,
+      role: 'admin', area: 'Office', assignedShift: 'G', category: 'Admin', mustChangePw: false
+    });
+    await AppData.updateOne({ type: 'users' }, { $set: { data: users } }, { upsert: true });
+    console.log('Admin created via repair endpoint');
+    res.json({ ok: true, message: 'Admin created with password admin123' });
+  } catch (e) {
+    res.status(500).json({ ok: false, message: 'Repair failed', error: e.message });
+  }
+});
+
 app.post('/api/logout', (req, res) => {
   const { userId } = req.body;
   if (userId) activeSessions.delete(userId);
