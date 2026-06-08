@@ -1,246 +1,88 @@
+require('dotenv').config();
 const express = require('express');
-const { MongoClient } = require('mongodb');
-const fs = require('fs');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const path = require('path');
-const compression = require('compression');
 
 const app = express();
+app.use(cors());
 app.use(express.json({ limit: '50mb' }));
-app.use(compression());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// MongoDB connection
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://admin:Anup2912@atten.wliwwci.mongodb.net/attendance-app?retryWrites=true&w=majority';
-const DATA_KEY = 'main';
-const BACKUP_FILE = path.join(__dirname, 'attendance_data.json');
+const JWT_SECRET = process.env.JWT_SECRET || 'my_local_secret_123';
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 
-let db = null;
-let dataCache = null;
-const activeSessions = new Map(); // userId -> lastHeartbeat timestamp
+// ─── MongoDB ───
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// Default data structure
-function defaultData() {
-  return { users: [], shifts: [], attendance: [], requests: [], siAssignments: [], monthlyGrids: {}, quotas: [], _lastSaved: 0 };
-}
+const AppData = require('./models/AppData');
 
-// Load/save JSON file fallback
-function loadFileBackup() {
+// ─── Session tracking (in-memory) ───
+const activeSessions = new Map();
+
+// ─── Auth Middleware ───
+const authenticate = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Unauthorized' });
   try {
-    if (fs.existsSync(BACKUP_FILE)) {
-      const raw = fs.readFileSync(BACKUP_FILE, 'utf8');
-      return JSON.parse(raw);
-    }
+    req.user = jwt.verify(token, JWT_SECRET);
+    next();
   } catch (e) {
-    console.warn('Could not read backup file:', e.message);
+    res.status(401).json({ message: 'Invalid Token' });
   }
-  return null;
-}
+};
 
-function saveFileBackup(data) {
-  try {
-    fs.writeFileSync(BACKUP_FILE, JSON.stringify(data), 'utf8');
-    return true;
-  } catch (e) {
-    console.warn('Could not write backup file:', e.message);
-    return false;
-  }
-}
-
-// Connect to MongoDB and populate dataCache before accepting requests
-async function connectDB() {
-  // Try file backup first (fastest)
-  const fileData = loadFileBackup();
-  if (fileData) {
-    dataCache = fileData;
-    console.log('Data loaded from backup file');
-  }
-
-  try {
-    const client = new MongoClient(MONGO_URI, { serverSelectionTimeoutMS: 15000 });
-    await client.connect();
-    db = client.db();
-    console.log('Connected to MongoDB, database:', db.databaseName);
-
-    try {
-      const doc = await db.collection('appdata').findOne({ _id: DATA_KEY });
-      if (doc) {
-        delete doc._id;
-        const def = defaultData();
-        for (const key of Object.keys(def)) {
-          if (!doc[key]) doc[key] = def[key];
-        }
-        dataCache = doc;
-        console.log('Data loaded from MongoDB');
-      }
-      if (!dataCache) {
-        dataCache = defaultData();
-        console.log('No existing data, starting fresh');
-      }
-      // Verify MongoDB persistence: do a test write
-      try {
-        await db.collection('appdata').updateOne(
-          { _id: '_ping' },
-          { $set: { ping: Date.now() } },
-          { upsert: true }
-        );
-        console.log('MongoDB write test OK');
-      } catch (e) {
-        console.warn('MongoDB write test FAILED:', e.message);
-      }
-    } catch (e) {
-      console.warn('Could not load data from MongoDB:', e.message);
-      if (!dataCache) dataCache = defaultData();
-    }
-  } catch (e) {
-    console.warn('MongoDB connection failed:', e.message);
-    if (!dataCache) dataCache = defaultData();
-  }
-  // Always ensure admin password is 000000 regardless of data source
-  if (dataCache && dataCache.users) {
-    const admin = dataCache.users.find(u => u.id === 1);
-    if (admin) admin.password = '000000';
+// ─── Seed Admin ───
+async function seedAdmin() {
+  const record = await AppData.findOne({ type: 'users' });
+  const users = record?.data || [];
+  const exists = users.find(u => u.username === 'admin');
+  if (!exists) {
+    const hashed = await bcrypt.hash('admin123', 10);
+    users.push({
+      id: '1', name: 'System Admin', username: 'admin', password: hashed,
+      role: 'admin', area: 'Office', assignedShift: 'G', category: 'Admin', mustChangePw: false
+    });
+    await AppData.updateOne({ type: 'users' }, { $set: { data: users } }, { upsert: true });
+    console.log('✅ Admin created: admin / admin123');
   }
 }
 
-async function saveData(data) {
-  // Always write to file backup first
-  saveFileBackup(data);
-
-  if (!db) return false;
+// ─── AUTH ROUTES ───
+app.post('/api/login', async (req, res) => {
   try {
-    await db.collection('appdata').replaceOne(
-      { _id: DATA_KEY },
-      { _id: DATA_KEY, ...data },
-      { upsert: true }
+    const { username, password, role } = req.body;
+    const record = await AppData.findOne({ type: 'users' });
+    const users = record?.data || [];
+
+    const user = users.find(u =>
+      u.username === username &&
+      (!role || u.role.toLowerCase() === role.toLowerCase())
     );
-    return true;
+    if (!user) return res.json({ ok: false, message: 'Invalid credentials' });
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.json({ ok: false, message: 'Invalid credentials' });
+
+    if (activeSessions.has(user.id)) {
+      return res.json({ ok: false, alreadyLoggedIn: true, message: 'Already logged in on another terminal' });
+    }
+
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET);
+    activeSessions.set(user.id, Date.now());
+
+    res.json({
+      ok: true, token,
+      user: { id: user.id, name: user.name, username: user.username, role: user.role,
+              area: user.area, assignedShift: user.assignedShift, category: user.category }
+    });
   } catch (e) {
-    console.error('MongoDB save error:', e.message);
-    try {
-      const client = new MongoClient(MONGO_URI, { serverSelectionTimeoutMS: 15000 });
-      await client.connect();
-      db = client.db();
-      await db.collection('appdata').replaceOne(
-        { _id: DATA_KEY },
-        { _id: DATA_KEY, ...data },
-        { upsert: true }
-      );
-      console.log('Data saved to MongoDB after reconnection');
-      return true;
-    } catch (e2) {
-      console.error('MongoDB reconnect+save failed:', e2.message);
-      return false;
-    }
+    res.status(500).json({ ok: false, message: 'Server error' });
   }
-}
-
-// Wait for MongoDB connection, then start server
-async function start() {
-  await connectDB();
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
-}
-start();
-
-// Serve static files
-app.use(express.static(__dirname, {
-  setHeaders(res, p) {
-    if (p.endsWith('.html')) res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  }
-}));
-
-// GET /api/data with optional pagination
-app.get('/api/data', (req, res) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  if (!dataCache) return res.json(defaultData());
-  // Always ensure admin password is 000000
-  if (dataCache.users) {
-    const admin = dataCache.users.find(u => u.id === 1);
-    if (admin) admin.password = '000000';
-  }
-
-  const { limit, offset } = req.query;
-  const l = parseInt(limit, 10);
-  const o = parseInt(offset, 10);
-  const isNum = !isNaN(l) && !isNaN(o);
-
-  if (isNum) {
-    // paginate arrays only; keep other objects whole
-    const paginated = { ...dataCache };
-    if (Array.isArray(paginated.attendance)) {
-      paginated.attendance = paginated.attendance.slice(o, o + l);
-    }
-    if (Array.isArray(paginated.requests)) {
-      paginated.requests = paginated.requests.slice(o, o + l);
-    }
-    // optionally paginate users/shifts if needed
-    res.json(paginated);
-  } else {
-    // return full data (but warn large)
-    res.json(dataCache);
-  }
-});
-
-// GET /api/debug — check MongoDB connection
-app.get('/api/debug', (req, res) => {
-  res.json({
-    dbConnected: db !== null,
-    dataCacheKeys: dataCache ? Object.keys(dataCache).filter(k => k !== 'users') : null,
-    userCount: dataCache?.users?.length || 0,
-    shiftCount: dataCache?.shifts?.length || 0,
-    mongoUriMasked: (process.env.MONGO_URI || '(using default)').replace(/\/\/[^:]+:[^@]+@/, '//USER:PASS@'),
-  });
-});
-
-// POST /api/data
-app.post('/api/data', async (req, res) => {
-  try {
-    const { users, shifts, attendance, requests, siAssignments, monthlyGrids, quotas, _lastSaved } = req.body;
-    const newData = {
-      users: users || [],
-      shifts: shifts || [],
-      attendance: attendance || [],
-      requests: requests || [],
-      siAssignments: siAssignments || [],
-      monthlyGrids: monthlyGrids || {},
-      quotas: quotas || [],
-      _lastSaved: _lastSaved || 0,
-    };
-    dataCache = newData;
-    // Always ensure admin password is 000000
-    if (dataCache.users) {
-      const admin = dataCache.users.find(u => u.id === 1);
-      if (admin) admin.password = '000000';
-    }
-    const saved = await saveData(dataCache);
-    res.json({ ok: true, persisted: saved });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// ── Session management: prevent same user login on multiple terminals ──
-app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-  if (!dataCache || !dataCache.users) return res.json({ ok: false, message: 'Server not ready' });
-  if (!username || !password) return res.json({ ok: false, message: 'Username and password required' });
-  // Admin password override
-  const user = dataCache.users.find(u =>
-    u.role !== '__deleted__' && u.username === username && u.password === password
-  );
-  if (!user) return res.json({ ok: false, message: 'Invalid credentials' });
-
-  // Check if user already has an active session (heartbeat within last 90s)
-  const last = activeSessions.get(user.id);
-  const now = Date.now();
-  if (last && (now - last) < 90000) {
-    return res.json({ ok: false, message: 'This user is already logged in on another device. Logout from there first.', alreadyLoggedIn: true });
-  }
-  activeSessions.set(user.id, now);
-  res.json({ ok: true, userId: user.id, userName: user.name, userRole: user.role });
 });
 
 app.post('/api/logout', (req, res) => {
@@ -255,17 +97,46 @@ app.post('/api/heartbeat', (req, res) => {
   res.json({ ok: true });
 });
 
-// Cleanup stale sessions every 60 seconds
-setInterval(() => {
-  const cutoff = Date.now() - 120000; // 2 min stale threshold
-  for (const [uid, ts] of activeSessions) {
-    if (ts < cutoff) activeSessions.delete(uid);
+// ─── DATA SYNC ───
+app.get('/api/data', authenticate, async (req, res) => {
+  try {
+    const records = await AppData.find({});
+    const result = {};
+    for (const r of records) result[r.type] = r.data;
+    res.json({ users: [], shifts: [], attendance: [], requests: [], monthlyGrids: {}, ...result });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
-}, 60000);
-
-// Serve HTML — always prevent caching so other PCs get latest version
-app.get('/*', (req, res) => {
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.sendFile(__dirname + '/attendance--app 2 .html');
 });
 
+app.post('/api/data', authenticate, async (req, res) => {
+  try {
+    const body = req.body;
+    const types = ['users', 'shifts', 'attendance', 'requests', 'monthlyGrids'];
+    for (const type of types) {
+      if (body[type] !== undefined) {
+        await AppData.updateOne(
+          { type },
+          { $set: { data: body[type] } },
+          { upsert: true }
+        );
+      }
+    }
+    res.json({ persisted: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ─── Seed on startup (runs once when module loads) ───
+seedAdmin().catch(console.error);
+
+// ─── START (only when not on Vercel) ───
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
