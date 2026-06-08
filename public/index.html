@@ -1592,6 +1592,11 @@ async function enterApp() {
     if (local) {
       const ld = JSON.parse(local);
       if (ld && ld.users && ld.users.length > 1) {
+        // Preserve server's bcrypt password before pushing local data
+        if (curUser && curUser.password && curUser.password.startsWith('$2')) {
+          const localUser = db.users.find(u => u.id === curUser.id);
+          if (localUser) localUser.password = curUser.password;
+        }
         try { await saveDb(); } catch(e) { console.warn('Initial server push failed:', e); }
       }
     }
