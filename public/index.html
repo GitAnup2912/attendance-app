@@ -1586,6 +1586,16 @@ async function doChangePw() {
 }
 
 async function enterApp() {
+  // Push local data to server first so it's available after reload
+  if (authToken) {
+    const local = localStorage.getItem('att_app_db');
+    if (local) {
+      const ld = JSON.parse(local);
+      if (ld && ld.users && ld.users.length > 1) {
+        try { await saveDb(); } catch(e) { console.warn('Initial server push failed:', e); }
+      }
+    }
+  }
   await loadDb();
   // Re-sync curUser to the matching object in the new db.users array
   const fresh = db.users.find(u => u.id === curUser.id);
