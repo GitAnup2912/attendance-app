@@ -14,10 +14,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 const JWT_SECRET = process.env.JWT_SECRET || 'my_local_secret_123';
 const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 
-// ─── MongoDB ───
-mongoose.connect(MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// ─── MongoDB (serverless-safe: cached promise across warm starts) ───
+let mongoPromise;
+function connectDB() {
+  if (!mongoPromise) {
+    mongoPromise = mongoose.connect(MONGODB_URI).then(() => {
+      console.log('MongoDB connected');
+    }).catch(err => {
+      console.error('MongoDB connection error:', err);
+      mongoPromise = null; // retry next time
+    });
+  }
+  return mongoPromise;
+}
 
 const AppData = require('./models/AppData');
 
@@ -58,11 +67,16 @@ app.get('/api/health', (req, res) => {
 });
 
 // ─── Wait for MongoDB before handling data routes ───
-app.use(['/api/login', '/api/data'], (req, res, next) => {
-  if (mongoose.connection.readyState !== 1) {
-    return res.status(503).json({ ok: false, message: 'Database connecting...', state: mongoose.connection.readyState });
+app.use(['/api/login', '/api/data'], async (req, res, next) => {
+  try {
+    await connectDB();
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ ok: false, message: 'Database not connected' });
+    }
+    next();
+  } catch (e) {
+    res.status(500).json({ ok: false, message: 'Database connection failed' });
   }
-  next();
 });
 
 // ─── AUTH ROUTES ───
@@ -142,7 +156,7 @@ app.post('/api/data', authenticate, async (req, res) => {
 });
 
 // ─── Seed on startup (runs once when module loads) ───
-seedAdmin().catch(console.error);
+connectDB().then(() => seedAdmin()).catch(console.error);
 
 // ─── START (only when not on Vercel) ───
 if (!process.env.VERCEL) {
