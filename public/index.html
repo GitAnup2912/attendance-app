@@ -1514,9 +1514,17 @@ async function doLogin() {
             const retry = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:un,password:pw}) });
             const retryData = await retry.json();
             if (!retryData.ok) { showErr('li-err', retryData.message || 'Login failed'); return; }
+            // Retry succeeded
+            curUser = retryData.user;
+            await enterApp();
+            return;
           } else { showErr('li-err', lrData.message); return; }
         } else { showErr('li-err', lrData.message || 'Login failed'); return; }
       }
+      // Server login succeeded — use server user data
+      curUser = lrData.user;
+      await enterApp();
+      return;
     } catch(e) {
       // Server not reachable, fall through to client-side login
       console.warn('Server login check failed, using local auth');
