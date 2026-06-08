@@ -62,7 +62,12 @@ async function seedAdmin() {
       role: 'admin', area: 'Office', assignedShift: 'G', category: 'Admin', mustChangePw: false
     });
     await AppData.updateOne({ type: 'users' }, { $set: { data: users } }, { upsert: true });
-    console.log('✅ Admin created: admin / admin123');
+    console.log('Admin created: admin / admin123');
+  } else if (exists.password && !exists.password.startsWith('$2')) {
+    // Fix plaintext admin password (from earlier bug)
+    exists.password = await bcrypt.hash('admin123', 10);
+    await AppData.updateOne({ type: 'users' }, { $set: { data: users } }, { upsert: true });
+    console.log('Admin password fixed (was plaintext)');
   }
 }
 
