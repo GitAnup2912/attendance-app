@@ -30,7 +30,7 @@ function connectDB() {
 
 const AppData = require('./models/AppData');
 
-// ─── Session tracking (in-memory) ───
+// ─── Session tracking (in-memory, unreliable on serverless) ───
 const activeSessions = new Map();
 
 // ─── Auth Middleware ───
@@ -95,12 +95,15 @@ app.post('/api/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.json({ ok: false, message: 'Invalid credentials' });
 
-    if (activeSessions.has(user.id)) {
-      return res.json({ ok: false, alreadyLoggedIn: true, message: 'Already logged in on another terminal' });
+    // Session tracking skipped on Vercel (serverless — in-memory state is unreliable)
+    if (!process.env.VERCEL) {
+      if (activeSessions.has(user.id)) {
+        return res.json({ ok: false, alreadyLoggedIn: true, message: 'Already logged in on another terminal' });
+      }
+      activeSessions.set(user.id, Date.now());
     }
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET);
-    activeSessions.set(user.id, Date.now());
 
     res.json({
       ok: true, token,
