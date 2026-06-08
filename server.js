@@ -147,14 +147,22 @@ app.post('/api/data', authenticate, async (req, res) => {
     // Handle users separately — protect bcrypt password hashes
     if (body.users !== undefined) {
       const existing = await AppData.findOne({ type: 'users' });
-      const existingUsers = (existing?.data || []).reduce((map, u) => {
-        map[u.id] = u.password;
-        return map;
-      }, {});
+      const existingData = existing?.data || [];
+      // Build lookup by id AND by username (covers edge cases where ids differ)
+      const existingById = {};
+      const existingByUser = {};
+      for (const u of existingData) {
+        if (u.id) existingById[u.id] = u;
+        if (u.username) existingByUser[u.username] = u;
+      }
       for (const u of body.users) {
-        // If password is plaintext but existing has bcrypt, preserve bcrypt
-        if (u.password && !u.password.startsWith('$2') && existingUsers[u.id] && existingUsers[u.id].startsWith('$2')) {
-          u.password = existingUsers[u.id];
+        const matched = existingById[u.id] || existingByUser[u.username];
+        if (u.password && !u.password.startsWith('$2') && matched && matched.password && matched.password.startsWith('$2')) {
+          u.password = matched.password;
+        }
+        // Final safety net: hash any plaintext that slipped through
+        if (u.password && !u.password.startsWith('$2')) {
+          u.password = await bcrypt.hash(u.password, 10);
         }
       }
       await AppData.updateOne({ type: 'users' }, { $set: { data: body.users } }, { upsert: true });
