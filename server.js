@@ -52,6 +52,19 @@ async function seedAdmin() {
   }
 }
 
+// ─── Health check ───
+app.get('/api/health', (req, res) => {
+  res.json({ mongoState: mongoose.connection.readyState, ok: mongoose.connection.readyState === 1 });
+});
+
+// ─── Wait for MongoDB before handling data routes ───
+app.use(['/api/login', '/api/data'], (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ ok: false, message: 'Database connecting...', state: mongoose.connection.readyState });
+  }
+  next();
+});
+
 // ─── AUTH ROUTES ───
 app.post('/api/login', async (req, res) => {
   try {
