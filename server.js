@@ -16,11 +16,16 @@ const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 
 // ─── MongoDB (serverless-safe: cached promise across warm starts) ───
 let mongoPromise;
+let lastConnectionError = null;
 function connectDB() {
   if (!mongoPromise) {
-    mongoPromise = mongoose.connect(MONGODB_URI).then(() => {
+    lastConnectionError = null;
+    mongoPromise = mongoose.connect(MONGODB_URI, {
+      serverSelectionTimeoutMS: 8000, // fail fast on Vercel cold starts
+    }).then(() => {
       console.log('MongoDB connected');
     }).catch(err => {
+      lastConnectionError = err.message;
       console.error('MongoDB connection error:', err);
       mongoPromise = null; // retry next time
     });
@@ -62,8 +67,15 @@ async function seedAdmin() {
 }
 
 // ─── Health check ───
-app.get('/api/health', (req, res) => {
-  res.json({ mongoState: mongoose.connection.readyState, ok: mongoose.connection.readyState === 1 });
+app.get('/api/health', async (req, res) => {
+  await connectDB();
+  res.json({
+    mongoState: mongoose.connection.readyState,
+    ok: mongoose.connection.readyState === 1,
+    error: lastConnectionError,
+    hasURI: !!MONGODB_URI,
+    uriPrefix: MONGODB_URI ? MONGODB_URI.substring(0, 25) + '...' : 'MISSING'
+  });
 });
 
 // ─── Wait for MongoDB before handling data routes ───
