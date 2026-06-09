@@ -36,7 +36,7 @@ input,select,textarea,button{font-family:var(--fb);}
              radial-gradient(ellipse 55% 45% at 88% 90%,rgba(124,92,252,.1),transparent 60%),var(--bg);}
 .auth-card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);
   padding:44px 42px 40px;width:440px;max-width:96vw;
-  box-shadow:var(--sh),0 0 0 1px rgba(79,124,255,.06);}
+  box-shadow:var(--sh),0 0 0 1px rgba(79,124,255,.06);position:relative;}
 .auth-logo{font-family:var(--fh);font-size:26px;font-weight:800;letter-spacing:-.5px;}
 .auth-logo span{color:var(--blue);}.auth-logo sup{font-size:13px;color:var(--purple);font-weight:600;margin-left:2px;}
 .auth-sub{font-size:12.5px;color:var(--t2);margin-bottom:28px;margin-top:3px;}
@@ -55,6 +55,22 @@ select.fld{cursor:pointer;}textarea.fld{resize:vertical;min-height:72px;}
 .hint strong{color:var(--t1);}
 .pw-warn{background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.25);
   border-radius:8px;padding:11px 14px;font-size:13px;color:var(--yellow);margin-bottom:16px;}
+
+/* ── LOADER / SPINNER ───────────────── */
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-overlay{position:fixed;inset:0;background:rgba(7,9,15,.82);
+  flex-direction:column;align-items:center;justify-content:center;
+  border-radius:var(--r2);z-index:50;backdrop-filter:blur(3px);}
+.loader-spin{width:40px;height:40px;border:3px solid var(--bdr2);
+  border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:14px;}
+.loader-msg{font-size:14px;color:var(--t2);font-weight:500;letter-spacing:.3px;}
+.save-spinner{position:fixed;bottom:20px;right:20px;z-index:9999;
+  align-items:center;gap:10px;
+  background:var(--s1);border:1px solid var(--bdr);border-radius:10px;
+  padding:10px 16px;box-shadow:var(--sh);}
+.save-spinner .spin{width:18px;height:18px;border:2px solid var(--bdr2);
+  border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+.save-spinner .msg{font-size:12px;color:var(--t2);white-space:nowrap;}
 
 /* ── ALERTS ────────────────────────── */
 .al{padding:11px 15px;border-radius:8px;font-size:13px;margin-bottom:14px;border:1px solid;}
@@ -273,6 +289,10 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <input class="fld" id="cp-conf" type="password" onkeydown="if(event.key==='Enter')doChangePw()"></div>
     <button class="btn-main" onclick="doChangePw()">Set & Enter →</button>
   </div>
+</div>
+<div id="login-loader" class="loader-overlay dn">
+  <div class="loader-spin"></div>
+  <div class="loader-msg">Logging in...</div>
 </div>
 </div>
 
@@ -1136,6 +1156,7 @@ async function saveDb() {
   if (IS_SERVER) {
     try {
       showToast('Saving to server...', 'info');
+      showEl('save-spinner');
       const hdrs = {'Content-Type':'application/json'};
 if (authToken) hdrs['Authorization'] = 'Bearer ' + authToken;
 const res = await fetch('/api/data', { method:'POST', headers:hdrs, body:JSON.stringify(payload) });
@@ -1148,6 +1169,8 @@ const res = await fetch('/api/data', { method:'POST', headers:hdrs, body:JSON.st
       console.warn('Server save failed:', e);
       showToast('Server save failed! Data only on this device.', 'err');
       return false;
+    } finally {
+      hideEl('save-spinner');
     }
   }
   return true;
@@ -1512,6 +1535,8 @@ async function doLogin() {
   if (!un) { showErr('li-err','Please enter your username.'); return; }
   if (!pw) { showErr('li-err','Please enter your password.'); return; }
 
+  showEl('login-loader');
+
   // Server-side session check — prevent same user login on multiple terminals
   if (IS_SERVER) {
     try {
@@ -1525,14 +1550,14 @@ async function doLogin() {
             await fetch('/api/logout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userId:localUser.id}) });
             const retry = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:un,password:pw}) });
             const retryData = await retry.json();
-            if (!retryData.ok) { showErr('li-err', retryData.message || 'Login failed'); return; }
+            if (!retryData.ok) { hideEl('login-loader'); showErr('li-err', retryData.message || 'Login failed'); return; }
             // Retry succeeded
             authToken = retryData.token;
             curUser = retryData.user;
             await enterApp();
             return;
-          } else { showErr('li-err', lrData.message); return; }
-        } else { showErr('li-err', lrData.message || 'Login failed'); return; }
+          } else { hideEl('login-loader'); showErr('li-err', lrData.message); return; }
+        } else { hideEl('login-loader'); showErr('li-err', lrData.message || 'Login failed'); return; }
       }
       // Server login succeeded — use server user data
       authToken = lrData.token;
@@ -1545,6 +1570,7 @@ async function doLogin() {
     }
   }
 
+  hideEl('login-loader');
   // Find user by username (exact match first), then by full name (case-insensitive)
   let user = db.users.find(u =>
     u.role !== '__deleted__' && u.username === un && u.password === pw
@@ -1679,6 +1705,7 @@ async function enterApp() {
 }
 
 function doLogout() {
+  hideEl('login-loader');
   const uid = curUser ? curUser.id : null;
   curUser = null;
   authToken = null;
@@ -2312,6 +2339,7 @@ function renderSIDash() {
   if (!dateEl.value) dateEl.value = today();
   const date = dateEl.value;
   const si   = curUser;
+  const isToday = date === today();
 
   // ── KEY FIX: SI shift code for today ──
   // Priority 1: Excel uploaded schedule for SI on this date (if SI appears in roster)
@@ -2453,6 +2481,8 @@ function renderSIDash() {
       markCell = `<span class="b bx">${code==='O'?'Week Off':'On Leave'}</span>`;
     } else if (att) {
       markCell = `${aBadge(att.status)} <span style="font-size:10px;color:var(--t3)">🔒 Locked</span>`;
+    } else if (!isToday) {
+      markCell = `<span class="b br" style="font-size:10.5px">📅 Out of date</span>`;
     } else if (!inWin) {
       markCell = `<span class="b br" style="font-size:10.5px">⏱ Outside window</span>`;
     } else {
@@ -2505,11 +2535,12 @@ async function siMark(uid, date, status) {
     showToast('Attendance already marked. Contact Admin to override.','warn'); return;
   }
 
-  if (!siCode || !isWithinSIWindow(siCode)) {
+  if (date !== today() || !siCode || !isWithinSIWindow(siCode)) {
     const win = siCode ? siAttendanceWindow(siCode) : null;
     showToast(
-      siCode ? `Outside marking window for Shift ${siCode} (${win?.label}). Within 8 hr from shift start only.`
-             : 'No shift scheduled for you today — cannot mark attendance.',
+      date !== today() ? 'Out of date — can only mark today attendance.'
+      : siCode ? `Outside marking window for Shift ${siCode} (${win?.label}). Within 8 hr from shift start only.`
+               : 'No shift scheduled for you today — cannot mark attendance.',
       'err'
     );
     return;
@@ -2529,6 +2560,7 @@ function renderAIView() {
   const date   = dateEl.value;
   const shiftF = getVal('ai-shift-f');
   const ai     = curUser;
+  const isToday = date === today();
 
   // AI's shift today (from Excel) — G-shift AI manages all G-coded employees in their area
   const rawCode = getEffectiveShiftCode(ai.id, date, true);
@@ -2611,6 +2643,8 @@ function renderAIView() {
       markCell = `<span class="b bx">${code==='O'?'Week Off':'On Leave'}</span>`;
     } else if (att) {
       markCell = `${aBadge(att.status)} <span style="font-size:10px;color:var(--t3)">🔒</span>`;
+    } else if (!isToday) {
+      markCell = `<span class="b br" style="font-size:10.5px">📅 Out of date</span>`;
     } else if (!inWin) {
       markCell = `<span class="b br" style="font-size:10.5px">Outside window</span>`;
     } else if (canMark) {
@@ -2641,7 +2675,7 @@ async function aiMark(uid, date, status) {
   const empCode = getEffectiveShiftCode(u.id, date, true) || 'G';
   if (aiCode !== empCode) { showToast('You can only mark employees with the same shift as yours today.','err'); return; }
   if (getAtt(uid, date))  { showToast('Already marked. Contact Admin to override.','warn'); return; }
-  if (!isWithinSIWindow(aiCode)) { showToast(`Outside marking window for Shift ${aiCode}.`,'err'); return; }
+  if (date !== today() || !isWithinSIWindow(aiCode)) { showToast(date !== today() ? 'Out of date — can only mark today attendance.' : `Outside marking window for Shift ${aiCode}.`,'err'); return; }
   await setAtt(uid, date, status, ai.id);
   renderAIView();
 }
@@ -4309,7 +4343,7 @@ function updateUMFields() {
   // site_manager and admin: no reporting chain rows
 }
 
-function saveUser() {
+async function saveUser() {
   const name  = getVal('um-name').trim();
   const uname = getVal('um-uname').trim();
   const pass  = getVal('um-pass').trim();
@@ -4402,7 +4436,7 @@ function saveUser() {
   }
 
   cm('user-modal');
-  saveDb();
+  await saveDb();
   renderUsers();
   populateAllFilters();
   showToast(`✅ User "${name}" saved successfully.`, 'ok');
@@ -5479,5 +5513,9 @@ async function manualSync() {
 }
 
 </script>
+<div id="save-spinner" class="save-spinner dn">
+  <div class="spin"></div>
+  <div class="msg">Saving...</div>
+</div>
 </body>
 </html>
