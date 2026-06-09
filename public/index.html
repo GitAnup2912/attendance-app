@@ -191,10 +191,10 @@ tr:hover td{background:rgba(255,255,255,.013);}
 .fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;}
 .fg{margin-bottom:13px;}
 
-/* ── DATE PICKER (white calendar icon) ── */
+/* ── DATE PICKER (dark green calendar icon) ── */
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="month"]::-webkit-calendar-picker-indicator {
-  filter: invert(1) brightness(1.5);
+  filter: invert(0.55) sepia(0.8) hue-rotate(90deg) saturate(3) brightness(0.7);
   cursor: pointer;
 }
 
@@ -414,6 +414,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
             <option value="CL">CL (Casual)</option>
             <option value="Off">W-Off</option>
           </select>
+          <button class="btn bg2 bsm" onclick="exportOverviewExcel()">⬇ Export Excel</button>
         </div>
         <div class="sg" id="ov-stats"></div>
         <div class="tw"><div class="th">Edit Attendance<small>Override any attendance record</small></div>
@@ -2781,6 +2782,77 @@ function renderOverview() {
     ${notScheduled.length ? `<div class="sc" style="--ca:var(--grey)"><div class="sv">${notScheduled.length}</div><div class="sl">Not Scheduled</div></div>` : ''}
   `);
 
+}
+
+function exportOverviewExcel() {
+  const dateEl = document.getElementById('ov-date');
+  const date = dateEl?.value || today();
+  const areaF  = getVal('ov-area');
+  const shiftF = getVal('ov-shift');
+
+  // Same role-based filtering as renderOverview
+  let emps;
+  if (curUser.role === 'shift_incharge' || curUser.role === 'assistant_shift_incharge') {
+    const myShift = curUser.assignedShift || 'G';
+    const areas = [curUser.area];
+    if (curUser.area.endsWith('-S')) areas.push(curUser.area.replace(/-S$/, '-G'));
+    if (curUser.area.endsWith('-G')) areas.push(curUser.area.replace(/-G$/, '-S'));
+    emps = db.users.filter(u => {
+      if (u.id === curUser.id) return true;
+      const uShift = u.assignedShift || 'G';
+      if (['area_incharge','assistant_area_incharge'].includes(u.role) && u.area === curUser.area) return true;
+      return areas.includes(u.area) && uShift === myShift;
+    });
+  } else if (curUser.role === 'area_incharge' || curUser.role === 'assistant_area_incharge') {
+    emps = db.users.filter(u => u.area === curUser.area);
+  } else {
+    emps = db.users.filter(u => u.role !== 'admin' && u.role !== '__deleted__');
+  }
+
+  // Filter by area and shift
+  if (areaF)  emps = emps.filter(u => u.area === areaF);
+  if (shiftF) emps = emps.filter(u => (getEffectiveShiftCode(u.id, date) || 'G') === shiftF);
+
+  // Build Excel data
+  const wsData = [['#','Employee','Area','Category','Role','Shift Code','Attendance Status','Marked By']];
+  const roleLabels = {
+    employee:'Employee', shift_incharge:'Shift IC', assistant_shift_incharge:'Asst. Shift IC',
+    area_incharge:'Area IC', assistant_area_incharge:'Asst. Area IC',
+    safety_officer:'Safety Officer', planning_incharge:'Planning IC',
+    deputy_site_manager:'Dy.Site Mgr', site_manager:'Site Mgr', manager:'Manager', admin:'Admin'
+  };
+
+  emps.forEach((u, i) => {
+    const shiftCode = getEffectiveShiftCode(u.id, date);
+    const att = getAtt(u.id, date);
+    const status = att ? att.status : (!shiftCode || !['A','B','C','G'].includes(shiftCode) ? 'Not Scheduled' : 'Not Marked');
+    const markedBy = att?.markedBy || '';
+    wsData.push([
+      i + 1,
+      u.name,
+      u.area || '',
+      u.category || '',
+      roleLabels[u.role] || u.role,
+      shiftCode || '',
+      status,
+      markedBy
+    ]);
+  });
+
+  // Footer row with totals
+  const present  = emps.filter(u => getAtt(u.id,date)?.status==='Present').length;
+  const absent   = emps.filter(u => getAtt(u.id,date)?.status==='Absent').length;
+  const total    = emps.length;
+  wsData.push([]);
+  wsData.push(['Total Employees', total, '', 'Present', present, 'Absent', absent, '']);
+
+  const ws = XLSX.utils.aoa_to_sheet(wsData);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Attendance Overview');
+  ws['!cols'] = [{wch:5},{wch:22},{wch:12},{wch:14},{wch:16},{wch:12},{wch:20},{wch:20}];
+  const fileName = `attendance_overview_${date}.xlsx`;
+  XLSX.writeFile(wb, fileName);
+  showToast(`⬇ Downloaded ${fileName}`, 'ok');
 }
 
 /* ══════════════════════════════════════════════════════
