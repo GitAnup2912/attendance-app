@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -30,7 +30,7 @@ input,select,textarea,button{font-family:var(--fb);}
 @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
 .dn{display:none!important;}
 
-/* â”€â”€ AUTH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── AUTH ──────────────────────────── */
 #auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;
   background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(79,124,255,.15),transparent 68%),
              radial-gradient(ellipse 55% 45% at 88% 90%,rgba(124,92,252,.1),transparent 60%),var(--bg);}
@@ -56,7 +56,7 @@ select.fld{cursor:pointer;}textarea.fld{resize:vertical;min-height:72px;}
 .pw-warn{background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.25);
   border-radius:8px;padding:11px 14px;font-size:13px;color:var(--yellow);margin-bottom:16px;}
 
-/* â”€â”€ ALERTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── ALERTS ────────────────────────── */
 .al{padding:11px 15px;border-radius:8px;font-size:13px;margin-bottom:14px;border:1px solid;}
 .al-e{background:rgba(240,90,90,.1);border-color:rgba(240,90,90,.28);color:#f8a0a0;}
 .al-s{background:rgba(34,201,122,.1);border-color:rgba(34,201,122,.28);color:#6ee7b7;}
@@ -68,7 +68,7 @@ select.fld{cursor:pointer;}textarea.fld{resize:vertical;min-height:72px;}
 .banner-r{background:rgba(240,90,90,.08);border-color:rgba(240,90,90,.2);color:var(--red);}
 .banner-b{background:rgba(79,124,255,.08);border-color:rgba(79,124,255,.2);color:var(--blue);}
 
-/* â”€â”€ APP SHELL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── APP SHELL ─────────────────────── */
 #app{display:none;flex-direction:column;min-height:100vh;}
 .topbar{background:var(--s1);border-bottom:1px solid var(--bdr);height:55px;
   display:flex;align-items:center;padding:0 20px;position:sticky;top:0;z-index:100;gap:12px;}
@@ -83,7 +83,7 @@ select.fld{cursor:pointer;}textarea.fld{resize:vertical;min-height:72px;}
 .u-name{font-size:13px;font-weight:500;}.u-role{font-size:11px;color:var(--t2);}
 .tb-date{font-size:12px;color:var(--t3);padding:0 6px;white-space:nowrap;}
 
-/* â”€â”€ LAYOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── LAYOUT ──────────────────────── */
 .app-body{display:flex;flex:1;}
 .sidebar{width:216px;background:var(--s1);border-right:1px solid var(--bdr);
   padding:16px 9px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;overflow-y:auto;}
@@ -100,20 +100,20 @@ select.fld{cursor:pointer;}textarea.fld{resize:vertical;min-height:72px;}
 .main{flex:1;padding:24px 28px;overflow-y:auto;min-width:0;}
 .page{display:none;}.page.active{display:block;}
 
-/* â”€â”€ SECTION HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── SECTION HEADER ─────────────────── */
 .sh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
 .st{font-family:var(--fh);font-size:20px;font-weight:700;letter-spacing:-.3px;}
 .st small{display:block;font-family:var(--fb);font-size:12px;color:var(--t2);font-weight:400;margin-top:2px;}
 
-/* â”€â”€ SCHEDULE EDITOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── SCHEDULE EDITOR ──────────────────── */
 .se-tab{padding:7px 14px;border-radius:7px;border:1px solid var(--bdr);cursor:pointer;
   font-size:12px;font-weight:500;color:var(--t2);background:var(--s2);transition:all .15s;}
 .se-tab:hover{border-color:var(--blue);color:var(--blue);}
 .se-tab.active{background:var(--bd);border-color:rgba(79,124,255,.35);color:var(--blue);font-weight:600;}
-.se-tab.saved::after{content:' â—';color:var(--green);font-size:9px;}
+.se-tab.saved::after{content:' ●';color:var(--green);font-size:9px;}
 #se-hot-container .ht_master .wtHolder{max-height:600px!important;}
 
-/* â”€â”€ STAT CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── STAT CARDS ─────────────────────── */
 .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;margin-bottom:20px;}
 .sc{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);
   padding:16px;position:relative;overflow:hidden;}
@@ -121,7 +121,7 @@ select.fld{cursor:pointer;}textarea.fld{resize:vertical;min-height:72px;}
 .sv{font-family:var(--fh);font-size:28px;font-weight:800;color:var(--ca,var(--blue));line-height:1;margin-bottom:4px;}
 .sl{font-size:11.5px;color:var(--t2);}
 
-/* â”€â”€ TABLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── TABLE ──────────────────────────── */
 .tw{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
 .th{padding:13px 17px 11px;font-family:var(--fh);font-size:13px;font-weight:600;
   border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
@@ -135,7 +135,7 @@ tr:hover td{background:rgba(255,255,255,.013);}
 .tdname{font-weight:600;}
 .tdsub{font-size:11.5px;color:var(--t2);}
 
-/* â”€â”€ BADGES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── BADGES ─────────────────────────── */
 .b{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
 .bg{background:var(--gd);color:var(--green);}
 .br{background:var(--rd);color:var(--red);}
@@ -147,7 +147,7 @@ tr:hover td{background:rgba(255,255,255,.013);}
 .bt{background:var(--td);color:var(--teal);}
 .bx{background:rgba(122,135,168,.12);color:var(--t2);}
 
-/* â”€â”€ BUTTONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── BUTTONS ────────────────────────── */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:7px;
   font-size:12.5px;font-weight:500;cursor:pointer;border:1px solid transparent;transition:all .15s;}
 .ba{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border:none;}
@@ -163,7 +163,7 @@ tr:hover td{background:rgba(255,255,255,.013);}
 .bsm{padding:5px 9px;font-size:11.5px;border-radius:6px;}
 .btn:disabled{opacity:.38;cursor:not-allowed;pointer-events:none;}
 
-/* â”€â”€ MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── MODAL ──────────────────────────── */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.74);z-index:200;
   display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
 .modal{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);
@@ -175,14 +175,14 @@ tr:hover td{background:rgba(255,255,255,.013);}
 .fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;}
 .fg{margin-bottom:13px;}
 
-/* â”€â”€ DATE PICKER (white calendar icon) â”€â”€ */
+/* ── DATE PICKER (white calendar icon) ── */
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="month"]::-webkit-calendar-picker-indicator {
   filter: invert(1) brightness(1.5);
   cursor: pointer;
 }
 
-/* â”€â”€ CALENDAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── CALENDAR ───────────────────────── */
 .cal-wrap{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bdr);}
 .cal-title{font-family:var(--fh);font-size:16px;font-weight:700;}
@@ -218,13 +218,13 @@ input[type="month"]::-webkit-calendar-picker-indicator {
 .cd-status{font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;min-height:36px;letter-spacing:.5px;}
 
 
-/* â”€â”€ FILTER BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── FILTER BAR ─────────────────────── */
 .fb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
 .fb select,.fb input{background:var(--s1);border:1px solid var(--bdr);border-radius:7px;
   padding:7px 11px;color:var(--t1);font-size:12.5px;outline:none;cursor:pointer;transition:border-color .2s;}
 .fb select:focus,.fb input:focus{border-color:var(--blue);}
 
-/* â”€â”€ MISC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── MISC ───────────────────────────── */
 .empty{text-align:center;padding:40px 20px;color:var(--t3);}
 .empty .ei{font-size:36px;margin-bottom:9px;}
 .info-box{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;
@@ -243,19 +243,19 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
 </head>
 <body>
 
-<!-- â•â• AUTH â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══ AUTH ═══════════════════════════════════ -->
 <div id="auth-screen">
 <div class="auth-card">
   <div class="auth-logo"><span>SIEMENS-NSL</span><sup>ATT</sup></div>
-  <div id="auth-sub" class="auth-sub">Attendance Management System â€” Industrial Shift Tracking</div>
+  <div id="auth-sub" class="auth-sub">Attendance Management System — Industrial Shift Tracking</div>
 
   <div id="pnl-login">
     <div id="li-err" class="al al-e dn"></div>
     <div class="fg"><div class="lbl">Username</div>
       <input class="fld" id="li-u" type="text" placeholder="Enter your username" autocomplete="off" autocapitalize="off"></div>
     <div class="fg"><div class="lbl">Password</div>
-      <input class="fld" id="li-p" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <button class="btn-main" onclick="doLogin()">Sign In â†’</button>
+      <input class="fld" id="li-p" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn-main" onclick="doLogin()">Sign In →</button>
     <div class="hint">
       <strong>Demo account:</strong><br>
       Admin: <strong>admin</strong> / admin123
@@ -263,7 +263,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
   </div>
 
   <div id="pnl-chgpw" class="dn">
-    <div class="pw-warn">âš ï¸ First login detected â€” set your username and password.</div>
+    <div class="pw-warn">⚠️ First login detected — set your username and password.</div>
     <div id="cp-err" class="al al-e dn"></div>
     <div class="fg"><div class="lbl">New Username</div>
       <input class="fld" id="cp-user" type="text" placeholder="Choose a username" autocomplete="off">
@@ -271,12 +271,12 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
     <div class="fg"><div class="lbl">New Password</div><input class="fld" id="cp-new" type="password" placeholder="Min 6 characters"></div>
     <div class="fg"><div class="lbl">Confirm Password</div>
       <input class="fld" id="cp-conf" type="password" onkeydown="if(event.key==='Enter')doChangePw()"></div>
-    <button class="btn-main" onclick="doChangePw()">Set & Enter â†’</button>
+    <button class="btn-main" onclick="doChangePw()">Set & Enter →</button>
   </div>
 </div>
 </div>
 
-<!-- â•â• APP â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══ APP ════════════════════════════════════ -->
 <div id="app">
   <div class="topbar">
     <div class="t-logo"><span>SIEMENS-NSL</span><sup> ATT</sup></div>
@@ -285,7 +285,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <div class="avt" id="tb-av">?</div>
       <div><div class="u-name" id="tb-name"></div><div class="u-role" id="tb-role"></div></div>
       <span class="tb-date" id="tb-date"></span>
-      <button class="btn bg2" style="padding:5px 9px;font-size:13px;line-height:1" onclick="manualSync()" title="Refresh data from server">âŸ³</button>
+      <button class="btn bg2" style="padding:5px 9px;font-size:13px;line-height:1" onclick="manualSync()" title="Refresh data from server">⟳</button>
       <button class="btn bo2" style="padding:5px 11px;font-size:12px" onclick="doLogout()">Sign out</button>
     </div>
   </div>
@@ -295,22 +295,22 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
 
       <!-- EMPLOYEE -->
       <div id="pg-emp-schedule" class="page">
-        <div class="sh"><div class="st">My Schedule<small>Monthly shift calendar â€” read only</small></div>
+        <div class="sh"><div class="st">My Schedule<small>Monthly shift calendar — read only</small></div>
           <div class="fb"><input type="month" id="emp-cal-month" onchange="renderEmpCal()"></div>
         </div>
         <div class="legend">
-          <div class="leg"><div class="ld" style="background:#88aaff"></div>Gâ€“General</div>
-          <div class="leg"><div class="ld" style="background:var(--green)"></div>Aâ€“Morning</div>
-          <div class="leg"><div class="ld" style="background:var(--yellow)"></div>Bâ€“Afternoon</div>
-          <div class="leg"><div class="ld" style="background:var(--orange)"></div>Câ€“Night</div>
-          <div class="leg"><div class="ld" style="background:var(--t2)"></div>Oâ€“WeekOff</div>
-          <div class="leg"><div class="ld" style="background:#c09aff"></div>Lâ€“Leave</div>
+          <div class="leg"><div class="ld" style="background:#88aaff"></div>G–General</div>
+          <div class="leg"><div class="ld" style="background:var(--green)"></div>A–Morning</div>
+          <div class="leg"><div class="ld" style="background:var(--yellow)"></div>B–Afternoon</div>
+          <div class="leg"><div class="ld" style="background:var(--orange)"></div>C–Night</div>
+          <div class="leg"><div class="ld" style="background:var(--t2)"></div>O–WeekOff</div>
+          <div class="leg"><div class="ld" style="background:#c09aff"></div>L–Leave</div>
         </div>
         <div class="cal-wrap">
           <div class="cal-nav">
-            <button class="cal-btn" onclick="empCalPrev()">â† Prev</button>
+            <button class="cal-btn" onclick="empCalPrev()">← Prev</button>
             <div class="cal-title" id="emp-cal-title"></div>
-            <button class="cal-btn" onclick="empCalNext()">Next â†’</button>
+            <button class="cal-btn" onclick="empCalNext()">Next →</button>
           </div>
           <div class="cal-grid">
             <div class="cdow">Sun</div><div class="cdow">Mon</div><div class="cdow">Tue</div>
@@ -352,12 +352,12 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
 
       <!-- AREA IN-CHARGE (view-only) -->
       <div id="pg-ai-view" class="page">
-        <div class="sh"><div class="st">Area View<small>View-only â€” attendance summary for your area</small></div>
+        <div class="sh"><div class="st">Area View<small>View-only — attendance summary for your area</small></div>
           <div class="fb">
             <select id="ai-shift-f" onchange="renderAIView()">
               <option value="">All Shifts</option>
-              <option value="G">G â€“ General</option><option value="A">A â€“ Morning</option>
-              <option value="B">B â€“ Afternoon</option><option value="C">C â€“ Night</option>
+              <option value="G">G – General</option><option value="A">A – Morning</option>
+              <option value="B">B – Afternoon</option><option value="C">C – Night</option>
             </select>
             <input type="date" id="ai-date" onchange="renderAIView()">
           </div>
@@ -366,7 +366,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
         <div id="ai-blocked-banner"></div>
         <div class="sg" id="ai-stats"></div>
         <div id="ai-missing-box"></div>
-        <div class="tw"><div class="th">Area Attendance â€” View Only ðŸ‘</div>
+        <div class="tw"><div class="th">Area Attendance — View Only 👁</div>
           <table><thead><tr>
             <th>Employee</th><th>Role</th><th>Shift</th><th>Attendance</th><th>Action</th>
           </tr></thead>
@@ -380,8 +380,8 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
         <div class="fb">
           <select id="ov-area" onchange="syncOvFilters()"><option value="">All Areas</option></select>
           <select id="ov-shift" onchange="syncOvFilters()">
-            <option value="">All Shifts</option><option value="G">Gâ€“General</option>
-            <option value="A">Aâ€“Morning</option><option value="B">Bâ€“Afternoon</option><option value="C">Câ€“Night</option>
+            <option value="">All Shifts</option><option value="G">G–General</option>
+            <option value="A">A–Morning</option><option value="B">B–Afternoon</option><option value="C">C–Night</option>
           </select>
           <input type="date" id="ov-date" onchange="renderOverview();renderAdminAtt()">
           <select id="ov-att-status" onchange="renderOverview();renderAdminAtt()">
@@ -398,12 +398,12 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
         <div class="sg" id="ov-stats"></div>
         <div class="tw"><div class="th">Edit Attendance<small>Override any attendance record</small></div>
           <div class="fb">
-            <input type="text" id="adm-search" placeholder="ðŸ” Search by name or usernameâ€¦"
+            <input type="text" id="adm-search" placeholder="🔍 Search by name or username…"
               oninput="renderAdminAtt()" style="min-width:230px">
             <select id="adm-area" onchange="syncOvFilters()"><option value="">All Areas</option></select>
             <select id="adm-shift" onchange="syncOvFilters()">
-              <option value="">All Shifts</option><option value="G">Gâ€“General</option>
-              <option value="A">Aâ€“Morning</option><option value="B">Bâ€“Afternoon</option><option value="C">Câ€“Night</option>
+              <option value="">All Shifts</option><option value="G">G–General</option>
+              <option value="A">A–Morning</option><option value="B">B–Afternoon</option><option value="C">C–Night</option>
             </select>
           </div>
           <table><thead><tr><th>Employee</th><th>Area</th><th>Shift</th>
@@ -425,7 +425,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
           <tbody id="appr-body"></tbody></table>
         </div>
         <div class="tw" style="margin-top:12px;display:none" id="revoke-section">
-          <div class="th" style="color:var(--orange)">ðŸ”„ Revocation Requests
+          <div class="th" style="color:var(--orange)">🔄 Revocation Requests
             <span class="b br" id="revoke-badge" style="font-size:11px;margin-left:4px"></span>
           </div>
           <table><thead><tr><th>Employee</th><th>Date</th><th>Type</th><th>Reason</th><th>Revoke Reason</th><th>Action</th></tr></thead>
@@ -477,8 +477,8 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <!-- ADMIN: INCHARGE ASSIGNMENT -->
       <div id="pg-assign" class="page">
         <div class="sh">
-          <div class="st">Incharge Assignment<small>Organisation mapping â€” from Site Manager to Employee</small></div>
-          <button class="btn ba" onclick="openEmpRemapModal()">âœï¸ Reassign Employee</button>
+          <div class="st">Incharge Assignment<small>Organisation mapping — from Site Manager to Employee</small></div>
+          <button class="btn ba" onclick="openEmpRemapModal()">✏️ Reassign Employee</button>
         </div>
         <div class="fb">
           <select id="map-area" onchange="renderEmpMap()"><option value="">All Areas</option></select>
@@ -493,11 +493,11 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <!-- ADMIN: MANAGE USERS -->
       <div id="pg-users" class="page">
         <div class="sh">
-          <div class="st">Manage Users<small>Hierarchy: Employee â†’ Shift IC â†’ Area IC â†’ Dy. Site Mgr â†’ Site Manager</small></div>
+          <div class="st">Manage Users<small>Hierarchy: Employee → Shift IC → Area IC → Dy. Site Mgr → Site Manager</small></div>
           <button class="btn ba" onclick="openAddUser()">+ Add User</button>
         </div>
         <div class="fb">
-          <input type="text" id="usr-search" placeholder="ðŸ” Search by name or usernameâ€¦" oninput="renderUsers()" style="min-width:220px">
+          <input type="text" id="usr-search" placeholder="🔍 Search by name or username…" oninput="renderUsers()" style="min-width:220px">
           <select id="usr-role-f" onchange="renderUsers()">
             <option value="">All Roles</option>
             <option value="employee">Employee</option>
@@ -510,7 +510,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
             <option value="admin">Admin</option>
           </select>
           <select id="usr-area-f" onchange="renderUsers()"><option value="">All Areas</option></select>
-          <button class="btn bo2 bsm" onclick="clearUsrFilters()">âœ• Clear</button>
+          <button class="btn bo2 bsm" onclick="clearUsrFilters()">✕ Clear</button>
         </div>
         <div class="tw"><div class="th" id="usr-count">All Accounts</div>
           <table><thead><tr>
@@ -526,10 +526,10 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
         <div class="sh">
           <div class="st">Schedule Editor<small>Excel-style editor for monthly shift schedules</small></div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn ba" onclick="seUploadExcel()">ðŸ“¤ Upload Excel</button>
-            <button class="btn bg2" onclick="seApplyToSystem()">âš¡ Apply to System</button>
-            <button class="btn bo2" onclick="seExportExcel()">â¬‡ Export Excel</button>
-            <button class="btn br2" onclick="seDeleteMonth()">ðŸ—‘ Delete Month</button>
+            <button class="btn ba" onclick="seUploadExcel()">📤 Upload Excel</button>
+            <button class="btn bg2" onclick="seApplyToSystem()">⚡ Apply to System</button>
+            <button class="btn bo2" onclick="seExportExcel()">⬇ Export Excel</button>
+            <button class="btn br2" onclick="seDeleteMonth()">🗑 Delete Month</button>
           </div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
@@ -542,7 +542,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center">
           <button class="btn bo2 bsm" onclick="seAddRow()">+ Add Row</button>
-          <button class="btn bo2 bsm" onclick="seRemoveRow()">âˆ’ Remove Row</button>
+          <button class="btn bo2 bsm" onclick="seRemoveRow()">− Remove Row</button>
           <input type="file" id="se-file-input" accept=".xlsx,.xls,.csv" style="display:none" onchange="seHandleFile(event)">
           <span style="font-size:12px;color:var(--t2)">Edit cells directly, copy/paste, drag-fill like Excel</span>
         </div>
@@ -555,12 +555,12 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
         <div class="sh"><div class="st">Backup & Restore<small>Export or import attendance data</small></div></div>
         <div style="max-width:500px;margin:30px auto;display:flex;flex-direction:column;gap:20px">
           <div class="sc" style="--ca:var(--blue);cursor:pointer;text-align:center;padding:30px" onclick="exportData()">
-            <div class="sv">â¬‡</div>
+            <div class="sv">⬇</div>
             <div class="sl">Export Data</div>
             <div style="font-size:13px;color:var(--t2);margin-top:6px">Download all attendance data as JSON file</div>
           </div>
           <div class="sc" style="--ca:var(--green);cursor:pointer;text-align:center;padding:30px;position:relative" onclick="document.getElementById('import-file-input').click()">
-            <div class="sv">â¬†</div>
+            <div class="sv">⬆</div>
             <div class="sl">Import Data</div>
             <div style="font-size:13px;color:var(--t2);margin-top:6px">Restore data from a previously exported JSON file</div>
             <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="importData(event)">
@@ -572,15 +572,15 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <!-- ADMIN: LEAVE QUOTA -->
       <div id="pg-quota" class="page">
         <div class="sh"><div class="st">Leave Quota Management<small>Set yearly EL/CL/C-off limits per user</small></div>
-          <button class="btn bo2 bsm" onclick="initAllQuotas(); renderQuota()">ðŸ”„ Init Missing</button>
+          <button class="btn bo2 bsm" onclick="initAllQuotas(); renderQuota()">🔄 Init Missing</button>
         </div>
         <div class="fb">
-          <input type="text" id="quota-search" placeholder="ðŸ” Search employeeâ€¦" oninput="renderQuota()" style="min-width:200px">
+          <input type="text" id="quota-search" placeholder="🔍 Search employee…" oninput="renderQuota()" style="min-width:200px">
           <select id="quota-year" onchange="renderQuota()" style="min-width:100px"></select>
         </div>
         <div class="tw"><div class="th" id="quota-count">Leave Quota</div>
           <table><thead><tr>
-            <th>Employee</th><th>Area</th><th>ðŸ– EL Quota</th><th>ðŸ“… CL Quota</th><th>ðŸ”„ C-off Quota</th>
+            <th>Employee</th><th>Area</th><th>🏖 EL Quota</th><th>📅 CL Quota</th><th>🔄 C-off Quota</th>
             <th>EL Used</th><th>CL Used</th><th>C-off Used</th><th>Action</th>
           </tr></thead>
           <tbody id="quota-body"></tbody></table>
@@ -593,8 +593,8 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
         <div class="sh"><div class="st">Leave Report<small>Date-wise leave summary & employee monthly status</small></div></div>
         <div style="max-width:1100px;margin:20px auto">
 
-          <!-- â”€â”€ Section 1: Date-wise Leave Summary â”€â”€ -->
-          <div style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--t1)">ðŸ“Š Date-wise Leave Summary</div>
+          <!-- ── Section 1: Date-wise Leave Summary ── -->
+          <div style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--t1)">📊 Date-wise Leave Summary</div>
           <div id="att-report-err" class="al al-e dn"></div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:12px">
             <div class="fg">
@@ -606,8 +606,8 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
               <input type="date" id="att-report-to">
             </div>
             <div style="display:flex;gap:8px">
-              <button class="btn btn-p" onclick="renderAttReport()" style="padding:8px 20px">ðŸ” Fetch</button>
-              <button class="btn btn-s" onclick="exportAttReport()" style="padding:8px 20px">â¬‡ Export Excel</button>
+              <button class="btn btn-p" onclick="renderAttReport()" style="padding:8px 20px">🔍 Fetch</button>
+              <button class="btn btn-s" onclick="exportAttReport()" style="padding:8px 20px">⬇ Export Excel</button>
             </div>
           </div>
           <div id="att-report-tbl-wrap" style="overflow-x:auto;max-height:600px;overflow-y:auto">
@@ -620,8 +620,8 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
 
           <hr style="border:none;border-top:1px solid var(--b2);margin:20px 0">
 
-          <!-- â”€â”€ Section 2: Employee Monthly Status â”€â”€ -->
-          <div style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--t1)">ðŸ‘¤ Employee Monthly Status</div>
+          <!-- ── Section 2: Employee Monthly Status ── -->
+          <div style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--t1)">👤 Employee Monthly Status</div>
           <div style="max-width:1000px">
             <div id="emp-monthly-err" class="al al-e dn"></div>
             <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:16px">
@@ -639,8 +639,8 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
                 <input type="month" id="emp-monthly-to">
               </div>
               <div style="display:flex;gap:8px">
-                <button class="btn btn-p" onclick="renderEmpMonthly()" style="padding:8px 20px">ðŸ” Fetch</button>
-                <button class="btn btn-s" onclick="exportEmpMonthly()" style="padding:8px 20px">â¬‡ Export Excel</button>
+                <button class="btn btn-p" onclick="renderEmpMonthly()" style="padding:8px 20px">🔍 Fetch</button>
+                <button class="btn btn-s" onclick="exportEmpMonthly()" style="padding:8px 20px">⬇ Export Excel</button>
               </div>
             </div>
             <div id="emp-monthly-info" style="margin-bottom:12px;font-size:14px"></div>
@@ -681,11 +681,11 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
   </div><!-- /app-body -->
 </div><!-- /app -->
 
-<!-- â•â• MODALS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<!-- â•â• CUSTOM CONFIRM MODAL (replaces browser confirm()) â•â• -->
+<!-- ══ MODALS ═══════════════════════════════════ -->
+<!-- ══ CUSTOM CONFIRM MODAL (replaces browser confirm()) ══ -->
 <div class="ov dn" id="confirm-modal" style="z-index:500">
   <div class="modal" style="width:380px;text-align:center">
-    <div style="font-size:28px;margin-bottom:12px" id="confirm-icon">ðŸ—‘ï¸</div>
+    <div style="font-size:28px;margin-bottom:12px" id="confirm-icon">🗑️</div>
     <div class="mtitle" id="confirm-title" style="text-align:center">Confirm Delete</div>
     <div id="confirm-msg" style="color:var(--t2);font-size:13.5px;margin-bottom:20px;line-height:1.6"></div>
     <div style="display:flex;gap:10px;justify-content:center">
@@ -699,7 +699,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
 <div class="ov dn" id="req-modal">
   <div class="modal"><div class="mtitle">Submit Attendance Request</div>
     <div class="al al-i" style="margin-bottom:12px;font-size:12.5px">
-      ðŸ“‹ Request is sent simultaneously to <strong>Deputy Site Manager, Site Manager &amp; Admin</strong>. All three must approve.
+      📋 Request is sent simultaneously to <strong>Deputy Site Manager, Site Manager &amp; Admin</strong>. All three must approve.
     </div>
     <div id="req-balance-hint" style="font-size:12px;color:var(--t2);margin-bottom:10px;padding:8px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--bdr)"></div>
     <div class="fr">
@@ -708,27 +708,27 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
     </div>
     <div class="fg"><div class="lbl">Request Type</div>
       <select class="fld" id="rm-type" onchange="onReqTypeChange()">
-        <option value="EL">ðŸ– Earned Leave (EL)</option>
-        <option value="CL">ðŸ“… Casual Leave (CL)</option>
-        <option value="C-off">ðŸ”„ C-off (Compensatory Off)</option>
-        <option value="Half-Day EL">ðŸŒ— Half-Day EL</option>
-        <option value="Half-Day CL">ðŸŒ— Half-Day CL</option>
-        <option value="Half-Day C-off">ðŸŒ“ Half-Day C-off</option>
-        <option value="Absent">ðŸ“ Absent Regularization</option>
+        <option value="EL">🏖 Earned Leave (EL)</option>
+        <option value="CL">📅 Casual Leave (CL)</option>
+        <option value="C-off">🔄 C-off (Compensatory Off)</option>
+        <option value="Half-Day EL">🌗 Half-Day EL</option>
+        <option value="Half-Day CL">🌗 Half-Day CL</option>
+        <option value="Half-Day C-off">🌓 Half-Day C-off</option>
+        <option value="Absent">📝 Absent Regularization</option>
       </select>
     </div>
-    <div class="fg"><div class="lbl">Reason</div><textarea class="fld" id="rm-reason" placeholder="Explain your reason clearlyâ€¦"></textarea></div>
+    <div class="fg"><div class="lbl">Reason</div><textarea class="fld" id="rm-reason" placeholder="Explain your reason clearly…"></textarea></div>
     <div id="req-err" class="al al-e dn"></div>
     <div class="mfooter">
       <button class="btn bo2" onclick="cm('req-modal')">Cancel</button>
-      <button class="btn ba" onclick="submitReq()">Submit for Approval â†’</button>
+      <button class="btn ba" onclick="submitReq()">Submit for Approval →</button>
     </div>
   </div>
 </div>
 
 <!-- Revoke Request Modal -->
 <div class="ov dn" id="revoke-modal">
-  <div class="modal"><div class="mtitle">â†© Request Revocation</div>
+  <div class="modal"><div class="mtitle">↩ Request Revocation</div>
     <div class="al al-w" style="font-size:12.5px;margin-bottom:12px">
       This request was already approved. Select the dates you want to revoke (only dates where you were marked Present can be selected).
     </div>
@@ -739,7 +739,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
     <div id="revoke-err" class="al al-e dn"></div>
     <div class="mfooter">
       <button class="btn bo2" onclick="cm('revoke-modal')">Cancel</button>
-      <button class="btn br2" onclick="confirmRevokeReq()">â†© Submit Revoke Request</button>
+      <button class="btn br2" onclick="confirmRevokeReq()">↩ Submit Revoke Request</button>
     </div>
   </div>
 </div>
@@ -749,12 +749,12 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
   <div class="modal"><div class="mtitle" id="appr-title">Review Request</div>
     <div class="info-box" id="appr-detail"></div>
     <div class="fg"><div class="lbl">Manager Remark (optional)</div>
-      <textarea class="fld" id="appr-remark" placeholder="Note for employeeâ€¦"></textarea>
+      <textarea class="fld" id="appr-remark" placeholder="Note for employee…"></textarea>
     </div>
     <div class="mfooter">
       <button class="btn bo2" onclick="cm('appr-modal')">Cancel</button>
-      <button class="btn br2" onclick="decideReq('reject')">âœ• Reject</button>
-      <button class="btn bg2" onclick="decideReq('approve')">âœ“ Approve</button>
+      <button class="btn br2" onclick="decideReq('reject')">✕ Reject</button>
+      <button class="btn bg2" onclick="decideReq('approve')">✓ Approve</button>
     </div>
   </div>
 </div>
@@ -765,29 +765,29 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
     <div class="info-box" id="adm-att-info"></div>
     <div class="fr">
       <div class="fg">
-        <div class="lbl">ðŸ“… Shift Schedule (Code)</div>
+        <div class="lbl">📅 Shift Schedule (Code)</div>
         <select class="fld" id="adm-shift-code">
-          <option value="">â€” No change â€”</option>
-          <option value="A">A â€“ Morning  (06:00â€“14:00)</option>
-          <option value="B">B â€“ Afternoon (14:00â€“22:00)</option>
-          <option value="C">C â€“ Night    (22:00â€“06:00)</option>
-          <option value="G">G â€“ General  (09:00â€“17:00)</option>
-          <option value="O">O â€“ Week Off</option>
-          <option value="L">L â€“ On Leave</option>
+          <option value="">— No change —</option>
+          <option value="A">A – Morning  (06:00–14:00)</option>
+          <option value="B">B – Afternoon (14:00–22:00)</option>
+          <option value="C">C – Night    (22:00–06:00)</option>
+          <option value="G">G – General  (09:00–17:00)</option>
+          <option value="O">O – Week Off</option>
+          <option value="L">L – On Leave</option>
         </select>
       </div>
       <div class="fg">
-        <div class="lbl">âœ… Attendance Status</div>
+        <div class="lbl">✅ Attendance Status</div>
         <select class="fld" id="adm-att-status">
-          <option value="">â€” No change â€”</option>
-          <option value="Present">âœ… Present</option>
-          <option value="Absent">âŒ Absent</option>
-          <option value="EL">ðŸ– EL (Earned Leave)</option>
-          <option value="CL">ðŸ“… CL (Casual Leave)</option>
-          <option value="C-off">ðŸŸ¡ C-off</option>
-          <option value="Leave">ðŸŸ£ Leave</option>
-          <option value="Off">âšª Week Off</option>
-          <option value="__remove__">âœ– Remove Attendance</option>
+          <option value="">— No change —</option>
+          <option value="Present">✅ Present</option>
+          <option value="Absent">❌ Absent</option>
+          <option value="EL">🏖 EL (Earned Leave)</option>
+          <option value="CL">📅 CL (Casual Leave)</option>
+          <option value="C-off">🟡 C-off</option>
+          <option value="Leave">🟣 Leave</option>
+          <option value="Off">⚪ Week Off</option>
+          <option value="__remove__">✖ Remove Attendance</option>
         </select>
       </div>
     </div>
@@ -819,24 +819,24 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       </div>
       <div class="fg"><div class="lbl">Role</div>
         <select class="fld" id="um-role" onchange="updateUMFields()">
-          <option value="employee">ðŸ‘· Employee</option>
-          <option value="shift_incharge">ðŸ”µ Shift In-charge</option>
-          <option value="area_incharge">ðŸŸ¢ Area In-charge</option>
-          <option value="assistant_area_incharge">ðŸ©µ Asst. Area In-charge</option>
-          <option value="assistant_shift_incharge">ðŸ©µ Asst. Shift In-charge</option>
-          <option value="deputy_site_manager">ðŸŸ¡ Deputy Site Manager</option>
-          <option value="site_manager">ðŸŸ  Site Manager</option>
-          <option value="admin">ðŸ”´ Admin</option>
+          <option value="employee">👷 Employee</option>
+          <option value="shift_incharge">🔵 Shift In-charge</option>
+          <option value="area_incharge">🟢 Area In-charge</option>
+          <option value="assistant_area_incharge">🩵 Asst. Area In-charge</option>
+          <option value="assistant_shift_incharge">🩵 Asst. Shift In-charge</option>
+          <option value="deputy_site_manager">🟡 Deputy Site Manager</option>
+          <option value="site_manager">🟠 Site Manager</option>
+          <option value="admin">🔴 Admin</option>
         </select>
       </div>
     </div>
 
-    <!-- Row 3: Area + Assigned Shift + Category â€” always visible, always editable for admin -->
+    <!-- Row 3: Area + Assigned Shift + Category — always visible, always editable for admin -->
     <div id="um-area-shift-row" class="fr3">
       <div class="fg">
         <div class="lbl">Area <span style="color:var(--t2);font-weight:400;font-size:10px">(auto from Excel)</span></div>
         <select class="fld" id="um-area" onchange="updateUMFields()">
-          <option value="">â€” None â€”</option>
+          <option value="">— None —</option>
           <option value="BOF-G">BOF General</option>
           <option value="BOF-S">BOF Shift</option>
           <option value="SRU-G">SRU General</option>
@@ -849,19 +849,19 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <div class="fg">
         <div class="lbl">Assigned Shift <span style="color:var(--t2);font-weight:400;font-size:10px">(auto from Excel)</span></div>
         <select class="fld" id="um-shift">
-          <option value="">â€” None â€”</option>
-          <option value="G">G â€“ General (09â€“17)</option>
-          <option value="A">A â€“ Morning (06â€“14)</option>
-          <option value="B">B â€“ Afternoon (14â€“22)</option>
-          <option value="C">C â€“ Night (22â€“06)</option>
+          <option value="">— None —</option>
+          <option value="G">G – General (09–17)</option>
+          <option value="A">A – Morning (06–14)</option>
+          <option value="B">B – Afternoon (14–22)</option>
+          <option value="C">C – Night (22–06)</option>
         </select>
       </div>
       <div class="fg"><div class="lbl">Category</div>
-        <input class="fld" id="um-cat" type="text" placeholder="Sr.Engg / Skilledâ€¦">
+        <input class="fld" id="um-cat" type="text" placeholder="Sr.Engg / Skilled…">
       </div>
     </div>
 
-    <!-- Dynamic mapping rows â€” shown/hidden by role -->
+    <!-- Dynamic mapping rows — shown/hidden by role -->
     <div id="um-si-row" class="fg dn">
       <div class="lbl" id="um-si-lbl">Reporting To</div>
       <select class="fld" id="um-si">
@@ -871,32 +871,32 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
 
     <!-- For Shift In-charge: Reports to AI or DSM -->
     <div id="um-ai-row" class="fg dn">
-      <div class="lbl">Reports to â†’ Area In-charge / Deputy Site Manager</div>
+      <div class="lbl">Reports to → Area In-charge / Deputy Site Manager</div>
       <select class="fld" id="um-ai">
-        <option value="">â€” None â€”</option>
+        <option value="">— None —</option>
       </select>
     </div>
 
     <!-- For Area In-charge: Reports to DSM -->
     <div id="um-dsm-row" class="fg dn">
-      <div class="lbl">Reports to â†’ Deputy Site Manager</div>
+      <div class="lbl">Reports to → Deputy Site Manager</div>
       <select class="fld" id="um-dsm">
-        <option value="">â€” None â€”</option>
+        <option value="">— None —</option>
       </select>
     </div>
 
     <!-- For DSM: pick Site Manager they report to -->
     <div id="um-sm-row" class="fg dn">
-      <div class="lbl">Reports to â†’ Site Manager</div>
+      <div class="lbl">Reports to → Site Manager</div>
       <select class="fld" id="um-sm">
-        <option value="">â€” None â€”</option>
+        <option value="">— None —</option>
       </select>
     </div>
 
     <div id="um-err" class="al al-e dn"></div>
     <div class="mfooter">
       <button class="btn bo2" onclick="cm('user-modal')">Cancel</button>
-      <button class="btn ba" onclick="saveUser()">ðŸ’¾ Save User</button>
+      <button class="btn ba" onclick="saveUser()">💾 Save User</button>
     </div>
   </div>
 </div>
@@ -921,48 +921,48 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       </div>
       <div class="fg"><div class="lbl">Shift</div>
         <select class="fld" id="sia-shift">
-          <option value="G">G â€“ General (09â€“17)</option>
-          <option value="A">A â€“ Morning (06â€“14)</option>
-          <option value="B">B â€“ Afternoon (14â€“22)</option>
-          <option value="C">C â€“ Night (22â€“06)</option>
+          <option value="G">G – General (09–17)</option>
+          <option value="A">A – Morning (06–14)</option>
+          <option value="B">B – Afternoon (14–22)</option>
+          <option value="C">C – Night (22–06)</option>
         </select>
       </div>
     </div>
 
-    <div class="fg"><div class="lbl">Shift In-charge â€” assign any person</div>
+    <div class="fg"><div class="lbl">Shift In-charge — assign any person</div>
       <div style="display:flex;gap:6px;margin-bottom:6px">
-        <input class="fld" id="sia-si-search" placeholder="ðŸ” Search nameâ€¦" oninput="filterSIASelect('sia-si','sia-si-search')"
+        <input class="fld" id="sia-si-search" placeholder="🔍 Search name…" oninput="filterSIASelect('sia-si','sia-si-search')"
           style="margin-bottom:0;flex:1;padding:8px 10px;font-size:13px">
       </div>
       <select class="fld" id="sia-si" size="4" style="height:auto;margin-bottom:0">
-        <option value="">â€” None â€”</option>
+        <option value="">— None —</option>
       </select>
     </div>
 
-    <div class="fg" style="margin-top:10px"><div class="lbl">Area In-charge â€” assign any person</div>
+    <div class="fg" style="margin-top:10px"><div class="lbl">Area In-charge — assign any person</div>
       <div style="display:flex;gap:6px;margin-bottom:6px">
-        <input class="fld" id="sia-ai-search" placeholder="ðŸ” Search nameâ€¦" oninput="filterSIASelect('sia-ai','sia-ai-search')"
+        <input class="fld" id="sia-ai-search" placeholder="🔍 Search name…" oninput="filterSIASelect('sia-ai','sia-ai-search')"
           style="margin-bottom:0;flex:1;padding:8px 10px;font-size:13px">
       </div>
       <select class="fld" id="sia-ai" size="4" style="height:auto;margin-bottom:0">
-        <option value="">â€” None â€”</option>
+        <option value="">— None —</option>
       </select>
     </div>
 
-    <div class="fg" style="margin-top:10px"><div class="lbl">Manager â€” assign any person (optional)</div>
+    <div class="fg" style="margin-top:10px"><div class="lbl">Manager — assign any person (optional)</div>
       <div style="display:flex;gap:6px;margin-bottom:6px">
-        <input class="fld" id="sia-mgr-search" placeholder="ðŸ” Search nameâ€¦" oninput="filterSIASelect('sia-mgr','sia-mgr-search')"
+        <input class="fld" id="sia-mgr-search" placeholder="🔍 Search name…" oninput="filterSIASelect('sia-mgr','sia-mgr-search')"
           style="margin-bottom:0;flex:1;padding:8px 10px;font-size:13px">
       </div>
       <select class="fld" id="sia-mgr" size="3" style="height:auto;margin-bottom:0">
-        <option value="">â€” None â€”</option>
+        <option value="">— None —</option>
       </select>
     </div>
 
     <div id="sia-err" class="al al-e dn" style="margin-top:10px"></div>
     <div class="mfooter">
       <button class="btn bo2" onclick="cm('sia-modal')">Cancel</button>
-      <button class="btn ba" onclick="saveSIA()">ðŸ’¾ Save Assignment</button>
+      <button class="btn ba" onclick="saveSIA()">💾 Save Assignment</button>
     </div>
   </div>
 </div>
@@ -974,7 +974,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       Admin can map any employee to any Area In-charge or Shift In-charge directly.
     </div>
     <div class="fg"><div class="lbl">Employee</div>
-      <select class="fld" id="remap-emp" onchange="prefillRemap()"><option value="">Select employeeâ€¦</option></select>
+      <select class="fld" id="remap-emp" onchange="prefillRemap()"><option value="">Select employee…</option></select>
     </div>
     <div class="fr">
       <div class="fg"><div class="lbl">New Area</div>
@@ -990,31 +990,31 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <div class="fg"><div class="lbl">New Assigned Shift</div>
         <select class="fld" id="remap-shift" onchange="updateRemapSI()">
           <option value="">No change</option>
-          <option value="G">G â€“ General</option><option value="A">A â€“ Morning</option>
-          <option value="B">B â€“ Afternoon</option><option value="C">C â€“ Night</option>
+          <option value="G">G – General</option><option value="A">A – Morning</option>
+          <option value="B">B – Afternoon</option><option value="C">C – Night</option>
         </select>
       </div>
     </div>
     <div class="fg">
-      <div class="lbl">Reports to â†’ Area In-charge <span style="color:var(--t2);font-weight:400">(direct mapping)</span></div>
-      <select class="fld" id="remap-ai"><option value="">â€” Keep current / Auto â€”</option></select>
+      <div class="lbl">Reports to → Area In-charge <span style="color:var(--t2);font-weight:400">(direct mapping)</span></div>
+      <select class="fld" id="remap-ai"><option value="">— Keep current / Auto —</option></select>
     </div>
     <div class="fg">
-      <div class="lbl">Reports to â†’ Shift In-charge <span style="color:var(--t2);font-weight:400">(optional)</span></div>
-      <select class="fld" id="remap-si"><option value="">â€” Keep current / Auto from table â€”</option></select>
+      <div class="lbl">Reports to → Shift In-charge <span style="color:var(--t2);font-weight:400">(optional)</span></div>
+      <select class="fld" id="remap-si"><option value="">— Keep current / Auto from table —</option></select>
     </div>
     <div id="remap-err" class="al al-e dn"></div>
     <div class="mfooter">
       <button class="btn bo2" onclick="cm('remap-modal')">Cancel</button>
-      <button class="btn ba" onclick="saveRemap()">ðŸ’¾ Save Reassignment</button>
+      <button class="btn ba" onclick="saveRemap()">💾 Save Reassignment</button>
     </div>
   </div>
 </div>
 
 <script>
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    CONSTANTS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 const AREAS = ['BOF-G','BOF-S','SRU-G','SRU-S','INST-S','SMS','OFFICE'];
 const AL = {
   'BOF-G':'BOF General','BOF-S':'BOF Shift',
@@ -1029,20 +1029,20 @@ const ROLE_MAP = {
   'EMP':'employee'
 };
 const SHIFT_LABEL = {
-  G:'General (09â€“17)',
-  A:'Morning (06â€“14)',
-  B:'Afternoon (14â€“22)',
-  C:'Night (22â€“06)',
+  G:'General (09–17)',
+  A:'Morning (06–14)',
+  B:'Afternoon (14–22)',
+  C:'Night (22–06)',
   O:'Week Off',
   L:'On Leave'
 };
-const SL = {G:'General (9â€“5)',A:'Morning (6â€“2)',B:'Afternoon (2â€“10)',C:'Night (10â€“6)',O:'Week Off',L:'On Leave'};
+const SL = {G:'General (9–5)',A:'Morning (6–2)',B:'Afternoon (2–10)',C:'Night (10–6)',O:'Week Off',L:'On Leave'};
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-/* â”€â”€ Badge helpers â€” declared AT TOP so available to all functions â”€â”€ */
+/* ── Badge helpers — declared AT TOP so available to all functions ── */
 function sBadge(c) {
   const m={A:'bg',B:'by',C:'bo',G:'bb',O:'bx',L:'bp'};
-  return c ? `<span class="b ${m[c]||'bx'}">${c}</span>` : '<span class="b bx">â€”</span>';
+  return c ? `<span class="b ${m[c]||'bx'}">${c}</span>` : '<span class="b bx">—</span>';
 }
 function aBadge(s) {
   if (!s) return `<span class="b bx">Not Marked</span>`;
@@ -1062,25 +1062,25 @@ function rBadge(r) {
   return `<span class="b ${m[r]||'bx'}">${l[r]||r}</span>`;
 }
 function qBadge(s) {
-  if (!s) return '<span class="b bx">â€”</span>';
+  if (!s) return '<span class="b bx">—</span>';
   const cls = s==='approved'?'bg' : s==='rejected'?'br' : s==='revoked'?'b-grey' : s==='Leave'||s==='C-off'?'bp' : 'by';
   return `<span class="b ${cls}">${s}</span>`;
 }
 function lvBadge(s) {
-  if (!s || s==='undefined' || s==='null') return '<span class="b bx" style="font-size:10.5px">â€”</span>';
+  if (!s || s==='undefined' || s==='null') return '<span class="b bx" style="font-size:10.5px">—</span>';
   const cls = s==='approved'?'bg' : s==='rejected'?'br' : 'by';
   return `<span class="b ${cls}" style="font-size:10.5px">${s}</span>`;
 }
-// Guarantee global scope â€” never undefined in any context
+// Guarantee global scope — never undefined in any context
 window.sBadge=sBadge; window.aBadge=aBadge; window.rBadge=rBadge;
 window.qBadge=qBadge; window.lvBadge=lvBadge;
 
 // Shift timing windows
 const SHIFT_WINDOW = {
-  G:{start:9,  end:17, wraps:false, label:'09:00â€“17:00'},
-  A:{start:6,  end:14, wraps:false, label:'06:00â€“14:00'},
-  B:{start:14, end:22, wraps:false, label:'14:00â€“22:00'},
-  C:{start:22, end:6,  wraps:true,  label:'22:00â€“06:00'},
+  G:{start:9,  end:17, wraps:false, label:'09:00–17:00'},
+  A:{start:6,  end:14, wraps:false, label:'06:00–14:00'},
+  B:{start:14, end:22, wraps:false, label:'14:00–22:00'},
+  C:{start:22, end:6,  wraps:true,  label:'22:00–06:00'},
 };
 
 // SI attendance window: marking allowed within 8 hr from shift start time
@@ -1090,7 +1090,7 @@ function siAttendanceWindow(shiftCode) {
   const openH  = w.start;                           // shift start
   const closeH = (w.start + 8) % 24;                // shift start + 8hrs
   const wraps = closeH < openH;
-  return {open:openH, close:closeH, wraps, label:`${String(openH).padStart(2,'0')}:00â€“${String(closeH).padStart(2,'0')}:00`};
+  return {open:openH, close:closeH, wraps, label:`${String(openH).padStart(2,'0')}:00–${String(closeH).padStart(2,'0')}:00`};
 }
 
 function isWithinSIWindow(shiftCode) {
@@ -1105,24 +1105,24 @@ function shiftWindowDesc(shiftCode) {
   const w = SHIFT_WINDOW[shiftCode];
   if (!w) return '';
   const win = siAttendanceWindow(shiftCode);
-  return `First 4hrs Â±1h: ${win.label}`;
+  return `First 4hrs ±1h: ${win.label}`;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    DATA STORE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 const STORAGE_KEY = 'att_app_db';
 const IS_SERVER = window.location.protocol !== 'file:';  // auto-detect: server mode vs local mode
 const db = {
   users: [
     {id:1, name:'Admin', username:'admin', password:'000000', role:'admin', area:'', assignedShift:'', category:'IT', reportsTo:null, mustChangePw:false},
   ],
-  // siAssignments: {area, shift, siId, aiId} â€” "" shift means ALL
+  // siAssignments: {area, shift, siId, aiId} — "" shift means ALL
   siAssignments: [],
   shifts:     [], // {userId, date, code}
   attendance: [], // {userId, date, status, markedBy, markedAt}
   requests:   [], // {id, userId, date, type, reason, status, remark, createdAt}
-  quotas:     [], // {userId, year, sl, cl, coff} â€” yearly leave quota
+  quotas:     [], // {userId, year, sl, cl, coff} — yearly leave quota
 };
 async function saveDb() {
   const payload = {
@@ -1134,9 +1134,9 @@ async function saveDb() {
   // Always save to localStorage first
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch(e) { console.warn('localStorage save failed:', e); }
   if (IS_SERVER) {
-    for (let _at = 1; _at <= 3; _at++) {
-      try {
-        const hdrs = {'Content-Type':'application/json'};
+    try {
+      showToast('Saving to server...', 'info');
+      const hdrs = {'Content-Type':'application/json'};
 if (authToken) hdrs['Authorization'] = 'Bearer ' + authToken;
 const res = await fetch('/api/data', { method:'POST', headers:hdrs, body:JSON.stringify(payload) });
       const result = await res.json();
@@ -1222,17 +1222,17 @@ let _dbReady = false;
   } catch(e) { console.warn('Auto-sync error:', e); }
 })();
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    STATE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 let curUser = null;
 let authToken = null; // JWT token for server API calls
 let editReqId = null, editAttKey = null, editUserId = null, editSIAIdx = null;
 let empCalYear = new Date().getFullYear(), empCalMonth = new Date().getMonth();
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    HELPERS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function _ds(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth()+1).padStart(2,'0');
@@ -1241,7 +1241,7 @@ function _ds(d) {
 }
 function today() { return _ds(new Date()); }
 function fmt(d) {
-  if (!d) return 'â€”';
+  if (!d) return '—';
   const [y, m, dd] = d.split('-');
   return `${dd} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m-1]} ${y}`;
 }
@@ -1260,12 +1260,12 @@ function sortByExcelOrder(users) {
 
 // DB lookups
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    CUSTOM CONFIRM MODAL (replaces browser confirm())
    Works in iframes where window.confirm() is blocked
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 let _confirmCallback = null;
-function showConfirm(title, msg, okLabel, cb, icon='ðŸ—‘ï¸') {
+function showConfirm(title, msg, okLabel, cb, icon='🗑️') {
   document.getElementById('confirm-title').textContent = title;
   document.getElementById('confirm-msg').innerHTML = msg;
   document.getElementById('confirm-icon').textContent = icon;
@@ -1282,7 +1282,7 @@ function confirmCancel() {
   _confirmCallback = null;
 }
 
-/* â”€â”€ Toast notification (replaces alert()) â”€â”€ */
+/* ── Toast notification (replaces alert()) ── */
 function showToast(msg, type='info') {
   let toast = document.getElementById('toast-container');
   if (!toast) {
@@ -1299,7 +1299,7 @@ function showToast(msg, type='info') {
   toast.appendChild(el);
   setTimeout(() => { if(el.parentNode) el.remove(); }, 4000);
 }
-// Backward-compatibility alias â€” older cached pages may still call addNotif
+// Backward-compatibility alias — older cached pages may still call addNotif
 function addNotif(msg, type) { showToast(msg, type||'info'); }
 
 function getUser(id) { return db.users.find(u => u.id === id); }
@@ -1310,7 +1310,7 @@ function getShift(uid, date) { return db.shifts.find(s => s.userId===uid && s.da
 function getAtt(uid, date)   { return db.attendance.find(a => a.userId===uid && a.date===date); }
 function pendingReqs() { return db.requests.filter(r => r.status==='pending'); }
 function pendingForRole(role) {
-  // SIMULTANEOUS: DSM, SM, Admin each act independently â€” no sequential gating
+  // SIMULTANEOUS: DSM, SM, Admin each act independently — no sequential gating
   if (role === 'deputy_site_manager') return db.requests.filter(r => r.dsmStatus === 'pending');
   if (role === 'site_manager')        return db.requests.filter(r => r.smStatus  === 'pending');
   if (role === 'admin')               return db.requests.filter(r => r.admStatus === 'pending');
@@ -1321,7 +1321,7 @@ function getSIA(area, shift, role) {
   function _find(a, s) {
     return db.siAssignments.find(x => x.area===a && x.shift===s);
   }
-  // RULE.txt cross-area mapping â€” find the primary assignment record per rules
+  // RULE.txt cross-area mapping — find the primary assignment record per rules
   // and return BOTH siId and aiId from it (the backfill in runSIAAutoSync ensures
   // AI IDs are populated on shift-area entries, and SI IDs on general-area entries).
   let primary = null;
@@ -1347,7 +1347,7 @@ function getSIA(area, shift, role) {
   return { siId: primary.siId, aiId: primary.aiId };
 }
 
-// â”€â”€ CORE HELPER: Effective shift code for a user on a given date â”€â”€
+// ── CORE HELPER: Effective shift code for a user on a given date ──
 // Uses Excel daily schedule (fromExcel:true) as authoritative source.
 // Falls back to profile assignedShift only when no Excel data exists for this user.
 function getEffectiveShiftCode(uid, date, excelStrict) {
@@ -1421,13 +1421,12 @@ async function setAtt(uid, date, status, markedBy) {
   const i = db.attendance.findIndex(a => a.userId===uid && a.date===date);
   const rec = {userId:uid, date, status, markedBy, markedAt: new Date().toISOString()};
   if (i >= 0) db.attendance[i] = rec; else db.attendance.push(rec);
-  // Await the server save so data actually persists before any re-render/navigation
   await saveDb();
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    LEAVE QUOTA SYSTEM
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function ensureQuota(userId, year) {
   if (!year) year = new Date().getFullYear();
   let q = db.quotas.find(x => x.userId === userId && x.year === year);
@@ -1487,7 +1486,7 @@ function showEl(id) { const e = document.getElementById(id); if(e) e.classList.r
 function setHTML(id, html) { const e = document.getElementById(id); if(e) e.innerHTML = html; }
 function setVal(id, v) { const e = document.getElementById(id); if(e) e.value = v; }
 function getVal(id) { const e = document.getElementById(id); return e ? e.value : ''; }
-function emptyRow(cols, msg, icon='ðŸ“­') {
+function emptyRow(cols, msg, icon='📭') {
   return `<tr><td colspan="${cols}"><div class="empty"><div class="ei">${icon}</div><p>${msg}</p></div></td></tr>`;
 }
 
@@ -1497,9 +1496,9 @@ function coloredName(u) {
   return cls ? `<span class="${cls}" style="font-weight:600">${safe}</span>` : `<span style="font-weight:600">${safe}</span>`;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    AUTH
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 async function doLogin() {
   if (!_dbReady) {
     showErr('li-err','Loading data, please wait...');
@@ -1513,14 +1512,14 @@ async function doLogin() {
   if (!un) { showErr('li-err','Please enter your username.'); return; }
   if (!pw) { showErr('li-err','Please enter your password.'); return; }
 
-  // Server-side session check â€” prevent same user login on multiple terminals
+  // Server-side session check — prevent same user login on multiple terminals
   if (IS_SERVER) {
     try {
       const lr = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:un,password:pw}) });
       const lrData = await lr.json();
       if (!lrData.ok) {
         if (lrData.alreadyLoggedIn) {
-          // Stale session from page refresh â€” force logout and retry
+          // Stale session from page refresh — force logout and retry
           const localUser = db.users.find(u => u.role!=='__deleted__' && u.username===un);
           if (localUser) {
             await fetch('/api/logout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userId:localUser.id}) });
@@ -1535,7 +1534,7 @@ async function doLogin() {
           } else { showErr('li-err', lrData.message); return; }
         } else { showErr('li-err', lrData.message || 'Login failed'); return; }
       }
-      // Server login succeeded â€” use server user data
+      // Server login succeeded — use server user data
       authToken = lrData.token;
       curUser = lrData.user;
       await enterApp();
@@ -1569,7 +1568,7 @@ async function doLogin() {
 
 function showChgPw() {
   hideEl('pnl-login'); showEl('pnl-chgpw');
-  document.getElementById('auth-sub').textContent = 'First Login â€” Set Username & Password';
+  document.getElementById('auth-sub').textContent = 'First Login — Set Username & Password';
   document.getElementById('cp-user').value = curUser.username || curUser.name;
   hideEl('cp-err');
 }
@@ -1637,7 +1636,7 @@ async function enterApp() {
     site_manager:'Site Manager', admin:'Admin'
   };
   const extra = curUser.area
-    ? ` â€” ${AL[curUser.area]||curUser.area}${curUser.assignedShift?' ('+curUser.assignedShift+')':''}`
+    ? ` — ${AL[curUser.area]||curUser.area}${curUser.assignedShift?' ('+curUser.assignedShift+')':''}`
     : '';
   document.getElementById('tb-role').textContent = (RL[curUser.role]||curUser.role) + extra;
   buildSidebar();
@@ -1686,7 +1685,7 @@ function doLogout() {
   document.getElementById('auth-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   showEl('pnl-login'); hideEl('pnl-chgpw');
-  document.getElementById('auth-sub').textContent = 'Attendance Management System â€” Industrial Shift Tracking';
+  document.getElementById('auth-sub').textContent = 'Attendance Management System — Industrial Shift Tracking';
   setVal('li-u',''); setVal('li-p','');
   empCalYear = new Date().getFullYear(); empCalMonth = new Date().getMonth();
   // Clear session on server
@@ -1696,78 +1695,78 @@ function doLogout() {
   }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    NAVIGATION
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 const NAV = {
   employee: [
-    {id:'pg-emp-schedule', icon:'ðŸ“…', label:'My Schedule'},
-    {id:'pg-emp-requests', icon:'ðŸ“‹', label:'My Requests'},
+    {id:'pg-emp-schedule', icon:'📅', label:'My Schedule'},
+    {id:'pg-emp-requests', icon:'📋', label:'My Requests'},
   ],
   shift_incharge: [
-    {id:'pg-emp-schedule',  icon:'ðŸ“…', label:'My Schedule'},
-    {id:'pg-si-dashboard',  icon:'âœ…', label:'Mark Attendance'},
-    {id:'pg-si-leave-view', icon:'ðŸ“‹', label:'Team Leave Status'},
-    {id:'pg-emp-requests',  icon:'ðŸ“', label:'My Requests'},
+    {id:'pg-emp-schedule',  icon:'📅', label:'My Schedule'},
+    {id:'pg-si-dashboard',  icon:'✅', label:'Mark Attendance'},
+    {id:'pg-si-leave-view', icon:'📋', label:'Team Leave Status'},
+    {id:'pg-emp-requests',  icon:'📝', label:'My Requests'},
   ],
   area_incharge: [
-    {id:'pg-emp-schedule',  icon:'ðŸ“…', label:'My Schedule'},
-    {id:'pg-ai-view',       icon:'ðŸ‘',  label:'Area Attendance'},
-    {id:'pg-ai-leave-view', icon:'ðŸ“‹', label:'Area Leave Status'},
-    {id:'pg-emp-requests',  icon:'ðŸ“', label:'My Requests'},
+    {id:'pg-emp-schedule',  icon:'📅', label:'My Schedule'},
+    {id:'pg-ai-view',       icon:'👁',  label:'Area Attendance'},
+    {id:'pg-ai-leave-view', icon:'📋', label:'Area Leave Status'},
+    {id:'pg-emp-requests',  icon:'📝', label:'My Requests'},
   ],
   assistant_area_incharge: [
-    {id:'pg-emp-schedule',  icon:'ðŸ“…', label:'My Schedule'},
-    {id:'pg-ai-view',       icon:'ðŸ‘',  label:'Area Attendance'},
-    {id:'pg-emp-requests',  icon:'ðŸ“', label:'My Requests'},
+    {id:'pg-emp-schedule',  icon:'📅', label:'My Schedule'},
+    {id:'pg-ai-view',       icon:'👁',  label:'Area Attendance'},
+    {id:'pg-emp-requests',  icon:'📝', label:'My Requests'},
   ],
-  // Asst. Shift IC â€” same dashboard as Shift IC; can cover when SI is absent
+  // Asst. Shift IC — same dashboard as Shift IC; can cover when SI is absent
   assistant_shift_incharge: [
-    {id:'pg-emp-schedule',  icon:'ðŸ“…', label:'My Schedule'},
-    {id:'pg-si-dashboard',  icon:'âœ…', label:'Mark Attendance'},
-    {id:'pg-si-leave-view', icon:'ðŸ“‹', label:'Team Leave Status'},
-    {id:'pg-emp-requests',  icon:'ðŸ“', label:'My Requests'},
+    {id:'pg-emp-schedule',  icon:'📅', label:'My Schedule'},
+    {id:'pg-si-dashboard',  icon:'✅', label:'Mark Attendance'},
+    {id:'pg-si-leave-view', icon:'📋', label:'Team Leave Status'},
+    {id:'pg-emp-requests',  icon:'📝', label:'My Requests'},
   ],
   deputy_site_manager: [
     {grp:'Attendance'},
-    {id:'pg-overview',    icon:'ðŸ“Š', label:'Overview'},
+    {id:'pg-overview',    icon:'📊', label:'Overview'},
     {grp:'Management'},
-    {id:'pg-users',       icon:'ðŸ‘¤', label:'Manage Users'},
+    {id:'pg-users',       icon:'👤', label:'Manage Users'},
     {grp:'Requests'},
-    {id:'pg-approve',     icon:'ðŸ””', label:'Approve Requests', badge:'dsm'},
-    {id:'pg-emp-requests',icon:'ðŸ“', label:'My Leave Request'},
+    {id:'pg-approve',     icon:'🔔', label:'Approve Requests', badge:'dsm'},
+    {id:'pg-emp-requests',icon:'📝', label:'My Leave Request'},
   ],
   site_manager: [
     {grp:'Attendance'},
-    {id:'pg-overview',    icon:'ðŸ“Š', label:'Overview'},
+    {id:'pg-overview',    icon:'📊', label:'Overview'},
     {grp:'Management'},
-    {id:'pg-users',       icon:'ðŸ‘¤', label:'Manage Users'},
+    {id:'pg-users',       icon:'👤', label:'Manage Users'},
     {grp:'Requests'},
-    {id:'pg-approve',     icon:'ðŸ””', label:'Approve Requests', badge:'sm'},
-    {id:'pg-emp-requests',icon:'ðŸ“', label:'My Leave Request'},
+    {id:'pg-approve',     icon:'🔔', label:'Approve Requests', badge:'sm'},
+    {id:'pg-emp-requests',icon:'📝', label:'My Leave Request'},
   ],
   admin: [
     {grp:'Attendance'},
-    {id:'pg-overview',   icon:'ðŸ“Š', label:'Overview'},
-    {id:'pg-emp-monthly', icon:'ðŸ“„', label:'Leave Report'},
+    {id:'pg-overview',   icon:'📊', label:'Overview'},
+    {id:'pg-emp-monthly', icon:'📄', label:'Leave Report'},
     {grp:'Management'},
-    {id:'pg-users',      icon:'ðŸ‘¤', label:'Manage Users'},
-    {id:'pg-assign',     icon:'ðŸ”—', label:'Incharge Assignment'},
-    {id:'pg-quota',      icon:'ðŸ“Š', label:'Leave Quota'},
+    {id:'pg-users',      icon:'👤', label:'Manage Users'},
+    {id:'pg-assign',     icon:'🔗', label:'Incharge Assignment'},
+    {id:'pg-quota',      icon:'📊', label:'Leave Quota'},
     {grp:'Schedule'},
-    {id:'pg-schedule-editor', icon:'ðŸ“‹', label:'Schedule Editor'},
+    {id:'pg-schedule-editor', icon:'📋', label:'Schedule Editor'},
     {grp:'System'},
-    {id:'pg-backup',     icon:'ðŸ’¾', label:'Backup & Restore'},
+    {id:'pg-backup',     icon:'💾', label:'Backup & Restore'},
     {grp:'Requests'},
-    {id:'pg-approve',    icon:'ðŸ””', label:'Approve Requests', badge:'adm'},
+    {id:'pg-approve',    icon:'🔔', label:'Approve Requests', badge:'adm'},
   ],
   safety_officer: [
-    {id:'pg-emp-schedule', icon:'ðŸ“…', label:'My Schedule'},
-    {id:'pg-emp-requests', icon:'ðŸ“‹', label:'My Requests'},
+    {id:'pg-emp-schedule', icon:'📅', label:'My Schedule'},
+    {id:'pg-emp-requests', icon:'📋', label:'My Requests'},
   ],
   planning_incharge: [
-    {id:'pg-emp-schedule', icon:'ðŸ“…', label:'My Schedule'},
-    {id:'pg-emp-requests', icon:'ðŸ“‹', label:'My Requests'},
+    {id:'pg-emp-schedule', icon:'📅', label:'My Schedule'},
+    {id:'pg-emp-requests', icon:'📋', label:'My Requests'},
   ],
 };
 
@@ -1782,7 +1781,7 @@ function buildSidebar() {
     </div>`;
   }).join('');
   // Append Profile link for all users
-  sb.innerHTML += `<div class="ng">Account</div><div class="ni" id="nav-pg-profile" onclick="goTo('pg-profile')"><span class="ni-icon">âš™ï¸</span><span>Profile Settings</span></div>`;
+  sb.innerHTML += `<div class="ng">Account</div><div class="ni" id="nav-pg-profile" onclick="goTo('pg-profile')"><span class="ni-icon">⚙️</span><span>Profile Settings</span></div>`;
   updateBadges();
 }
 
@@ -1844,9 +1843,9 @@ function renderPage(id) {
   }[id] || (() => {}))();
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    POPULATE FILTER SELECTS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function populateAllFilters() {
   ['ov-area','adm-area','map-area','usr-area-f'].forEach(id => {
     const el = document.getElementById(id);
@@ -1857,9 +1856,9 @@ function populateAllFilters() {
   });
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   EMPLOYEE â€” CALENDAR
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   EMPLOYEE — CALENDAR
+══════════════════════════════════════════════════════ */
 function renderEmpCal() {
   const mf = document.getElementById('emp-cal-month');
   if (!mf.value) mf.value = `${empCalYear}-${String(empCalMonth+1).padStart(2,'0')}`;
@@ -1869,11 +1868,11 @@ function renderEmpCal() {
   const si = curUser.siId ? getUser(curUser.siId) : null;
   const ai = curUser.aiId ? getUser(curUser.aiId) : null;
   setHTML('emp-info',
-    `<strong>Area:</strong> ${AL[curUser.area]||curUser.area||'â€”'} &nbsp;|&nbsp;
-     <strong>Assigned Shift:</strong> ${curUser.assignedShift||'â€”'} &nbsp;|&nbsp;
-     <strong>Category:</strong> ${curUser.category||'â€”'}<br>
-     <strong>Shift In-charge:</strong> ${si?si.name:'â€”'} &nbsp;|&nbsp;
-     <strong>Area In-charge:</strong> ${ai?ai.name:'â€”'}`
+    `<strong>Area:</strong> ${AL[curUser.area]||curUser.area||'—'} &nbsp;|&nbsp;
+     <strong>Assigned Shift:</strong> ${curUser.assignedShift||'—'} &nbsp;|&nbsp;
+     <strong>Category:</strong> ${curUser.category||'—'}<br>
+     <strong>Shift In-charge:</strong> ${si?si.name:'—'} &nbsp;|&nbsp;
+     <strong>Area In-charge:</strong> ${ai?ai.name:'—'}`
   );
 }
 function empCalPrev() { empCalMonth--; if(empCalMonth<0){empCalMonth=11;empCalYear--;} syncEmpCalMonth(); drawEmpCal(); }
@@ -1897,12 +1896,12 @@ function drawEmpCal() {
   const reqTypeMap = r => {
     if (r.type === 'Leave') return 'LEAVE';
     if (r.type === 'C-off') return 'C-OFF';
-    if (r.type === 'Half-Day Leave') return 'Â½ LEAVE';
-    if (r.type === 'Half-Day C-off') return 'Â½ C-OFF';
+    if (r.type === 'Half-Day Leave') return '½ LEAVE';
+    if (r.type === 'Half-Day C-off') return '½ C-OFF';
     if (r.type === 'EL') return 'EL';
     if (r.type === 'CL') return 'CL';
-    if (r.type === 'Half-Day EL') return 'Â½ EL';
-    if (r.type === 'Half-Day CL') return 'Â½ CL';
+    if (r.type === 'Half-Day EL') return '½ EL';
+    if (r.type === 'Half-Day CL') return '½ CL';
     return r.type;
   };
   let html = '';
@@ -1915,30 +1914,30 @@ function drawEmpCal() {
     const isPresent = att && att.status === 'Present';
     const isAbsent = att && att.status === 'Absent';
     let statusText = '', statusColor = '', opacity = '1';
-    // Priority 1: Attendance marked as leave/c-off â†’ RED
+    // Priority 1: Attendance marked as leave/c-off → RED
     if (att && (att.status === 'Leave' || att.status === 'C-off' || att.status === 'Half-Day Leave' || att.status === 'Half-Day C-off' || att.status === 'EL' || att.status === 'CL' || att.status === 'Half-Day EL' || att.status === 'Half-Day CL')) {
-      const m = { 'Leave':'LEAVE','C-off':'C-OFF','Half-Day Leave':'Â½ LEAVE','Half-Day C-off':'Â½ C-OFF','EL':'EL','CL':'CL','Half-Day EL':'Â½ EL','Half-Day CL':'Â½ CL' };
+      const m = { 'Leave':'LEAVE','C-off':'C-OFF','Half-Day Leave':'½ LEAVE','Half-Day C-off':'½ C-OFF','EL':'EL','CL':'CL','Half-Day EL':'½ EL','Half-Day CL':'½ CL' };
       statusText = m[att.status] || att.status;
       statusColor = 'var(--red)';
-    // Priority 2: Approved leave request (even if Excel overwrote shift) â†’ RED
+    // Priority 2: Approved leave request (even if Excel overwrote shift) → RED
     } else if (hasApprovedLeave(ds2)) {
       const req = approvedReqs.find(r => ds2 >= (r.fromDate||r.date) && ds2 <= (r.toDate||r.date));
       statusText = reqTypeMap(req);
       statusColor = 'var(--red)';
-    // Priority 3: Absent â†’ RED
+    // Priority 3: Absent → RED
     } else if (isAbsent) {
       statusText = 'ABSENT';
       statusColor = 'var(--red)';
-    // Priority 4: Week off â†’ LIGHT color
+    // Priority 4: Week off → LIGHT color
     } else if (code === 'O') {
       statusText = 'OFF';
       statusColor = 'var(--t2)';
       opacity = isPresent ? '1' : '0.4';
-    // Priority 5: Leave shift code â†’ RED
+    // Priority 5: Leave shift code → RED
     } else if (code === 'L') {
       statusText = 'LEAVE';
       statusColor = 'var(--red)';
-    // Priority 6: A/B/C/G â†’ GREEN (light if not present, dark if present)
+    // Priority 6: A/B/C/G → GREEN (light if not present, dark if present)
     } else if (code && ['A','B','C','G'].includes(code)) {
       statusText = code;
       statusColor = 'var(--green)';
@@ -1952,22 +1951,22 @@ function drawEmpCal() {
   setHTML('emp-cal-body', html);
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   EMPLOYEE â€” REQUESTS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   EMPLOYEE — REQUESTS
+══════════════════════════════════════════════════════ */
 function renderEmpReqs() {
   // Show leave balance
   const bal = getBalance(curUser.id);
   document.getElementById('emp-balance-display').innerHTML = `
     <div style="display:flex;gap:12px;flex-wrap:wrap;padding:14px 18px;background:var(--s2);border-radius:var(--r);border:1px solid var(--bdr)">
-      <div style="flex:1;min-width:140px"><span style="font-size:11px;color:var(--t2)">ðŸ– EL (Earned Leave)</span><br><span style="font-size:20px;font-weight:700;color:var(--blue)">${bal.el}</span><span style="font-size:13px;color:var(--t3)"> / ${bal.elTotal}</span></div>
-      <div style="flex:1;min-width:140px"><span style="font-size:11px;color:var(--t2)">ðŸ“… CL (Casual Leave)</span><br><span style="font-size:20px;font-weight:700;color:var(--green)">${bal.cl}</span><span style="font-size:13px;color:var(--t3)"> / ${bal.clTotal}</span></div>
-      <div style="flex:1;min-width:140px"><span style="font-size:11px;color:var(--t2)">ðŸ”„ C-off</span><br><span style="font-size:20px;font-weight:700;color:var(--orange)">${bal.coff}</span><span style="font-size:13px;color:var(--t3)"> / ${bal.coffTotal}</span></div>
+      <div style="flex:1;min-width:140px"><span style="font-size:11px;color:var(--t2)">🏖 EL (Earned Leave)</span><br><span style="font-size:20px;font-weight:700;color:var(--blue)">${bal.el}</span><span style="font-size:13px;color:var(--t3)"> / ${bal.elTotal}</span></div>
+      <div style="flex:1;min-width:140px"><span style="font-size:11px;color:var(--t2)">📅 CL (Casual Leave)</span><br><span style="font-size:20px;font-weight:700;color:var(--green)">${bal.cl}</span><span style="font-size:13px;color:var(--t3)"> / ${bal.clTotal}</span></div>
+      <div style="flex:1;min-width:140px"><span style="font-size:11px;color:var(--t2)">🔄 C-off</span><br><span style="font-size:20px;font-weight:700;color:var(--orange)">${bal.coff}</span><span style="font-size:13px;color:var(--t3)"> / ${bal.coffTotal}</span></div>
     </div>`;
   const reqs = db.requests.filter(r => r.userId===curUser.id)
     .sort((a,b) => b.createdAt.localeCompare(a.createdAt));
   const body = document.getElementById('emp-req-body');
-  if (!reqs.length) { body.innerHTML = emptyRow(8,'No requests yet. Submit your first request!','ðŸ“‹'); return; }
+  if (!reqs.length) { body.innerHTML = emptyRow(8,'No requests yet. Submit your first request!','📋'); return; }
   body.innerHTML = reqs.map(r => {
     const dsm  = r.dsmStatus || 'pending';
     const sm   = r.smStatus  || 'pending';
@@ -1980,7 +1979,7 @@ function renderEmpReqs() {
       (dsm==='approved' && sm==='approved' && adm==='approved') ? 'approved' :
       (dsm==='rejected' || sm==='rejected' || adm==='rejected') ? 'rejected' : 'pending';
     const dateRange = r.fromDate && r.toDate && r.fromDate!==r.toDate
-      ? `${fmt(r.fromDate)} â€“ ${fmt(r.toDate)}`
+      ? `${fmt(r.fromDate)} – ${fmt(r.toDate)}`
       : fmt(r.fromDate||r.date);
     // Action button logic
     let actionBtn = '';
@@ -1990,16 +1989,16 @@ function renderEmpReqs() {
       actionBtn = '<span style="font-size:11px;color:var(--yellow)">Revoke Pending</span>';
     } else if (r.revokeRequested && r.revokeStatus === 'rejected') {
       actionBtn = '<span style="font-size:11px;color:var(--red)">Revoke Rejected</span> ' +
-        `<button class="btn bo2 bsm" onclick="openRevokeReqModal(${r.id})">â†© Retry</button>`;
+        `<button class="btn bo2 bsm" onclick="openRevokeReqModal(${r.id})">↩ Retry</button>`;
     } else if (overall === 'pending' || overall === 'rejected') {
-      actionBtn = `<button class="btn br2 bsm" onclick="directRevokeReq(${r.id})">âœ• Revoke</button>`;
+      actionBtn = `<button class="btn br2 bsm" onclick="directRevokeReq(${r.id})">✕ Revoke</button>`;
     } else if (overall === 'approved') {
-      actionBtn = `<button class="btn bo2 bsm" onclick="openRevokeReqModal(${r.id})">â†© Request Revoke</button>`;
+      actionBtn = `<button class="btn bo2 bsm" onclick="openRevokeReqModal(${r.id})">↩ Request Revoke</button>`;
     }
     return `<tr>
       <td style="white-space:nowrap">${dateRange}</td>
       <td><span class="b ${['EL','CL','Half-Day EL','Half-Day CL','Leave','Half-Day Leave'].includes(r.type)?'bp':r.type==='C-off'||r.type==='Half-Day C-off'?'by':'br'}">${r.type}</span></td>
-      <td style="max-width:120px;word-break:break-word">${escHtml(r.reason||'â€”')}</td>
+      <td style="max-width:120px;word-break:break-word">${escHtml(r.reason||'—')}</td>
       <td>${qBadge(dsm)}<span class="tdsub"> DSM</span></td>
       <td>${qBadge(sm)}<span class="tdsub"> SM</span></td>
       <td>${qBadge(adm)}<span class="tdsub"> Admin</span></td>
@@ -2016,7 +2015,7 @@ function openReqModal() {
   // Show balance hint
   const bal = getBalance(curUser.id);
   document.getElementById('req-balance-hint').innerHTML =
-    `ðŸ– EL: <strong>${bal.el}</strong> &nbsp;|&nbsp; ðŸ“… CL: <strong>${bal.cl}</strong> &nbsp;|&nbsp; ðŸ”„ C-off: <strong>${bal.coff}</strong>`;
+    `🏖 EL: <strong>${bal.el}</strong> &nbsp;|&nbsp; 📅 CL: <strong>${bal.cl}</strong> &nbsp;|&nbsp; 🔄 C-off: <strong>${bal.coff}</strong>`;
   om('req-modal');
 }
 
@@ -2083,13 +2082,13 @@ function submitReq() {
     createdAt: now,
 
     // SIMULTANEOUS: all three levels receive the request at the same time
-    // DSM: if requester is DSM â†’ self-approved; else pending
+    // DSM: if requester is DSM → self-approved; else pending
     dsmStatus:  (isSelfApprove && curUser.role==='deputy_site_manager') ? 'approved' : 'pending',
     dsmRemark:  (isSelfApprove && curUser.role==='deputy_site_manager') ? 'Self-approved' : '',
     dsmBy: (isSelfApprove && curUser.role==='deputy_site_manager') ? curUser.id : null,
     dsmAt: (isSelfApprove && curUser.role==='deputy_site_manager') ? now : null,
 
-    // SM: if requester is SM â†’ self-approved; else pending
+    // SM: if requester is SM → self-approved; else pending
     smStatus:   (isSelfApprove && curUser.role==='site_manager') ? 'approved' : 'pending',
     smRemark:   (isSelfApprove && curUser.role==='site_manager') ? 'Self-approved' : '',
     smBy:  (isSelfApprove && curUser.role==='site_manager') ? curUser.id : null,
@@ -2099,8 +2098,8 @@ function submitReq() {
     admStatus:  'pending', admRemark:'', admBy:null, admAt:null,
   };
 
-  // If DSM is submitting â€” their own DSM level is self-approved, SM + Admin still need to act
-  // If SM is submitting  â€” their own SM level is self-approved,  DSM + Admin still need to act
+  // If DSM is submitting — their own DSM level is self-approved, SM + Admin still need to act
+  // If SM is submitting  — their own SM level is self-approved,  DSM + Admin still need to act
   // Check if self-approve makes all 3 levels done (impossible for single user)
   const allDone = req.dsmStatus==='approved' && req.smStatus==='approved' && req.admStatus==='approved';
   if (allDone) req.status = 'approved'; // edge case: never happens for normal flow
@@ -2111,16 +2110,16 @@ function submitReq() {
   renderEmpReqs();
   updateBadges();
 
-  const dateRange = fromDate === toDate ? fmt(fromDate) : `${fmt(fromDate)} â€“ ${fmt(toDate)}`;
+  const dateRange = fromDate === toDate ? fmt(fromDate) : `${fmt(fromDate)} – ${fmt(toDate)}`;
   const selfNote  = isSelfApprove ? ' Your own level is auto-approved.' : '';
-  showToast(`âœ… ${type} request submitted for ${dateRange}. Sent to DSM, SM &amp; Admin simultaneously.${selfNote}`, 'ok');
+  showToast(`✅ ${type} request submitted for ${dateRange}. Sent to DSM, SM &amp; Admin simultaneously.${selfNote}`, 'ok');
 }
 
-/* â”€â”€ REVOKE FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── REVOKE FUNCTIONS ────────────────────────── */
 function directRevokeReq(id) {
   if (!confirm('Are you sure you want to revoke this request?')) return;
   const req = db.requests.find(r => r.id === id);
-  if (!req) { showToast('âŒ Request not found','err'); return; }
+  if (!req) { showToast('❌ Request not found','err'); return; }
   req.status = 'revoked';
   req.revokeStatus = 'approved';
   req.revokeApprovedAt = new Date().toISOString();
@@ -2157,7 +2156,7 @@ function directRevokeReq(id) {
   renderEmpReqs();
   renderApprove();
   updateBadges();
-  showToast('âœ• Request revoked successfully â€” shift restored, attendance cleared','ok');
+  showToast('✕ Request revoked successfully — shift restored, attendance cleared','ok');
 }
 
 let _revokeReqId = null;
@@ -2217,15 +2216,15 @@ async function confirmRevokeReq() {
   cm('revoke-modal');
   renderEmpReqs();
   updateBadges();
-  showToast('â†© Revoke request for ' + selectedDates.length + ' date(s) sent to Admin for approval','ok');
+  showToast('↩ Revoke request for ' + selectedDates.length + ' date(s) sent to Admin for approval','ok');
 }
 
 async function approveRevokeReq(id) {
   if (!confirm('Approve this revocation?')) return;
   await loadDb(); // get latest data from server
   const req = db.requests.find(r => r.id === id);
-  if (!req) { showToast('âŒ Request not found','err'); return; }
-  if (req.status === 'revoked') { showToast('â›” Already revoked','err'); return; }
+  if (!req) { showToast('❌ Request not found','err'); return; }
+  if (req.status === 'revoked') { showToast('⛔ Already revoked','err'); return; }
   // Determine which dates to revoke: selected by employee or fallback to full range
   let revokeDates = req.revokeDates;
   if (!revokeDates || revokeDates.length === 0) {
@@ -2243,7 +2242,7 @@ async function approveRevokeReq(id) {
   for (const ds of revokeDates) {
     if (!req.revokedDates.includes(ds)) req.revokedDates.push(ds);
   }
-  // Check if all dates in the range are now revoked â†’ fully revoked
+  // Check if all dates in the range are now revoked → fully revoked
   const startAll = new Date((req.fromDate||req.date) + 'T00:00:00');
   const endAll = new Date((req.toDate||req.fromDate||req.date) + 'T00:00:00');
   let totalDates = 0, revokedCount = 0;
@@ -2257,7 +2256,7 @@ async function approveRevokeReq(id) {
     req.smStatus = 'revoked';
     req.admStatus = 'revoked';
   } else {
-    // Partial revoke â€” keep request active for remaining dates
+    // Partial revoke — keep request active for remaining dates
     req.status = 'approved';
     req.revokeRequested = false;
   }
@@ -2285,36 +2284,36 @@ async function approveRevokeReq(id) {
   }
   saveDb();
   renderApprove();
-  showToast(`âœ… Revocation approved for ${user?.name||'user'} â€” ${revokeDates.length} date(s) restored`,'ok');
+  showToast(`✅ Revocation approved for ${user?.name||'user'} — ${revokeDates.length} date(s) restored`,'ok');
 }
 
 async function rejectRevokeReq(id) {
   if (!confirm('Reject this revocation request?')) return;
   await loadDb(); // get latest data from server
   const req = db.requests.find(r => r.id === id);
-  if (!req) { showToast('âŒ Request not found','err'); return; }
-  if (req.status === 'revoked' || req.revokeStatus === 'approved') { showToast('â›” Already revoked','err'); return; }
+  if (!req) { showToast('❌ Request not found','err'); return; }
+  if (req.status === 'revoked' || req.revokeStatus === 'approved') { showToast('⛔ Already revoked','err'); return; }
   req.revokeStatus = 'rejected';
   req.revokeRejectedAt = new Date().toISOString();
   req.revokeRejectedBy = curUser.id;
   saveDb();
   renderApprove();
-  showToast('âœ• Revocation request rejected','ok');
+  showToast('✕ Revocation request rejected','ok');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SHIFT IN-CHARGE â€” DASHBOARD
+/* ══════════════════════════════════════════════════════
+   SHIFT IN-CHARGE — DASHBOARD
    - Only marks for their siId-mapped employees
    - Only within shift timing window + grace period
    - Once marked, locked (admin can override)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function renderSIDash() {
   const dateEl = document.getElementById('si-date');
   if (!dateEl.value) dateEl.value = today();
   const date = dateEl.value;
   const si   = curUser;
 
-  // â”€â”€ KEY FIX: SI shift code for today â”€â”€
+  // ── KEY FIX: SI shift code for today ──
   // Priority 1: Excel uploaded schedule for SI on this date (if SI appears in roster)
   // Priority 2: their assignedShift from profile (set in Manage Users)
   // Both SI and Asst. Shift Incharge use the same logic
@@ -2326,7 +2325,7 @@ function renderSIDash() {
   const siBlocked = !isWorkShift && (!siCodeToday || ['O','L'].includes(siCodeToday));
   const siReason = !siCodeToday ? 'C-OFF/Not Mark' : siCodeToday === 'O' ? 'Off' : 'Leave';
   setHTML('si-blocked-banner', siBlocked
-    ? `<div class="banner banner-r">âš ï¸ YOU have ${siReason} so not Allow to Mark Attendance</div>`
+    ? `<div class="banner banner-r">⚠️ YOU have ${siReason} so not Allow to Mark Attendance</div>`
     : '');
 
   // Shift timing banner
@@ -2337,30 +2336,30 @@ function renderSIDash() {
   setHTML('si-shift-banner',
     isWorkShift
       ? `<div class="banner ${inWin?'banner-g':'banner-r'}">
-          <span>${inWin?'ðŸŸ¢':'ðŸ”´'}</span>
+          <span>${inWin?'🟢':'🔴'}</span>
           <div>
-            <strong>[${roleLabel}] ${AL[si.area]||si.area} â€” Shift ${siCodeToday} (${w?w.label:''})</strong>
+            <strong>[${roleLabel}] ${AL[si.area]||si.area} — Shift ${siCodeToday} (${w?w.label:''})</strong>
             <br>Marking window: within 8 hr from shift start
             <br>${inWin
-              ? 'âœ… Within window â€” marking <strong>ENABLED</strong>.'
-              : 'ðŸ”’ Outside window â€” marking <strong>LOCKED</strong>. Contact Admin for override.'}
+              ? '✅ Within window — marking <strong>ENABLED</strong>.'
+              : '🔒 Outside window — marking <strong>LOCKED</strong>. Contact Admin for override.'}
           </div>
          </div>`
       : siCodeToday === 'O'
-        ? `<div class="banner banner-b"><span>ðŸ“…</span><div>You are on <strong>Week Off</strong> on ${fmt(date)}. No attendance marking needed.</div></div>`
-        : `<div class="banner banner-y"><span>âš ï¸</span><div>
+        ? `<div class="banner banner-b"><span>📅</span><div>You are on <strong>Week Off</strong> on ${fmt(date)}. No attendance marking needed.</div></div>`
+        : `<div class="banner banner-y"><span>⚠️</span><div>
             No shift assigned for <strong>${fmt(date)}</strong>.<br>
             <small>Assign your shift in Manage Users (assignedShift field) or upload the Excel schedule.</small>
            </div></div>`
   );
 
-  // â”€â”€ CORE MAPPING: all employees in SI's area with the SAME shift code today â”€â”€
-  // "IF Chinmay is BOF SI and his shift is A â†’ all BOF employees with A on that date"
+  // ── CORE MAPPING: all employees in SI's area with the SAME shift code today ──
+  // "IF Chinmay is BOF SI and his shift is A → all BOF employees with A on that date"
   // Works for both Shift Incharge and Asst. Shift Incharge
-  // If two SIs are in A shift â†’ BOTH see the same full A-shift team and can both mark
+  // If two SIs are in A shift → BOTH see the same full A-shift team and can both mark
   let myEmps = [];
   if (isWorkShift && si.area) {
-    // Scope: SI's own area + cross-mapped general area (e.g., BOF-G â†’ BOF-S)
+    // Scope: SI's own area + cross-mapped general area (e.g., BOF-G → BOF-S)
     const areas = [si.area];
     if (si.area.endsWith('-S')) areas.push(si.area.replace(/-S$/, '-G'));
     if (si.area.endsWith('-G')) areas.push(si.area.replace(/-G$/, '-S'));
@@ -2402,18 +2401,18 @@ function renderSIDash() {
   if (missEl) {
     missEl.innerHTML = !isWorkShift ? ''
       : notMarked.length
-        ? `<div class="banner banner-y">âš ï¸ <strong>${notMarked.length} not marked</strong></div>`
+        ? `<div class="banner banner-y">⚠️ <strong>${notMarked.length} not marked</strong></div>`
         : myEmps.length
-          ? `<div class="banner banner-g">âœ… All team members marked for ${fmt(date)}</div>`
+          ? `<div class="banner banner-g">✅ All team members marked for ${fmt(date)}</div>`
           : '';
   }
 
   setHTML('si-tbl-hdr', isWorkShift
-    ? `${AL[si.area]||si.area} / Shift ${siCodeToday} â€” <span class="b bb">${fmt(date)}</span>
+    ? `${AL[si.area]||si.area} / Shift ${siCodeToday} — <span class="b bb">${fmt(date)}</span>
        <span style="font-size:11px;color:var(--t2);font-weight:400;margin-left:6px">
          Auto-matched by Excel shift code ${siCodeToday}
        </span>`
-    : `${AL[si.area]||si.area} â€” <span class="b bx">${fmt(date)}</span>`
+    : `${AL[si.area]||si.area} — <span class="b bx">${fmt(date)}</span>`
   );
 
   const body = document.getElementById('si-body');
@@ -2421,9 +2420,9 @@ function renderSIDash() {
   if (!isWorkShift) {
     body.innerHTML = emptyRow(6,
       !siCodeToday
-        ? `No shift assigned. Go to Manage Users â†’ set Assigned Shift, or upload Excel schedule.`
+        ? `No shift assigned. Go to Manage Users → set Assigned Shift, or upload Excel schedule.`
         : `You are on ${siCodeToday==='O'?'Week Off':'Leave'} on ${fmt(date)}.`,
-      'ðŸ“…');
+      '📅');
     return;
   }
 
@@ -2433,7 +2432,7 @@ function renderSIDash() {
         <td colspan="6">
           <div style="padding:14px 16px">
             <strong>${si.name}</strong> <span class="b bb" style="font-size:9.5px">You (${roleLabel})</span>
-            â€” No employees found with Shift <strong>${siCodeToday}</strong> in <strong>${AL[si.area]||si.area}</strong> on ${fmt(date)}.
+            — No employees found with Shift <strong>${siCodeToday}</strong> in <strong>${AL[si.area]||si.area}</strong> on ${fmt(date)}.
             <br><span style="font-size:12px;color:var(--t2)">
               Make sure employees have been assigned the correct area and the Excel schedule has been uploaded.
             </span>
@@ -2453,13 +2452,13 @@ function renderSIDash() {
     if (isOff) {
       markCell = `<span class="b bx">${code==='O'?'Week Off':'On Leave'}</span>`;
     } else if (att) {
-      markCell = `${aBadge(att.status)} <span style="font-size:10px;color:var(--t3)">ðŸ”’ Locked</span>`;
+      markCell = `${aBadge(att.status)} <span style="font-size:10px;color:var(--t3)">🔒 Locked</span>`;
     } else if (!inWin) {
-      markCell = `<span class="b br" style="font-size:10.5px">â± Outside window</span>`;
+      markCell = `<span class="b br" style="font-size:10.5px">⏱ Outside window</span>`;
     } else {
       markCell = `
-        <button class="btn bg2 bsm" onclick="siMark(${u.id},'${date}','Present')">âœ” Present</button>
-        <button class="btn br2 bsm" style="margin-left:4px" onclick="siMark(${u.id},'${date}','Absent')">âœ– Absent</button>`;
+        <button class="btn bg2 bsm" onclick="siMark(${u.id},'${date}','Present')">✔ Present</button>
+        <button class="btn br2 bsm" style="margin-left:4px" onclick="siMark(${u.id},'${date}','Absent')">✖ Absent</button>`;
     }
 
     const markedBy = att?.markedBy ? getUser(att.markedBy) : null;
@@ -2471,10 +2470,10 @@ function renderSIDash() {
         </div>
         <div style="font-size:11px;color:var(--t2)">${u.category||''}</div>
       </td>
-      <td>${AL[u.area]||u.area||'â€”'}</td>
+      <td>${AL[u.area]||u.area||'—'}</td>
       <td>${sBadge(code)}</td>
       <td>${aBadge(att?att.status:'')}</td>
-      <td style="font-size:11px;color:var(--t2)">${markedBy?markedBy.name:'â€”'}</td>
+      <td style="font-size:11px;color:var(--t2)">${markedBy?markedBy.name:'—'}</td>
       <td>${markCell}</td>
     </tr>`;
   }).join('');
@@ -2510,7 +2509,7 @@ async function siMark(uid, date, status) {
     const win = siCode ? siAttendanceWindow(siCode) : null;
     showToast(
       siCode ? `Outside marking window for Shift ${siCode} (${win?.label}). Within 8 hr from shift start only.`
-             : 'No shift scheduled for you today â€” cannot mark attendance.',
+             : 'No shift scheduled for you today — cannot mark attendance.',
       'err'
     );
     return;
@@ -2518,12 +2517,12 @@ async function siMark(uid, date, status) {
 
   await setAtt(uid, date, status, si.id);
   renderSIDash();
-  showToast(`âœ… ${u.name} marked as ${status}.`,'ok');
+  showToast(`✅ ${u.name} marked as ${status}.`,'ok');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   AREA IN-CHARGE â€” VIEW ONLY
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   AREA IN-CHARGE — VIEW ONLY
+══════════════════════════════════════════════════════ */
 function renderAIView() {
   const dateEl = document.getElementById('ai-date');
   if (!dateEl.value) dateEl.value = today();
@@ -2531,14 +2530,14 @@ function renderAIView() {
   const shiftF = getVal('ai-shift-f');
   const ai     = curUser;
 
-  // AI's shift today (from Excel) â€” G-shift AI manages all G-coded employees in their area
+  // AI's shift today (from Excel) — G-shift AI manages all G-coded employees in their area
   const rawCode = getEffectiveShiftCode(ai.id, date, true);
   const aiCodeToday = rawCode || 'G';
   const inWin = isWithinSIWindow(aiCodeToday);
   const isBlocked = !rawCode || rawCode === 'O' || rawCode === 'L';
   const blockReason = !rawCode ? 'C-OFF/Not Mark' : rawCode === 'O' ? 'Off' : 'Leave';
   setHTML('ai-blocked-banner', isBlocked
-    ? `<div class="banner banner-r">âš ï¸ YOU have ${blockReason} so not Allow to Mark Attendance</div>`
+    ? `<div class="banner banner-r">⚠️ YOU have ${blockReason} so not Allow to Mark Attendance</div>`
     : '');
   // Shift info banner (like SI view)
   const isActiveShift = aiCodeToday && ['A','B','C','G'].includes(aiCodeToday);
@@ -2547,26 +2546,26 @@ function renderAIView() {
   setHTML('ai-shift-banner',
     isActiveShift
       ? `<div class="banner ${inWin?'banner-g':'banner-r'}">
-          <span>${inWin?'ðŸŸ¢':'ðŸ”´'}</span>
+          <span>${inWin?'🟢':'🔴'}</span>
           <div>
-            <strong>[${aiRoleLabel}] ${AL[ai.area]||ai.area} â€” Shift ${aiCodeToday} (${w?w.label:''})</strong>
+            <strong>[${aiRoleLabel}] ${AL[ai.area]||ai.area} — Shift ${aiCodeToday} (${w?w.label:''})</strong>
             <br>Marking window: within 8 hr from shift start
             <br>${inWin
-              ? 'âœ… Within window â€” marking <strong>ENABLED</strong>.'
-              : 'ðŸ”’ Outside window â€” marking <strong>LOCKED</strong>. Contact Admin for override.'}
+              ? '✅ Within window — marking <strong>ENABLED</strong>.'
+              : '🔒 Outside window — marking <strong>LOCKED</strong>. Contact Admin for override.'}
           </div>
          </div>`
       : rawCode === 'O'
-        ? `<div class="banner banner-b"><span>ðŸ“…</span><div>You are on <strong>Week Off</strong> on ${fmt(date)}. No attendance marking needed.</div></div>`
+        ? `<div class="banner banner-b"><span>📅</span><div>You are on <strong>Week Off</strong> on ${fmt(date)}. No attendance marking needed.</div></div>`
         : rawCode === 'L'
-        ? `<div class="banner banner-b"><span>ðŸ“…</span><div>You are on <strong>Leave</strong> on ${fmt(date)}. No attendance marking needed.</div></div>`
-        : `<div class="banner banner-y"><span>âš ï¸</span><div>
+        ? `<div class="banner banner-b"><span>📅</span><div>You are on <strong>Leave</strong> on ${fmt(date)}. No attendance marking needed.</div></div>`
+        : `<div class="banner banner-y"><span>⚠️</span><div>
             No shift assigned for <strong>${fmt(date)}</strong>.<br>
             <small>Assign your shift in Manage Users (assignedShift field) or upload the Excel schedule.</small>
            </div></div>`
   );
 
-  // Scope: AI's own area + cross-mapped general area (e.g., BOF-G â†’ BOF-S)
+  // Scope: AI's own area + cross-mapped general area (e.g., BOF-G → BOF-S)
   const aiAreas = [ai.area];
   if (ai.area.endsWith('-S')) aiAreas.push(ai.area.replace(/-S$/, '-G'));
   if (ai.area.endsWith('-G')) aiAreas.push(ai.area.replace(/-G$/, '-S'));
@@ -2595,11 +2594,11 @@ function renderAIView() {
 
   const missEl = document.getElementById('ai-missing-box') || document.getElementById('ai-miss-box');
   if (missEl) missEl.innerHTML = notMarked.length
-    ? `<div class="banner banner-y">âš ï¸ ${notMarked.length} not marked</div>`
-    : `<div class="banner banner-g">âœ… All personnel accounted for on ${fmt(date)}.</div>`;
+    ? `<div class="banner banner-y">⚠️ ${notMarked.length} not marked</div>`
+    : `<div class="banner banner-g">✅ All personnel accounted for on ${fmt(date)}.</div>`;
 
   const body = document.getElementById('ai-body');
-  if (!emps.length) { body.innerHTML = emptyRow(5,'No personnel in your area.','ðŸ‘¥'); return; }
+  if (!emps.length) { body.innerHTML = emptyRow(5,'No personnel in your area.','👥'); return; }
 
   body.innerHTML = emps.map(u => {
     const code    = getEffectiveShiftCode(u.id, date, true) || 'G';
@@ -2611,13 +2610,13 @@ function renderAIView() {
     if (isOff) {
       markCell = `<span class="b bx">${code==='O'?'Week Off':'On Leave'}</span>`;
     } else if (att) {
-      markCell = `${aBadge(att.status)} <span style="font-size:10px;color:var(--t3)">ðŸ”’</span>`;
+      markCell = `${aBadge(att.status)} <span style="font-size:10px;color:var(--t3)">🔒</span>`;
     } else if (!inWin) {
       markCell = `<span class="b br" style="font-size:10.5px">Outside window</span>`;
     } else if (canMark) {
       markCell = `
-        <button class="btn bg2 bsm" onclick="aiMark(${u.id},'${date}','Present')">âœ” Present</button>
-        <button class="btn br2 bsm" style="margin-left:4px" onclick="aiMark(${u.id},'${date}','Absent')">âœ– Absent</button>`;
+        <button class="btn bg2 bsm" onclick="aiMark(${u.id},'${date}','Present')">✔ Present</button>
+        <button class="btn br2 bsm" style="margin-left:4px" onclick="aiMark(${u.id},'${date}','Absent')">✖ Absent</button>`;
     } else {
       markCell = `<span style="font-size:11px;color:var(--t2)">View only</span>`;
     }
@@ -2647,9 +2646,9 @@ async function aiMark(uid, date, status) {
   renderAIView();
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    OVERVIEW (Manager + Admin + SI/AI read-only)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function renderOverview() {
   const dateEl = document.getElementById('ov-date');
   if (!dateEl.value) dateEl.value = today();
@@ -2657,7 +2656,7 @@ function renderOverview() {
   const areaF  = getVal('ov-area');
   const shiftF = getVal('ov-shift');
 
-  // Role-based scope â€” determines what this user is allowed to see
+  // Role-based scope — determines what this user is allowed to see
   let emps;
   if (curUser.role === 'shift_incharge' || curUser.role === 'assistant_shift_incharge') {
     const myShift = curUser.assignedShift || 'G';
@@ -2705,7 +2704,7 @@ function renderOverview() {
     emps = emps.filter(u => getAtt(u.id,date)?.status===attStatusF);
   }
 
-  // â”€â”€ All stats computed from baseEmps (unfiltered by attendance status) â”€â”€
+  // ── All stats computed from baseEmps (unfiltered by attendance status) ──
   const present  = baseEmps.filter(u => getAtt(u.id,date)?.status==='Present').length;
   const absent   = baseEmps.filter(u => getAtt(u.id,date)?.status==='Absent').length;
   const leave    = baseEmps.filter(u => {
@@ -2750,9 +2749,9 @@ function renderOverview() {
 
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    APPROVE REQUESTS (Manager + Admin)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function renderApprove() {
   const role = curUser.role;
   const monthEl = document.getElementById('appr-month');
@@ -2769,9 +2768,9 @@ function renderApprove() {
   };
 
   // SIMULTANEOUS 3-level: DSM, SM, and Admin each see requests
-  // where THEIR OWN level is still pending â€” independent of other levels
+  // where THEIR OWN level is still pending — independent of other levels
   let reqs;
-  // Once any level rejects, the request is dead â€” hide from all other approvers
+  // Once any level rejects, the request is dead — hide from all other approvers
   const noRej = r => r.dsmStatus!=='rejected' && r.smStatus!=='rejected' && r.admStatus!=='rejected';
   if (role === 'deputy_site_manager') {
     reqs = db.requests.filter(r => r.dsmStatus === 'pending' && noRej(r) && matchArea(getUser(r.userId)));
@@ -2798,12 +2797,12 @@ function renderApprove() {
   if (!reqs.length) {
     body.innerHTML = emptyRow(7, role==='area_incharge'
       ? 'No requests from your area employees.'
-      : 'No pending requests for your approval.','âœ…');
+      : 'No pending requests for your approval.','✅');
   } else {
     body.innerHTML = reqs.map(r => {
       const u = getUser(r.userId);
       const dateRange = (r.fromDate && r.toDate && r.fromDate !== r.toDate)
-        ? `${fmt(r.fromDate)} â€“ ${fmt(r.toDate)}`
+        ? `${fmt(r.fromDate)} – ${fmt(r.toDate)}`
         : fmt(r.fromDate || r.date);
 
       // Show all 3 levels' current status
@@ -2820,7 +2819,7 @@ function renderApprove() {
         <td style="font-weight:600">${u ? coloredName(u) : '?'}<br><span style="font-size:11px;color:var(--t2)">${AL[u?.area]||u?.area||''}</span></td>
         <td style="white-space:nowrap">${dateRange}</td>
         <td>${qBadge(r.type)}</td>
-        <td style="max-width:120px">${escHtml(r.reason||'â€”')}</td>
+        <td style="max-width:120px">${escHtml(r.reason||'—')}</td>
         <td>
           ${qBadge(dsmSt)} <span style="font-size:10.5px;color:var(--t2)">DSM</span><br>
           ${qBadge(smSt)}  <span style="font-size:10.5px;color:var(--t2)">SM</span><br>
@@ -2831,7 +2830,7 @@ function renderApprove() {
     }).join('');
   }
 
-  // â”€â”€ Revocation requests (admin only) â”€â”€
+  // ── Revocation requests (admin only) ──
   const revokeSection = document.getElementById('revoke-section');
   const revokeBody = document.getElementById('appr-revoke-body');
   if (role === 'admin' && revokeSection && revokeBody) {
@@ -2842,22 +2841,22 @@ function renderApprove() {
     if (rBadge) rBadge.textContent = revokeReqs.length || '';
     revokeSection.style.display = 'block';
     if (!revokeReqs.length) {
-      revokeBody.innerHTML = emptyRow(6, 'No revocation requests pending.','ðŸ”„');
+      revokeBody.innerHTML = emptyRow(6, 'No revocation requests pending.','🔄');
     } else {
       revokeBody.innerHTML = revokeReqs.map(r => {
         const u = getUser(r.userId);
         const dateRange = (r.fromDate && r.toDate && r.fromDate !== r.toDate)
-          ? `${fmt(r.fromDate)} â€“ ${fmt(r.toDate)}`
+          ? `${fmt(r.fromDate)} – ${fmt(r.toDate)}`
           : fmt(r.fromDate || r.date);
         return `<tr>
           <td style="font-weight:600">${u ? coloredName(u) : '?'}<br><span style="font-size:11px;color:var(--t2)">${AL[u?.area]||u?.area||''}</span></td>
           <td style="white-space:nowrap">${dateRange}</td>
           <td>${qBadge(r.type)}</td>
-          <td style="max-width:100px;word-break:break-word">${escHtml(r.reason||'â€”')}</td>
-          <td style="max-width:100px;word-break:break-word"><span style="color:var(--orange)">${escHtml(r.revokeReason||'â€”')}</span></td>
+          <td style="max-width:100px;word-break:break-word">${escHtml(r.reason||'—')}</td>
+          <td style="max-width:100px;word-break:break-word"><span style="color:var(--orange)">${escHtml(r.revokeReason||'—')}</span></td>
           <td style="white-space:nowrap">
-            <button class="btn bg2 bsm" onclick="approveRevokeReq(${r.id})">âœ“ Approve</button>
-            <button class="btn br2 bsm" onclick="rejectRevokeReq(${r.id})">âœ• Reject</button>
+            <button class="btn bg2 bsm" onclick="approveRevokeReq(${r.id})">✓ Approve</button>
+            <button class="btn br2 bsm" onclick="rejectRevokeReq(${r.id})">✕ Reject</button>
           </td>
         </tr>`;
       }).join('');
@@ -2866,7 +2865,7 @@ function renderApprove() {
     revokeSection.style.display = 'none';
   }
 
-  // Monthly leave status â€” ALL requests for this month (not just pending)
+  // Monthly leave status — ALL requests for this month (not just pending)
   const monthEl2 = document.getElementById('appr-monthly-month');
   if (monthEl2 && !monthEl2.value) monthEl2.value = new Date().toISOString().slice(0, 7);
   const apprMonth2 = monthEl2 ? monthEl2.value : '';
@@ -2876,12 +2875,12 @@ function renderApprove() {
   const monthBody = document.getElementById('appr-monthly-body');
   if (monthBody) {
     if (!allMonthReqs.length) {
-      monthBody.innerHTML = emptyRow(7, 'No leave requests for this month.','ðŸ“‹');
+      monthBody.innerHTML = emptyRow(7, 'No leave requests for this month.','📋');
     } else {
       monthBody.innerHTML = allMonthReqs.sort((a,b) => a.createdAt.localeCompare(b.createdAt)).map(r => {
         const u = getUser(r.userId);
         const dateRange = (r.fromDate && r.toDate && r.fromDate !== r.toDate)
-          ? `${fmt(r.fromDate)} â€“ ${fmt(r.toDate)}`
+          ? `${fmt(r.fromDate)} – ${fmt(r.toDate)}`
           : fmt(r.fromDate || r.date);
         const dsmSt = r.dsmStatus || 'pending';
         const smSt  = r.smStatus  || 'pending';
@@ -2914,15 +2913,15 @@ function openApprove(rid) {
   if (!r) return;
   const u = getUser(r.userId);
   const dateRange = r.fromDate && r.toDate && r.fromDate!==r.toDate
-    ? `${fmt(r.fromDate)} â€“ ${fmt(r.toDate)}`
+    ? `${fmt(r.fromDate)} – ${fmt(r.toDate)}`
     : fmt(r.fromDate||r.date);
   document.getElementById('appr-title').textContent = `Review ${r.type} Request`;
   setHTML('appr-detail',
     `<strong>Employee:</strong> ${u?.name||'?'}<br>
-     <strong>Area:</strong> ${AL[u?.area]||u?.area||'â€”'}<br>
+     <strong>Area:</strong> ${AL[u?.area]||u?.area||'—'}<br>
      <strong>Date Range:</strong> ${dateRange}<br>
      <strong>Type:</strong> ${r.type}<br>
-     <strong>Reason:</strong> ${escHtml(r.reason||'â€”')}<br>
+     <strong>Reason:</strong> ${escHtml(r.reason||'—')}<br>
      <br><strong>Approval Status:</strong><br>
      DSM: ${qBadge(r.dsmStatus||'pending')} &nbsp; SM: ${qBadge(r.smStatus||'pending')} &nbsp; Admin: ${qBadge(r.admStatus||'pending')}`
   );
@@ -2939,13 +2938,13 @@ async function decideReq(decision) {
                        || (role!=='site_manager'        && r.smStatus ==='rejected')
                        || (role!=='admin'               && r.admStatus==='rejected');
   if (alreadyRejected) {
-    showToast('âŒ This request was already rejected by another approver. Cannot proceed.','err');
+    showToast('❌ This request was already rejected by another approver. Cannot proceed.','err');
     cm('appr-modal'); renderApprove(); updateBadges(); return;
   }
   const remark   = getVal('appr-remark');
   const ts       = new Date().toISOString();
   const approved = decision === 'approve';
-  // If rejecting, mark final immediately â€” no other level can override
+  // If rejecting, mark final immediately — no other level can override
   if (!approved) {
     r.dsmStatus = role==='deputy_site_manager' ? 'rejected' : r.dsmStatus;
     r.smStatus  = role==='site_manager'        ? 'rejected' : r.smStatus;
@@ -2954,7 +2953,7 @@ async function decideReq(decision) {
     if (role==='site_manager')        { r.smRemark=remark;  r.smBy=curUser.id;  r.smAt=ts; }
     if (role==='admin')               { r.admRemark=remark; r.admBy=curUser.id; r.admAt=ts; }
     r.status = 'rejected';
-    showToast(`âŒ ${r.type} request rejected.`,'err');
+    showToast(`❌ ${r.type} request rejected.`,'err');
     saveDb(); cm('appr-modal'); renderApprove(); updateBadges(); return;
   }
 
@@ -2972,7 +2971,7 @@ async function decideReq(decision) {
 
   // Don't change status if already revoked
   if (r.status === 'revoked' || r.revokeStatus === 'approved') {
-    showToast('â›” This request has already been revoked.','err');
+    showToast('⛔ This request has already been revoked.','err');
   } else {
     // Compute final overall status
     const anyRej = r.dsmStatus==='rejected' || r.smStatus==='rejected' || r.admStatus==='rejected';
@@ -2980,7 +2979,7 @@ async function decideReq(decision) {
 
     if (anyRej) {
       r.status = 'rejected';
-      showToast(`âŒ ${r.type} request rejected.`, 'err');
+      showToast(`❌ ${r.type} request rejected.`, 'err');
     } else if (allOk) {
       r.status = 'approved';
       // Apply to schedule for each day in the range
@@ -3003,9 +3002,9 @@ async function decideReq(decision) {
       }
       const u = getUser(r.userId);
       const dateRange = (r.fromDate !== r.toDate)
-        ? `${fmt(r.fromDate)} â€“ ${fmt(r.toDate)}`
+        ? `${fmt(r.fromDate)} – ${fmt(r.toDate)}`
         : fmt(r.fromDate||r.date);
-      showToast(`âœ… ${r.type} fully approved for ${u?.name} (${dateRange})`, 'ok');
+      showToast(`✅ ${r.type} fully approved for ${u?.name} (${dateRange})`, 'ok');
     } else {
       // Still waiting for other levels
       const pending = [
@@ -3013,7 +3012,7 @@ async function decideReq(decision) {
         r.smStatus !=='approved'&&r.smStatus !=='rejected' ? 'SM':'',
         r.admStatus!=='approved'&&r.admStatus!=='rejected' ? 'Admin':'',
       ].filter(Boolean).join(', ');
-      showToast(`âœ” Your approval recorded. Still awaiting: ${pending}`, 'ok');
+      showToast(`✔ Your approval recorded. Still awaiting: ${pending}`, 'ok');
     }
   }
 
@@ -3045,9 +3044,9 @@ function syncOvFilters() {
   renderAdminAtt();
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ADMIN / MANAGER â€” EDIT ATTENDANCE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   ADMIN / MANAGER — EDIT ATTENDANCE
+══════════════════════════════════════════════════════ */
 function renderAdminAtt() {
   // Ensure siAssignments is built from current users (runs once per session)
   if (!window._admAutoSynced) { runSIAAutoSync(); window._admAutoSynced = true; }
@@ -3090,21 +3089,21 @@ function renderAdminAtt() {
   emps = sortByExcelOrder(emps);
   const body = document.getElementById('adm-att-body');
   if (!emps.length) {
-    body.innerHTML = emptyRow(6, searchQ ? `No employees matching "${searchQ}".` : 'No employees for selected filters.','ðŸ‘¤');
+    body.innerHTML = emptyRow(6, searchQ ? `No employees matching "${searchQ}".` : 'No employees for selected filters.','👤');
     return;
   }
 
   body.innerHTML = emps.map(u => {
     const shiftCode  = getEffectiveShiftCode(u.id, date) || 'G';
     const att       = getAtt(u.id, date);
-    const markerName = att?.markedBy ? (getUser(att.markedBy)?.name || '?') : 'â€”';
+    const markerName = att?.markedBy ? (getUser(att.markedBy)?.name || '?') : '—';
     return `<tr>
       <td><div>${coloredName(u)}</div><div style="font-size:11px;color:var(--t2)">${u.username||''}</div></td>
-      <td style="font-size:12.5px">${AL[u.area]||u.area||'â€”'}</td>
+      <td style="font-size:12.5px">${AL[u.area]||u.area||'—'}</td>
       <td>${sBadge(shiftCode)}</td>
       <td>${aBadge(att?att.status:'')}</td>
       <td style="font-size:11.5px;color:var(--t2)">${markerName}</td>
-      <td><button class="btn bo2 bsm" onclick="openAdmAttModal(${u.id},'${date}')">âœï¸ Edit</button></td>
+      <td><button class="btn bo2 bsm" onclick="openAdmAttModal(${u.id},'${date}')">✏️ Edit</button></td>
     </tr>`;
   }).join('');
 }
@@ -3115,11 +3114,11 @@ function openAdmAttModal(uid, date) {
   const u = getUser(uid);
   const att = getAtt(uid, date);
   const shift = getShift(uid, date);
-  const title = curUser.role==='admin' ? 'Admin Override â€” Attendance & Schedule' : 'Manager Edit â€” Attendance';
+  const title = curUser.role==='admin' ? 'Admin Override — Attendance & Schedule' : 'Manager Edit — Attendance';
   document.getElementById('adm-att-title').textContent = title;
   setHTML('adm-att-info',
-    `<strong>${u.name}</strong> â€” ${fmt(date)}<br>
-     <span class="tdsub">Area: ${AL[u.area]||u.area||'â€”'} &nbsp;|&nbsp; Assigned Shift: ${u.assignedShift||'â€”'} &nbsp;|&nbsp; Category: ${u.category||'â€”'}</span><br>
+    `<strong>${u.name}</strong> — ${fmt(date)}<br>
+     <span class="tdsub">Area: ${AL[u.area]||u.area||'—'} &nbsp;|&nbsp; Assigned Shift: ${u.assignedShift||'—'} &nbsp;|&nbsp; Category: ${u.category||'—'}</span><br>
      <span class="tdsub">Current Schedule Code: <strong style="color:var(--t1)">${shift?shift.code:'None (default G)'}</strong> &nbsp;|&nbsp; Current Attendance: <strong style="color:var(--t1)">${att?att.status:'Not Marked'}</strong></span>`
   );
   // Pre-select current shift code
@@ -3150,16 +3149,16 @@ function saveAdmAtt() {
   if (document.getElementById("pg-overview").classList.contains("active")) { renderOverview(); renderAdminAtt(); };
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ADMIN â€” LEAVE REPORT (Date-wise by Category)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   ADMIN — LEAVE REPORT (Date-wise by Category)
+══════════════════════════════════════════════════════ */
 function isLeaveStatus(s) { return s==='Leave'||s==='C-off'||s==='Half-Day Leave'||s==='Half-Day C-off'||s==='EL'||s==='CL'||s==='Half-Day EL'||s==='Half-Day CL';}
 
 function getEffectiveStatus(uid, date) {
   // First check explicit attendance record
   const att = getAtt(uid, date);
   if (att) return att.status;
-  // No attendance record â€” derive from shift code
+  // No attendance record — derive from shift code
   const code = getEffectiveShiftCode(uid, date);
   if (code === 'O') return 'Off';
   if (code === 'L') return 'Leave';
@@ -3255,7 +3254,7 @@ function renderAttReport() {
       <td style="white-space:nowrap;font-weight:600">${fmt(date)}</td>
       <td>${dayN}</td>
       <td style="text-align:center;font-weight:700;color:var(--purple)">${totalLeave}</td>
-      ${cats.map(c => `<td style="text-align:center">${catCounts[c] || 'â€”'}</td>`).join('')}
+      ${cats.map(c => `<td style="text-align:center">${catCounts[c] || '—'}</td>`).join('')}
       <td style="font-size:12px;color:var(--t2);max-width:400px">${escHtml(onLeaveNames.join(', '))}</td>
     </tr>`;
   });
@@ -3271,14 +3270,14 @@ function renderAttReport() {
   rows += `<tr style="font-weight:700;background:var(--b1)">
     <td colspan="2" style="text-align:right">TOTAL</td>
     <td style="text-align:center;color:var(--purple)">${grandTotal}</td>
-    ${cats.map(c => `<td style="text-align:center">${catTotals[c] || 'â€”'}</td>`).join('')}
+    ${cats.map(c => `<td style="text-align:center">${catTotals[c] || '—'}</td>`).join('')}
     <td></td>
   </tr>`;
 
   body.innerHTML = rows;
 
   const totalDays = dates.length;
-  summaryEl.innerHTML = `ðŸ“Š Showing <b>${totalDays}</b> days (${fmt(fromDate)} â€“ ${fmt(toDate)}) â€” Total leave instances: <b style="color:var(--purple)">${grandTotal}</b>`;
+  summaryEl.innerHTML = `📊 Showing <b>${totalDays}</b> days (${fmt(fromDate)} – ${fmt(toDate)}) — Total leave instances: <b style="color:var(--purple)">${grandTotal}</b>`;
 }
 
 function getOnLeaveDetails(uid, fromDate, toDate) {
@@ -3382,7 +3381,7 @@ function exportAttReport() {
           deputy_site_manager:'Dy.Site Mgr', site_manager:'Site Mgr', manager:'Manager', admin:'Admin'
         }[u.role] || u.role;
         const [y, m, dd] = date.split('-');
-        ws2Data.push([u.name, u.category || 'â€”', roleLabel, `${dd}/${m}/${y}`, dayName(date), status]);
+        ws2Data.push([u.name, u.category || '—', roleLabel, `${dd}/${m}/${y}`, dayName(date), status]);
       }
     });
   });
@@ -3403,12 +3402,12 @@ function exportAttReport() {
 
   const fileName = `leave_report_${fromDate}_to_${toDate}.xlsx`;
   XLSX.writeFile(wb, fileName);
-  showToast(`â¬‡ Exported ${fileName}`, 'ok');
+  showToast(`⬇ Exported ${fileName}`, 'ok');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ADMIN â€” EMPLOYEE MONTHLY STATUS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   ADMIN — EMPLOYEE MONTHLY STATUS
+══════════════════════════════════════════════════════ */
 let empMonthlySelectedId = null;
 
 function empMonthlySuggest() {
@@ -3423,7 +3422,7 @@ function empMonthlySuggest() {
   el.innerHTML = matches.map(u =>
     `<div style="padding:6px 10px;cursor:pointer;border-bottom:1px solid var(--b2)"
           onmouseover="this.style.background='var(--b1)'" onmouseout="this.style.background=''"
-          onclick="empMonthlyPick(${u.id},'${escHtml(u.name)}')">${escHtml(u.name)} <span style="color:var(--t2);font-size:11px">${u.category||'â€”'} Â· ${u.role}</span></div>`
+          onclick="empMonthlyPick(${u.id},'${escHtml(u.name)}')">${escHtml(u.name)} <span style="color:var(--t2);font-size:11px">${u.category||'—'} · ${u.role}</span></div>`
   ).join('');
   el.style.display = 'block';
 }
@@ -3510,10 +3509,10 @@ function renderEmpMonthly() {
     deputy_site_manager:'Dy.Site Mgr', site_manager:'Site Mgr', manager:'Manager', admin:'Admin'
   }[u.role] || u.role;
   setHTML('emp-monthly-info',
-    `<strong>${escHtml(u.name)}</strong> â€” ${roleLabel} &nbsp;|&nbsp; Category: ${u.category||'â€”'} &nbsp;|&nbsp; Area: ${u.area||'â€”'}`
+    `<strong>${escHtml(u.name)}</strong> — ${roleLabel} &nbsp;|&nbsp; Category: ${u.category||'—'} &nbsp;|&nbsp; Area: ${u.area||'—'}`
   );
 
-  // Build table â€” only show Leave / C-off / Absent
+  // Build table — only show Leave / C-off / Absent
   const head = document.getElementById('emp-monthly-head');
   const body = document.getElementById('emp-monthly-body');
 
@@ -3529,15 +3528,15 @@ function renderEmpMonthly() {
       const monthLabel = r.date.substring(0, 7);
       let badge = '';
       const status = r.status;
-      if (status === 'Absent')            badge = '<span style="color:var(--red);font-weight:600">âœ— Absent</span>';
+      if (status === 'Absent')            badge = '<span style="color:var(--red);font-weight:600">✗ Absent</span>';
       else if (status === 'Leave')         badge = '<span style="color:var(--purple);font-weight:600">L Leave</span>';
       else if (status === 'EL')            badge = '<span style="color:var(--purple);font-weight:600">L EL</span>';
       else if (status === 'CL')            badge = '<span style="color:var(--purple);font-weight:600">L CL</span>';
-      else if (status === 'Half-Day Leave') badge = '<span style="color:var(--purple);font-weight:600">Â½ Leave</span>';
-      else if (status === 'Half-Day EL')   badge = '<span style="color:var(--purple);font-weight:600">Â½ EL</span>';
-      else if (status === 'Half-Day CL')   badge = '<span style="color:var(--purple);font-weight:600">Â½ CL</span>';
+      else if (status === 'Half-Day Leave') badge = '<span style="color:var(--purple);font-weight:600">½ Leave</span>';
+      else if (status === 'Half-Day EL')   badge = '<span style="color:var(--purple);font-weight:600">½ EL</span>';
+      else if (status === 'Half-Day CL')   badge = '<span style="color:var(--purple);font-weight:600">½ CL</span>';
       else if (status === 'C-off')         badge = '<span style="color:var(--yellow);font-weight:600">C C-off</span>';
-      else if (status === 'Half-Day C-off') badge = '<span style="color:var(--yellow);font-weight:600">Â½ C-off</span>';
+      else if (status === 'Half-Day C-off') badge = '<span style="color:var(--yellow);font-weight:600">½ C-off</span>';
       else badge = `<span>${status}</span>`;
       return `<tr>
         <td style="text-align:center">${i+1}</td>
@@ -3550,13 +3549,13 @@ function renderEmpMonthly() {
   }
 
   setHTML('emp-monthly-summary',
-    `ðŸ“Š ${escHtml(u.name)} â€” ${fromVal} to ${toVal} &nbsp;|&nbsp; ` +
+    `📊 ${escHtml(u.name)} — ${fromVal} to ${toVal} &nbsp;|&nbsp; ` +
     `Present: <b style="color:var(--green)">${counts.Present}</b> ` +
     `| Absent: <b style="color:var(--red)">${counts.Absent}</b> ` +
     `| Leave: <b style="color:var(--purple)">${counts.Leave}</b> ` +
-    `| Â½ Leave: <b style="color:var(--purple)">${counts['Half-Day Leave']}</b> ` +
+    `| ½ Leave: <b style="color:var(--purple)">${counts['Half-Day Leave']}</b> ` +
     `| C-off: <b style="color:var(--yellow)">${counts['C-off']}</b> ` +
-    `| Â½ C-off: <b style="color:var(--yellow)">${counts['Half-Day C-off']}</b> ` +
+    `| ½ C-off: <b style="color:var(--yellow)">${counts['Half-Day C-off']}</b> ` +
     `| Off: <b style="color:var(--t2)">${counts.Off}</b> ` +
     `| Not Marked: <b style="color:var(--t3)">${counts['Not Marked']}</b>` +
     `| Not Scheduled: <b style="color:var(--t3)">${counts['Not Scheduled']}</b>`
@@ -3633,14 +3632,14 @@ function exportEmpMonthly() {
 
   const fileName = `${u.name}_${fromVal}_to_${toVal}_status.xlsx`;
   XLSX.writeFile(wb, fileName);
-  showToast(`â¬‡ Exported ${fileName}`, 'ok');
+  showToast(`⬇ Exported ${fileName}`, 'ok');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ADMIN â€” INCHARGE ASSIGNMENT PAGE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   ADMIN — INCHARGE ASSIGNMENT PAGE
+══════════════════════════════════════════════════════ */
 function renderAssignPage() {
-  // Only render the org chart â€” no "Current Assignments" table
+  // Only render the org chart — no "Current Assignments" table
   runSIAAutoSync();   // keep data consistent with Manage Users
   renderEmpMap();     // draw the org chart
   // Populate map-area filter
@@ -3654,7 +3653,7 @@ function renderAssignPage() {
 
 // Auto-sync siAssignments from Manage Users data (no DOM rendering)
 function runSIAAutoSync() {
-  // Clear stale entries â€” rebuilt from current users below
+  // Clear stale entries — rebuilt from current users below
   db.siAssignments = [];
   // For every shift_incharge with an area: ensure siAssignments has their entry
   db.users.filter(u => u.role==='shift_incharge' && u.area).forEach(si => {
@@ -3669,7 +3668,7 @@ function runSIAAutoSync() {
     }
   });
   // For area_incharge / assistant_area_incharge: ensure aiId is set on ALL shift entries for their area.
-  // AI manages all 4 shifts â€” create explicit entries so _find(area, shift) matches exactly.
+  // AI manages all 4 shifts — create explicit entries so _find(area, shift) matches exactly.
   const ALL_SHIFTS = ['A','B','C','G'];
   db.users.filter(u => (u.role==='area_incharge'||u.role==='assistant_area_incharge') && u.area).forEach(ai => {
     // Build list of areas this AI should cover: own area + sister area (if no AI exists there)
@@ -3746,7 +3745,7 @@ function runSIAAutoSync() {
   saveDb();
 }
 
-// Kept for backward compatibility â€” old callers may still invoke renderSIATable
+// Kept for backward compatibility — old callers may still invoke renderSIATable
 function renderSIATable() { runSIAAutoSync(); }
 function renderEmpMap() {
   const areaF  = getVal('map-area');
@@ -3758,7 +3757,7 @@ function renderEmpMap() {
   if (areaF)  emps = emps.filter(u => u.area  === areaF);
   if (shiftF) emps = emps.filter(u => u.assignedShift === shiftF);
 
-  // â”€â”€ Build full hierarchy: SM â†’ DSM â†’ AI â†’ SI â†’ Employees â”€â”€
+  // ── Build full hierarchy: SM → DSM → AI → SI → Employees ──
   const sms  = db.users.filter(u => u.role === 'site_manager');
   const dsms = db.users.filter(u => u.role === 'deputy_site_manager');
   const ais  = db.users.filter(u => u.role === 'area_incharge');
@@ -3799,7 +3798,7 @@ function renderEmpMap() {
       <span class="cs ${code}">${code}</span>
       <span style="font-weight:500">${u.name}</span>
       <span style="font-size:10px;color:var(--t3)">${u.category||''}</span>
-      <span style="font-size:10px;color:var(--blue)">âœï¸</span>
+      <span style="font-size:10px;color:var(--blue)">✏️</span>
     </div>`;
   }
 
@@ -3807,7 +3806,7 @@ function renderEmpMap() {
     const siEmps = emps.filter(u => u.siId === si.id);
     const shiftLabel = si.assignedShift ? `<span style="font-size:11px;font-weight:400;color:var(--bd)"> / Shift ${si.assignedShift}</span>` : '';
     return `<div class="org-node">
-      <div class="org-box si">ðŸ”µ ${si.name}${shiftLabel}</div>
+      <div class="org-box si">🔵 ${si.name}${shiftLabel}</div>
       ${siEmps.length
         ? `<div class="org-emp-list">${siEmps.map(empChip).join('')}</div>`
         : `<div class="org-emp-list" style="font-size:12px;color:var(--t3)">No employees mapped</div>`}
@@ -3818,14 +3817,14 @@ function renderEmpMap() {
     const aiSIs = sis.filter(u => u.aiId === ai.id && (!areaF || u.area===areaF));
     // Employees directly under this AI with no SI
     const directEmps = emps.filter(u => u.aiId===ai.id && !u.siId);
-    const areaLabel = ai.area ? ` â€” ${AL[ai.area]||ai.area}` : '';
+    const areaLabel = ai.area ? ` — ${AL[ai.area]||ai.area}` : '';
     return `<div class="org-node">
-      <div class="org-box ai">ðŸŸ¢ ${ai.name}${areaLabel}</div>
+      <div class="org-box ai">🟢 ${ai.name}${areaLabel}</div>
       <div class="org-children">
         ${aiSIs.map(renderSIBlock).join('') || '<span style="font-size:12px;color:var(--t3)">No Shift In-charges assigned</span>'}
         ${directEmps.length
           ? `<div class="org-node">
-               <div class="org-box" style="background:rgba(122,135,168,.1);color:var(--t2);border-color:var(--bdr)">ðŸ‘· Direct Reports (no SI)</div>
+               <div class="org-box" style="background:rgba(122,135,168,.1);color:var(--t2);border-color:var(--bdr)">👷 Direct Reports (no SI)</div>
                <div class="org-emp-list">${directEmps.map(empChip).join('')}</div>
              </div>`
           : ''}
@@ -3836,7 +3835,7 @@ function renderEmpMap() {
   function renderDSMBlock(dsm) {
     const dsmAIs = ais.filter(u => u.reportsTo === dsm.id);
     return `<div class="org-node">
-      <div class="org-box dsm">ðŸŸ¡ ${dsm.name} â€” Deputy Site Manager</div>
+      <div class="org-box dsm">🟡 ${dsm.name} — Deputy Site Manager</div>
       <div class="org-children">
         ${dsmAIs.length
           ? dsmAIs.map(renderAIBlock).join('')
@@ -3853,7 +3852,7 @@ function renderEmpMap() {
       sms.forEach(sm => {
         const smDSMs = dsms.filter(u => u.reportsTo === sm.id);
         html += `<div class="org-node">
-          <div class="org-box sm">ðŸ”´ ${sm.name} â€” Site Manager</div>
+          <div class="org-box sm">🔴 ${sm.name} — Site Manager</div>
           <div class="org-children">
             ${smDSMs.length
               ? smDSMs.map(renderDSMBlock).join('')
@@ -3880,7 +3879,7 @@ function renderEmpMap() {
     const orphanSIs = sis.filter(si => !si.aiId && (!areaF || si.area===areaF));
     if (orphanSIs.length) {
       html += `<div class="org-node">
-        <div class="org-box" style="background:rgba(240,192,64,.1);color:var(--yellow);border-color:rgba(240,192,64,.3)">âš ï¸ Shift In-charges (no Area IC assigned)</div>
+        <div class="org-box" style="background:rgba(240,192,64,.1);color:var(--yellow);border-color:rgba(240,192,64,.3)">⚠️ Shift In-charges (no Area IC assigned)</div>
         <div class="org-children">${orphanSIs.map(renderSIBlock).join('')}</div>
       </div>`;
     }
@@ -3889,12 +3888,12 @@ function renderEmpMap() {
     const orphanEmps = emps.filter(u => !u.siId && !u.aiId);
     if (orphanEmps.length) {
       html += `<div class="org-node">
-        <div class="org-box unassigned">âš  Unassigned Employees (no In-charge)</div>
+        <div class="org-box unassigned">⚠ Unassigned Employees (no In-charge)</div>
         <div class="org-emp-list">${orphanEmps.map(empChip).join('')}</div>
       </div>`;
     }
   } else {
-    html += '<div style="padding:40px;text-align:center;color:var(--t3)"><div style="font-size:36px">ðŸ‘¥</div><p>No users found. Add users in Manage Users first.</p></div>';
+    html += '<div style="padding:40px;text-align:center;color:var(--t3)"><div style="font-size:36px">👥</div><p>No users found. Add users in Manage Users first.</p></div>';
   }
 
   html += '</div>';
@@ -3920,10 +3919,10 @@ function filterSIASelect(selectId, inputId) {
 function _populateSIASelects(curSiId, curAiId, curMgrId) {
   // Admin can assign ANY non-employee as SI, AI, or Manager
   const allMgmt = db.users.filter(u => u.role !== 'employee' && u.role !== '__deleted__');
-  const baseOpt = '<option value="">â€” None â€”</option>';
+  const baseOpt = '<option value="">— None —</option>';
 
   const makeOpts = (cur) => allMgmt.map(u =>
-    `<option value="${u.id}" ${u.id===cur?'selected':''}>[${ROLE_SHORT[u.role]||u.role}] ${u.name}${u.area?' â€” '+(AL[u.area]||u.area):''}${u.assignedShift?' / '+u.assignedShift:''}</option>`
+    `<option value="${u.id}" ${u.id===cur?'selected':''}>[${ROLE_SHORT[u.role]||u.role}] ${u.name}${u.area?' — '+(AL[u.area]||u.area):''}${u.assignedShift?' / '+u.assignedShift:''}</option>`
   ).join('');
 
   ['sia-si','sia-ai','sia-mgr'].forEach(id => {
@@ -3974,7 +3973,7 @@ function saveSIA() {
     db.siAssignments[editSIAIdx] = asgn;
   } else {
     if (db.siAssignments.find(a => a.area===area && a.shift===shift)) {
-      showErr('sia-err','Assignment for this Area + Shift already exists â€” edit the existing one.'); return;
+      showErr('sia-err','Assignment for this Area + Shift already exists — edit the existing one.'); return;
     }
     db.siAssignments.push(asgn);
   }
@@ -3993,13 +3992,13 @@ function saveSIA() {
   renderAssignPage();
   populateAllFilters();
   const siUser = siId ? getUser(siId) : null;
-  showToast(`âœ… Saved. ${autoMapped} employee(s) in ${AL[area]||area} / Shift ${shift} mapped to ${siUser?siUser.name:'(none)'}.`, 'ok');
+  showToast(`✅ Saved. ${autoMapped} employee(s) in ${AL[area]||area} / Shift ${shift} mapped to ${siUser?siUser.name:'(none)'}.`, 'ok');
 }
 
-/* Employee remap â€” admin can assign employee to any SI or directly to any AI */
+/* Employee remap — admin can assign employee to any SI or directly to any AI */
 function openEmpRemapModal(preUid) {
   const empSel = document.getElementById('remap-emp');
-  empSel.innerHTML = '<option value="">Select employeeâ€¦</option>' +
+  empSel.innerHTML = '<option value="">Select employee…</option>' +
     empUsers().map(u =>
       `<option value="${u.id}">${u.name} (${AL[u.area]||u.area||'?'} / ${u.assignedShift||'?'})</option>`
     ).join('');
@@ -4008,13 +4007,13 @@ function openEmpRemapModal(preUid) {
   // Populate AI select
   const aiSel = document.getElementById('remap-ai');
   if (aiSel) {
-    aiSel.innerHTML = '<option value="">â€” Keep current / Auto â€”</option>' +
+    aiSel.innerHTML = '<option value="">— Keep current / Auto —</option>' +
       db.users.filter(u => u.role==='area_incharge').map(u =>
         `<option value="${u.id}">${u.name} (${AL[u.area]||u.area||'Any'})</option>`
       ).join('');
   }
   const siSel = document.getElementById('remap-si');
-  if (siSel) siSel.innerHTML = '<option value="">â€” Keep current / Auto â€”</option>';
+  if (siSel) siSel.innerHTML = '<option value="">— Keep current / Auto —</option>';
 
   hideEl('remap-err');
 
@@ -4050,9 +4049,9 @@ function updateRemapSI() {
   );
   const siSel = document.getElementById('remap-si');
   if (siSel) {
-    siSel.innerHTML = '<option value="">â€” Keep current / Auto from table â€”</option>' +
+    siSel.innerHTML = '<option value="">— Keep current / Auto from table —</option>' +
       list.map(u =>
-        `<option value="${u.id}">${u.name} â€” ${AL[u.area]||u.area||'Any'}${u.assignedShift?' / Shift '+u.assignedShift:''}</option>`
+        `<option value="${u.id}">${u.name} — ${AL[u.area]||u.area||'Any'}${u.assignedShift?' / Shift '+u.assignedShift:''}</option>`
       ).join('');
   }
   // Also update AI select to filter by area
@@ -4060,7 +4059,7 @@ function updateRemapSI() {
   if (aiSel) {
     const ais = db.users.filter(u => u.role==='area_incharge' && (!area || u.area===area));
     const cur = aiSel.value;
-    aiSel.innerHTML = '<option value="">â€” Keep current / Auto â€”</option>' +
+    aiSel.innerHTML = '<option value="">— Keep current / Auto —</option>' +
       ais.map(u => `<option value="${u.id}" ${u.id==cur?'selected':''}>${u.name} (${AL[u.area]||u.area||'Any'})</option>`).join('');
   }
 }
@@ -4107,12 +4106,12 @@ function saveRemap() {
   saveDb();
   cm('remap-modal');
   renderAssignPage();
-  showToast(`âœ… ${u.name} reassigned to ${area||u.area||'?'} / ${shift||u.assignedShift||'?'}`, 'ok');
+  showToast(`✅ ${u.name} reassigned to ${area||u.area||'?'} / ${shift||u.assignedShift||'?'}`, 'ok');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ADMIN â€” MANAGE USERS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   ADMIN — MANAGE USERS
+══════════════════════════════════════════════════════ */
 function renderUsers() {
   const roleF   = getVal('usr-role-f');
   const areaF   = getVal('usr-area-f');
@@ -4129,12 +4128,12 @@ function renderUsers() {
   const cnt = document.getElementById('usr-count');
   if (cnt) cnt.textContent = `All Accounts (${users.length})`;
   const body = document.getElementById('users-body');
-  if (!users.length) { body.innerHTML = emptyRow(8,'No users match filters.','ðŸ‘¤'); return; }
+  if (!users.length) { body.innerHTML = emptyRow(8,'No users match filters.','👤'); return; }
 
   body.innerHTML = users.map(u => {
     const reportsUser = u.reportsTo ? db.users.find(x=>x.id===u.reportsTo) : null;
     const siUser      = u.siId      ? db.users.find(x=>x.id===u.siId)      : null;
-    const reportLabel = reportsUser ? reportsUser.name : (siUser ? siUser.name : 'â€”');
+    const reportLabel = reportsUser ? reportsUser.name : (siUser ? siUser.name : '—');
     const isSelf      = u.id === curUser.id;
     const uid         = u.id; // numeric id for onclick
     return `<tr>
@@ -4148,25 +4147,25 @@ function renderUsers() {
         </div>
       </td>
       <td>${rBadge(u.role)}</td>
-      <td style="font-size:12.5px">${AL[u.area]||u.area||'â€”'}</td>
+      <td style="font-size:12.5px">${AL[u.area]||u.area||'—'}</td>
       <td style="font-size:12px;color:var(--t2)">${reportLabel}</td>
-      <td style="font-size:12px;color:var(--t2)">${u.category||'â€”'}</td>
+      <td style="font-size:12px;color:var(--t2)">${u.category||'—'}</td>
       <td>${u.mustChangePw
         ? '<span class="b by" style="font-size:10.5px">Pending</span>'
         : '<span class="b bg" style="font-size:10.5px">Set</span>'}</td>
       <td>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn bo2 bsm" onclick="openEditUser(${uid})">âœï¸ Edit</button>
+          <button class="btn bo2 bsm" onclick="openEditUser(${uid})">✏️ Edit</button>
           ${isSelf
             ? '<span style="font-size:11px;color:var(--t3);padding:4px 6px">You</span>'
-            : `<button class="btn br2 bsm" onclick="delUser(${uid})">ðŸ—‘ Delete</button>`}
+            : `<button class="btn br2 bsm" onclick="delUser(${uid})">🗑 Delete</button>`}
         </div>
       </td>
     </tr>`;
   }).join('');
 }
 
-// â”€â”€ Helper: compute dominant shift code from uploaded Excel schedule â”€â”€
+// ── Helper: compute dominant shift code from uploaded Excel schedule ──
 // Returns 'G', 'A', 'B', 'C', or '' if no shifts uploaded yet
 function getDominantShiftFromExcel(userId) {
   const userShifts = db.shifts.filter(s => s.userId === userId);
@@ -4194,7 +4193,7 @@ function openEditUser(uid) {
   const u  = db.users.find(x => x.id === id);
   if (!u) { showToast('User not found.','err'); return; }
   editUserId = id;
-  document.getElementById('um-title').textContent = 'Edit User â€” ' + u.name;
+  document.getElementById('um-title').textContent = 'Edit User — ' + u.name;
 
   setVal('um-name',  u.name);
   setVal('um-uname', u.username);
@@ -4202,10 +4201,10 @@ function openEditUser(uid) {
   setVal('um-role',  u.role);
   setVal('um-cat',   u.category||'');
 
-  // â”€â”€ Pre-fill Area from Excel (stored in u.area during upload) â”€â”€
+  // ── Pre-fill Area from Excel (stored in u.area during upload) ──
   setVal('um-area', u.area||'');
 
-  // â”€â”€ Pre-fill Assigned Shift from Excel schedule (dominant code) â”€â”€
+  // ── Pre-fill Assigned Shift from Excel schedule (dominant code) ──
   // This shows what shift the person is actually on, from the uploaded file
   const excelShift = getDominantShiftFromExcel(u.id);
   // Use Excel value first; fall back to profile value; fallback to G
@@ -4268,10 +4267,10 @@ function updateUMFields() {
     document.getElementById('um-si').innerHTML =
       '<option value="">Auto-assign from Assignment Table</option>' +
       (sis.length ? '<optgroup label="Shift In-charges">' +
-        sis.map(u=>`<option value="${u.id}">ðŸ”µ ${u.name} â€” ${AL[u.area]||u.area||'Any'}</option>`).join('') +
+        sis.map(u=>`<option value="${u.id}">🔵 ${u.name} — ${AL[u.area]||u.area||'Any'}</option>`).join('') +
         '</optgroup>' : '') +
       (ais.length ? '<optgroup label="Area In-charges (G-shift)">' +
-        ais.map(u=>`<option value="${u.id}">ðŸŸ¢ ${u.name} â€” ${AL[u.area]||u.area||'Any'}</option>`).join('') +
+        ais.map(u=>`<option value="${u.id}">🟢 ${u.name} — ${AL[u.area]||u.area||'Any'}</option>`).join('') +
         '</optgroup>' : '');
 
   } else if (role === 'shift_incharge') {
@@ -4279,12 +4278,12 @@ function updateUMFields() {
     const ais  = db.users.filter(u => u.role==='area_incharge' && (!area||area==='AUTO'||u.area===area));
     const dsms = db.users.filter(u => u.role==='deputy_site_manager');
     document.getElementById('um-ai').innerHTML =
-      '<option value="">â€” None â€”</option>' +
+      '<option value="">— None —</option>' +
       (ais.length ? '<optgroup label="Area In-charges">' +
-        ais.map(u=>`<option value="${u.id}">ðŸŸ¢ ${u.name} â€” ${AL[u.area]||u.area||'Any'}</option>`).join('') +
+        ais.map(u=>`<option value="${u.id}">🟢 ${u.name} — ${AL[u.area]||u.area||'Any'}</option>`).join('') +
         '</optgroup>' : '') +
       (dsms.length ? '<optgroup label="Deputy Site Manager">' +
-        dsms.map(u=>`<option value="${u.id}">ðŸŸ¡ ${u.name}</option>`).join('') +
+        dsms.map(u=>`<option value="${u.id}">🟡 ${u.name}</option>`).join('') +
         '</optgroup>' : '');
 
   } else if (role === 'area_incharge') {
@@ -4292,20 +4291,20 @@ function updateUMFields() {
     const dsms = db.users.filter(u => u.role==='deputy_site_manager');
     const sms  = db.users.filter(u => u.role==='site_manager');
     document.getElementById('um-dsm').innerHTML =
-      '<option value="">â€” None â€”</option>' +
+      '<option value="">— None —</option>' +
       (dsms.length ? '<optgroup label="Deputy Site Manager">' +
-        dsms.map(u=>`<option value="${u.id}">ðŸŸ¡ ${u.name}</option>`).join('') +
+        dsms.map(u=>`<option value="${u.id}">🟡 ${u.name}</option>`).join('') +
         '</optgroup>' : '') +
       (sms.length ? '<optgroup label="Site Manager">' +
-        sms.map(u=>`<option value="${u.id}">ðŸŸ  ${u.name}</option>`).join('') +
+        sms.map(u=>`<option value="${u.id}">🟠 ${u.name}</option>`).join('') +
         '</optgroup>' : '');
 
   } else if (role === 'deputy_site_manager') {
     showEl('um-sm-row');
     const sms = db.users.filter(u => u.role==='site_manager');
     document.getElementById('um-sm').innerHTML =
-      '<option value="">â€” None â€”</option>' +
-      sms.map(u=>`<option value="${u.id}">ðŸŸ  ${u.name}</option>`).join('');
+      '<option value="">— None —</option>' +
+      sms.map(u=>`<option value="${u.id}">🟠 ${u.name}</option>`).join('');
   }
   // site_manager and admin: no reporting chain rows
 }
@@ -4406,10 +4405,10 @@ function saveUser() {
   saveDb();
   renderUsers();
   populateAllFilters();
-  showToast(`âœ… User "${name}" saved successfully.`, 'ok');
+  showToast(`✅ User "${name}" saved successfully.`, 'ok');
 }
 
-/* â”€â”€ BULLETPROOF DELETE â€” works in iframes without window.confirm â”€â”€ */
+/* ── BULLETPROOF DELETE — works in iframes without window.confirm ── */
 function delUser(id) {
   const u = getUser(id);
   if (!u) { showToast('User not found','err'); return; }
@@ -4417,9 +4416,9 @@ function delUser(id) {
   showConfirm(
     'Delete User',
     `Delete <strong>${escHtml(u.name)}</strong>?<br>
-     <span style="font-size:12px;color:var(--t2)">Role: ${u.role} &nbsp;|&nbsp; Area: ${AL[u.area]||u.area||'â€”'}</span><br><br>
-     <span style="font-size:12px;color:var(--red)">âš  This user will be permanently removed from the system.</span>`,
-    'ðŸ—‘ Yes, Delete',
+     <span style="font-size:12px;color:var(--t2)">Role: ${u.role} &nbsp;|&nbsp; Area: ${AL[u.area]||u.area||'—'}</span><br><br>
+     <span style="font-size:12px;color:var(--red)">⚠ This user will be permanently removed from the system.</span>`,
+    '🗑 Yes, Delete',
     () => {
       const idx = db.users.findIndex(x => x.id === id);
       if (idx === -1) { showToast('User already removed','err'); return; }
@@ -4440,7 +4439,7 @@ function delUser(id) {
 }
 window.delUser = delUser;
 
-/* â”€â”€ Same bulletproof approach for delSIA â”€â”€ */
+/* ── Same bulletproof approach for delSIA ── */
 function delSIA(idx) {
   const a = db.siAssignments[idx];
   if (!a) { showToast('Assignment not found','err'); return; }
@@ -4451,7 +4450,7 @@ function delSIA(idx) {
     `Remove: <strong>${AL[a.area]||a.area} / Shift ${a.shift}</strong><br>
      Incharge: <strong>${si?escHtml(si.name):'None'}</strong><br>
      <span style="font-size:12px;color:var(--t2)">${empCount} employee(s) will lose their Shift In-charge mapping.</span>`,
-    'ðŸ—‘ Yes, Delete',
+    '🗑 Yes, Delete',
     () => {
       const removed = db.siAssignments[idx];
       db.siAssignments.splice(idx, 1);
@@ -4471,9 +4470,9 @@ function escHtml(str) {
   return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    ALL REQUESTS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function pendingWith(r) {
   const dsm = r.dsmStatus || 'pending';
   const sm  = r.smStatus  || 'pending';
@@ -4486,9 +4485,9 @@ function pendingWith(r) {
   return 'Pending';
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ADMIN â€” LEAVE QUOTA MANAGEMENT
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════
+   ADMIN — LEAVE QUOTA MANAGEMENT
+══════════════════════════════════════════════════════ */
 function renderQuota() {
   // Populate year dropdown
   const yearEl = document.getElementById('quota-year');
@@ -4508,11 +4507,11 @@ function renderQuota() {
   if (searchQ) emps = emps.filter(u => u.name.toLowerCase().includes(searchQ));
   emps = sortByExcelOrder(emps);
 
-  document.getElementById('quota-count').textContent = `Leave Quota (${year}) â€” ${emps.length} employees`;
+  document.getElementById('quota-count').textContent = `Leave Quota (${year}) — ${emps.length} employees`;
 
   const body = document.getElementById('quota-body');
   if (!emps.length) {
-    body.innerHTML = emptyRow(8, searchQ ? `No employees matching "${searchQ}"` : 'No employees found.','ðŸ“Š');
+    body.innerHTML = emptyRow(8, searchQ ? `No employees matching "${searchQ}"` : 'No employees found.','📊');
     return;
   }
 
@@ -4521,14 +4520,14 @@ function renderQuota() {
     const used = getUsedDays(u.id, year);
     return `<tr>
       <td style="font-weight:600">${coloredName(u)}<br><span style="font-size:11px;color:var(--t2)">${u.username||''}</span></td>
-      <td style="font-size:12.5px">${AL[u.area]||u.area||'â€”'}</td>
+      <td style="font-size:12.5px">${AL[u.area]||u.area||'—'}</td>
       <td><input class="fld" type="number" min="0" id="q-el-${u.id}" value="${q.el}" style="width:60px;padding:6px 8px;text-align:center"></td>
       <td><input class="fld" type="number" min="0" id="q-cl-${u.id}" value="${q.cl}" style="width:60px;padding:6px 8px;text-align:center"></td>
       <td><input class="fld" type="number" min="0" id="q-coff-${u.id}" value="${q.coff}" style="width:60px;padding:6px 8px;text-align:center"></td>
       <td style="font-size:13px;color:var(--blue);font-weight:600">${used.el}</td>
       <td style="font-size:13px;color:var(--green);font-weight:600">${used.cl}</td>
       <td style="font-size:13px;color:var(--orange);font-weight:600">${used.coff}</td>
-      <td><button class="btn bg2 bsm" onclick="saveUserQuota(${u.id})">ðŸ’¾ Save</button></td>
+      <td><button class="btn bg2 bsm" onclick="saveUserQuota(${u.id})">💾 Save</button></td>
     </tr>`;
   }).join('');
 }
@@ -4542,10 +4541,10 @@ function saveUserQuota(uid) {
   else { db.quotas.push({ userId: uid, year, el, cl, coff }); }
   saveDb();
   const u = getUser(uid);
-  showToast(`âœ… Quota saved for ${u?.name||'user'} (${year})`, 'ok');
+  showToast(`✅ Quota saved for ${u?.name||'user'} (${year})`, 'ok');
 }
 
-/* â”€â”€ Profile Settings â”€â”€ */
+/* ── Profile Settings ── */
 function renderProfile() {
   document.getElementById('prof-name').value = curUser.name || '';
   document.getElementById('prof-user').value = curUser.username || '';
@@ -4577,21 +4576,21 @@ async function saveProfile() {
     }
     await saveDb();
     showEl('prof-ok');
-    document.getElementById('prof-ok').textContent = 'âœ… Changes saved successfully!';
+    document.getElementById('prof-ok').textContent = '✅ Changes saved successfully!';
     document.getElementById('prof-pass').value = '';
     document.getElementById('prof-conf').value = '';
   } catch(e) { showErr('prof-err','Error: ' + e.message); }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SHIFT IN-CHARGE â€” TEAM LEAVE STATUS (view-only)
+/* ══════════════════════════════════════════════════════
+   SHIFT IN-CHARGE — TEAM LEAVE STATUS (view-only)
    Shows leave/c-off requests of all employees under this SI
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function renderSILeaveView() {
   const body = document.getElementById('si-leave-body');
   if (!body) return;
 
-  // Expand area scope: include cross-mapped area (e.g., BOF-S â†’ BOF-G, SRU-S â†’ SRU-G)
+  // Expand area scope: include cross-mapped area (e.g., BOF-S → BOF-G, SRU-S → SRU-G)
   const allAreas = [curUser.area];
   if (curUser.area.endsWith('-S')) allAreas.push(curUser.area.replace(/-S$/, '-G'));
   if (curUser.area.endsWith('-G')) allAreas.push(curUser.area.replace(/-G$/, '-S'));
@@ -4618,7 +4617,7 @@ function renderSILeaveView() {
   const myEmpIds = new Set(db.users.filter(u => u.role !== '__deleted__' && u.role !== 'admin' && activeAreas.includes(u.area)).map(u => u.id));
 
   if (myEmpIds.size === 0) {
-    body.innerHTML = emptyRow(8, 'No employees assigned to you yet.', 'ðŸ‘¥');
+    body.innerHTML = emptyRow(8, 'No employees assigned to you yet.', '👥');
     return;
   }
 
@@ -4627,7 +4626,7 @@ function renderSILeaveView() {
     .sort((a,b) => b.createdAt.localeCompare(a.createdAt));
 
   if (!reqs.length) {
-    body.innerHTML = emptyRow(8, 'No leave or C-off requests from your team yet.', 'ðŸ“‹');
+    body.innerHTML = emptyRow(8, 'No leave or C-off requests from your team yet.', '📋');
     return;
   }
 
@@ -4642,13 +4641,13 @@ function renderSILeaveView() {
                 : r.revokeRequested && r.revokeStatus === 'pending' ? 'revoke-pending'
                 : allOk ? 'approved' : anyRej ? 'rejected' : 'pending';
     const dateRange = (r.fromDate && r.toDate && r.fromDate !== r.toDate)
-      ? `${fmt(r.fromDate)} â€“ ${fmt(r.toDate)}`
+      ? `${fmt(r.fromDate)} – ${fmt(r.toDate)}`
       : fmt(r.fromDate || r.date);
     return `<tr>
       <td style="font-weight:600">${u ? coloredName(u) : '?'}</td>
       <td style="white-space:nowrap;font-size:12.5px">${dateRange}</td>
       <td><span class="b ${['EL','CL','Half-Day EL','Half-Day CL','Leave','Half-Day Leave'].includes(r.type)?'bp':r.type==='C-off'||r.type==='Half-Day C-off'?'by':'br'}">${r.type}</span></td>
-      <td style="max-width:140px;word-break:break-word;font-size:12px">${escHtml(r.reason||'â€”')}</td>
+      <td style="max-width:140px;word-break:break-word;font-size:12px">${escHtml(r.reason||'—')}</td>
       <td>${lvBadge(dsm)}</td>
       <td>${lvBadge(sm)}</td>
       <td>${lvBadge(adm)}</td>
@@ -4657,15 +4656,15 @@ function renderSILeaveView() {
   }).join('');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   AREA IN-CHARGE â€” AREA LEAVE STATUS (view-only)
+/* ══════════════════════════════════════════════════════
+   AREA IN-CHARGE — AREA LEAVE STATUS (view-only)
    Shows leave/c-off requests of ALL employees in this AI's area
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function renderAILeaveView() {
   const body = document.getElementById('ai-leave-body');
   if (!body) return;
 
-  // Expand area scope: include cross-mapped area (e.g., BOF-S â†’ BOF-G, SRU-S â†’ SRU-G)
+  // Expand area scope: include cross-mapped area (e.g., BOF-S → BOF-G, SRU-S → SRU-G)
   const allAreas = [curUser.area];
   if (curUser.area.endsWith('-S')) allAreas.push(curUser.area.replace(/-S$/, '-G'));
   if (curUser.area.endsWith('-G')) allAreas.push(curUser.area.replace(/-G$/, '-S'));
@@ -4683,7 +4682,7 @@ function renderAILeaveView() {
   // Filter by selected area (or show all)
   const activeAreas = areaF ? [areaF] : allAreas;
 
-  // Employees in active areas â€” all roles (not just employee)
+  // Employees in active areas — all roles (not just employee)
   let areaEmps = db.users.filter(u => u.role !== '__deleted__' && u.role !== 'admin' && activeAreas.includes(u.area));
 
   // Month filter (same as admin approve page)
@@ -4694,7 +4693,7 @@ function renderAILeaveView() {
   const areaEmpIds = new Set(areaEmps.map(u => u.id));
 
   if (areaEmpIds.size === 0) {
-    body.innerHTML = emptyRow(9, 'No employees found in your area.', 'ðŸ‘¥');
+    body.innerHTML = emptyRow(9, 'No employees found in your area.', '👥');
     return;
   }
 
@@ -4703,7 +4702,7 @@ function renderAILeaveView() {
     .sort((a,b) => b.createdAt.localeCompare(a.createdAt));
 
   if (!reqs.length) {
-    body.innerHTML = emptyRow(9, 'No leave or C-off requests for your area.', 'ðŸ“‹');
+    body.innerHTML = emptyRow(9, 'No leave or C-off requests for your area.', '📋');
     return;
   }
 
@@ -4718,14 +4717,14 @@ function renderAILeaveView() {
                       : r.revokeRequested && r.revokeStatus === 'pending' ? 'revoke-pending'
                       : allOk ? 'approved' : anyRej ? 'rejected' : 'pending';
     const dateRange = (r.fromDate && r.toDate && r.fromDate!==r.toDate)
-      ? `${fmt(r.fromDate)} â€“ ${fmt(r.toDate)}`
+      ? `${fmt(r.fromDate)} – ${fmt(r.toDate)}`
       : fmt(r.fromDate||r.date);
     return `<tr>
       <td style="font-weight:600">${u ? coloredName(u) : '?'}</td>
-      <td>${u?.assignedShift ? `<span class="b bb">${u.assignedShift}</span>` : 'â€”'}</td>
+      <td>${u?.assignedShift ? `<span class="b bb">${u.assignedShift}</span>` : '—'}</td>
       <td style="white-space:nowrap;font-size:12px">${dateRange}</td>
       <td>${qBadge(r.type)}</td>
-      <td style="max-width:130px;word-break:break-word;font-size:12px">${escHtml(r.reason||'â€”')}</td>
+      <td style="max-width:130px;word-break:break-word;font-size:12px">${escHtml(r.reason||'—')}</td>
       <td>${lvBadge(dsm)}</td>
       <td>${lvBadge(sm)}</td>
       <td>${lvBadge(adm)}</td>
@@ -4734,11 +4733,11 @@ function renderAILeaveView() {
   }).join('');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    EXCEL UPLOAD
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 function parseXL(raw, stEl) {
-  // â”€â”€ Step 1: Detect month / year from Row 1 â”€â”€
+  // ── Step 1: Detect month / year from Row 1 ──
   const row1 = raw[0]||[];
   let monthNum=null, yearNum=null;
   const MN = {JANUARY:1,FEBRUARY:2,MARCH:3,APRIL:4,MAY:5,JUNE:6,JUN:6,
@@ -4749,8 +4748,8 @@ function parseXL(raw, stEl) {
     if (/^\d{4}$/.test(v)) yearNum = parseInt(v);
   }
 
-  // â”€â”€ Step 2: Detect date columns from Row 1 (col 4+) â”€â”€
-  const dateCols = {};   // colIndex â†’ 'YYYY-MM-DD'
+  // ── Step 2: Detect date columns from Row 1 (col 4+) ──
+  const dateCols = {};   // colIndex → 'YYYY-MM-DD'
   for (let c=4; c<row1.length; c++) {
     const v = row1[c]; if (!v) continue;
     let d = null;
@@ -4763,19 +4762,19 @@ function parseXL(raw, stEl) {
       const day = parseInt(String(v));
       if (!isNaN(day) && day >= 1 && day <= 31) {
         const dt = new Date(yearNum, monthNum-1, day);
-        // Validate month matches to prevent overflow (e.g. June 31 â†’ July 1)
+        // Validate month matches to prevent overflow (e.g. June 31 → July 1)
         if (!isNaN(dt.getTime()) && dt.getMonth() === monthNum - 1) dateCols[c] = _ds(dt);
       }
     }
   }
   if (!Object.keys(dateCols).length) {
     stEl.innerHTML = `<div class="al al-e" style="margin-top:12px">
-      âŒ Could not detect date columns from Row 1.<br>
+      ❌ Could not detect date columns from Row 1.<br>
       <small>Row 1 must contain the month name (e.g. APRIL), year (e.g. 2025), and day numbers starting from column E.</small>
     </div>`; return;
   }
 
-  // â”€â”€ Step 3: Area & role parsing from columns â”€â”€
+  // ── Step 3: Area & role parsing from columns ──
   // The Excel has explicit AREA (col 4) and ROLE (col 5) columns
   function parseAreaCol(val) {
     if (!val) return {area: null, shift: null};
@@ -4787,15 +4786,15 @@ function parseXL(raw, stEl) {
       'SRU GENERAL':'SRU-G','SRU SHIFT':'SRU-S','SRU SHIFT AREA':'SRU-S',
       'INST SHIFT':'INST-S','INST SHIFT AREA':'INST-S','INSTRUMENTATION SHIFT':'INST-S'};
     if (nameMap[t]) return {area: nameMap[t], shift: null};
-    // Patterns: "BOF -G" â†’ {area:"BOF-G", shift:"G"}
-    //           "BOF-S" â†’ {area:"BOF-S", shift:null}
-    //           "INS-S" â†’ {area:"INST-S", shift:null}
+    // Patterns: "BOF -G" → {area:"BOF-G", shift:"G"}
+    //           "BOF-S" → {area:"BOF-S", shift:null}
+    //           "INS-S" → {area:"INST-S", shift:null}
     const m = t.match(/^([A-Z]+)\s*-?\s*([A-Z0-9]+)?$/);
     if (m) {
       const base = m[1];
       const suffix = m[2] || '';
       let areaCode = suffix ? base + '-' + suffix : base;
-      // Normalise INS â†’ INST
+      // Normalise INS → INST
       if (areaCode === 'INS-S') areaCode = 'INST-S';
       if (AREAS.includes(areaCode)) return {area: areaCode, shift: null};
       // If suffix is a single shift letter (G/A/B/C), keep base as area
@@ -4805,14 +4804,14 @@ function parseXL(raw, stEl) {
     return {area: null, shift: null};
   }
 
-  // â”€â”€ Step 4: Row-level category validation â”€â”€
-  // IMPORTANT: Only skip TRUE summary/header rows â€” NOT employee categories like "Skilled"
+  // ── Step 4: Row-level category validation ──
+  // IMPORTANT: Only skip TRUE summary/header rows — NOT employee categories like "Skilled"
   // The categories in this Excel are: Sr.Engg, Engg, Highly Skilled, Skilled, Un Skilled
   const SKIP_NAME_PATTERNS  = /^(TOTAL|PRESENT|WEEKLY\s*OFF|ON\s*LEAVE|LEAVE\s*WITHOUT|BOF\s*SHIFT|SR\.?\s*NO|CATEGORY)$/i;
   const SKIP_CAT_PATTERNS   = /^(TOTAL|PRESENT|CATEGORY|SR\.?\s*NO|WEEKLY\s*OFF|ON\s*LEAVE|REQ\.|TOTAL\s*ENGG|TOTAL\s*MANPOWER|HIGH\s*SKILLED|UNSKILLED|ENGG\s*-|TOTAL\s*HIGH|TOTAL\s*SKILL)$/i;
-  // NOTE: "Skilled", "Highly Skilled", "Un Skilled" are valid employee categories â€” do NOT skip them
+  // NOTE: "Skilled", "Highly Skilled", "Un Skilled" are valid employee categories — do NOT skip them
 
-  // â”€â”€ Step 5: Normalised name matching â”€â”€
+  // ── Step 5: Normalised name matching ──
   function normName(n) {
     return String(n||'').toLowerCase().replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim();
   }
@@ -4820,7 +4819,7 @@ function parseXL(raw, stEl) {
     return normName(a) === normName(b);
   }
 
-  // â”€â”€ Step 6: Clear ALL data for this month, then parse all employee rows â”€â”€
+  // ── Step 6: Clear ALL data for this month, then parse all employee rows ──
   // CRITICAL: Fully wipe all shifts, attendance, and user accounts for this month
   // before importing. This ensures each month's data is fully independent.
   // Uses shift data (not 'month' field) to identify which users belong to this month.
@@ -4837,7 +4836,7 @@ function parseXL(raw, stEl) {
   db.shifts = db.shifts.filter(s => !monthDates.includes(s.date));
   db.attendance = db.attendance.filter(a => !monthDates.includes(a.date));
 
-  db.siAssignments = []; // Clear org mappings â€” will be rebuilt by runSIAAutoSync()
+  db.siAssignments = []; // Clear org mappings — will be rebuilt by runSIAAutoSync()
 
   let created=0, updated=0, codesSet=0, excelRowOrder=0;
   const createdNames=[], preview=[];
@@ -4850,12 +4849,12 @@ function parseXL(raw, stEl) {
     const nameCell = String(row[2]||'').trim();
     if (!nameCell) continue;
 
-    // â”€â”€ Skip summary/total rows â”€â”€
+    // ── Skip summary/total rows ──
     // Check name column
     if (SKIP_NAME_PATTERNS.test(nameCell.trim())) continue;
     if (/TOTAL|PRESENT|WEEKLY\s*OFF|ON\s*LEAVE|LEAVE\s*WITHOUT|BOF\s*SHIFT\s*PRESENT/i.test(nameCell)) continue;
 
-    // Check category column â€” ONLY skip if it exactly matches a summary keyword
+    // Check category column — ONLY skip if it exactly matches a summary keyword
     const rawCat = String(row[3]||'').trim();
     if (SKIP_CAT_PATTERNS.test(rawCat)) continue;
 
@@ -4868,7 +4867,7 @@ function parseXL(raw, stEl) {
     // Reject cells that are clearly a person's name in wrong column
     if (rawCat && rawCat.split(' ').length > 3 && !/skilled|engg/i.test(rawCat)) continue;
 
-    // â”€â”€ Read AREA (col 4) and ROLE (col 5) from Excel columns â”€â”€
+    // ── Read AREA (col 4) and ROLE (col 5) from Excel columns ──
     const rawArea = String(row[4]||'').trim();
     const rawRole = String(row[5]||'').trim().toUpperCase();
     const parsedArea = parseAreaCol(rawArea);
@@ -4876,7 +4875,7 @@ function parseXL(raw, stEl) {
     const excelShift = parsedArea.shift;
     const excelRole = ROLE_MAP[rawRole] || 'employee';
 
-    // â”€â”€ Find existing user (including __deleted__ so they can be revived) â”€â”€
+    // ── Find existing user (including __deleted__ so they can be revived) ──
     let user = db.users.find(u => u.name && normName(u.name) === normName(nameCell));
     if (!user) {
       // Fallback: match by first 2 name words + same area + same role (catches truncation/re-imports)
@@ -4889,7 +4888,7 @@ function parseXL(raw, stEl) {
 
     if (!user) {
       // Fallback: match by last name + first initial + area + role
-      // Handles "A. Diwakar" â†’ "Ajay Diwakar" but NOT "Ajay Mandal" â†’ "Ajay Diwakar"
+      // Handles "A. Diwakar" → "Ajay Diwakar" but NOT "Ajay Mandal" → "Ajay Diwakar"
       if (excelArea && excelRole) {
         const eWords = normName(nameCell).split(' ');
         const eFirst = eWords[0] || '';
@@ -4955,7 +4954,7 @@ function parseXL(raw, stEl) {
     // Track Excel row order so Manage Users / Overview can sort by it
     user.excelOrder = ++excelRowOrder;
 
-    // â”€â”€ Infer dominant shift for this employee â”€â”€
+    // ── Infer dominant shift for this employee ──
     const codeCounts = {A:0,B:0,C:0,G:0};
     Object.keys(dateCols).forEach(col => {
       const c = String(row[parseInt(col)+2]||'').toUpperCase().trim();
@@ -4964,16 +4963,16 @@ function parseXL(raw, stEl) {
     const dominantShift = Object.entries(codeCounts).sort((a,b)=>b[1]-a[1]).find(([,n])=>n>0)?.[0] || '';
     user.assignedShift = dominantShift; // always update from Excel
 
-    // â”€â”€ Auto-assign SI/AI from assignment table â”€â”€
+    // ── Auto-assign SI/AI from assignment table ──
     const asgn = getSIA(user.area, user.assignedShift, user.role);
     if (asgn) { user.siId = asgn.siId; user.aiId = asgn.aiId; }
 
-    // â”€â”€ Write shift codes into db.shifts â”€â”€
+    // ── Write shift codes into db.shifts ──
     let days = 0;
     for (const [col, dateS] of Object.entries(dateCols)) {
       let code = String(row[parseInt(col)+2]||'').toUpperCase().trim();
-      // Empty cell â†’ keep empty (employee not scheduled that day)
-      // Invalid non-empty code â†’ use dominant shift as fallback
+      // Empty cell → keep empty (employee not scheduled that day)
+      // Invalid non-empty code → use dominant shift as fallback
       if (code && !['A','B','C','G','O','L'].includes(code)) {
         code = dominantShift;
       }
@@ -4988,10 +4987,10 @@ function parseXL(raw, stEl) {
     processedIds.add(user.id);
   }
 
-  // â”€â”€ Post-import: sync assignments & remap all employee-type users â”€â”€
+  // ── Post-import: sync assignments & remap all employee-type users ──
   runSIAAutoSync();
   const mgmtRoles = ['site_manager','deputy_site_manager','admin','shift_incharge','area_incharge','assistant_area_incharge','assistant_shift_incharge'];
-  // Remap non-management employees â€” sets their siId/aiId per RULE.txt mapping
+  // Remap non-management employees — sets their siId/aiId per RULE.txt mapping
   db.users.filter(u => !mgmtRoles.includes(u.role)).forEach(u => {
     if (u.area && u.assignedShift) {
       const a = getSIA(u.area, u.assignedShift, u.role);
@@ -5006,7 +5005,7 @@ function parseXL(raw, stEl) {
     }
   });
 
-  // â”€â”€ Clean up orphaned shift data for users not in this import â”€â”€
+  // ── Clean up orphaned shift data for users not in this import ──
   let orphanedRemoved = 0;
   db.shifts = db.shifts.filter(s => {
     if (s.fromExcel && monthDates.includes(s.date) && !processedIds.has(s.userId)) {
@@ -5017,13 +5016,13 @@ function parseXL(raw, stEl) {
   });
   if (orphanedRemoved) console.log(`Cleaned ${orphanedRemoved} orphaned shift entries for this month.`);
 
-  // â”€â”€ Mark users removed from this month's schedule as __deleted__ â”€â”€
+  // ── Mark users removed from this month's schedule as __deleted__ ──
   // Users who were part of a previous Excel import for THIS month but are
   // NOT in the new schedule get marked __deleted__. Three cases covered:
-  //   (a) had shifts in this month before â€” caught via prevUserIds
-  //   (b) created/updated by new code for THIS month â€” caught via month field
-  //   (c) created by old code (no month field) â€” caught via excelOrder fallback
-  // Users from OTHER months are not affected â€” their month field is different
+  //   (a) had shifts in this month before — caught via prevUserIds
+  //   (b) created/updated by new code for THIS month — caught via month field
+  //   (c) created by old code (no month field) — caught via excelOrder fallback
+  // Users from OTHER months are not affected — their month field is different
   // and they have no excelOrder from this month's import.
   let removedFromMonth = 0;
   db.users.forEach(u => {
@@ -5035,7 +5034,7 @@ function parseXL(raw, stEl) {
     }
   });
 
-  // â”€â”€ Deduplicate: remove employee-type users with same name+area not in this import â”€â”€
+  // ── Deduplicate: remove employee-type users with same name+area not in this import ──
   // This cleans up duplicates created by previous imports where name matching failed.
   // Uses first 2 name words + area + role as key (lenient enough to catch formatting diffs).
   const dedupCount = {removed: 0};
@@ -5056,15 +5055,15 @@ function parseXL(raw, stEl) {
 
   const total = created + updated;
 
-  // â”€â”€ Result banner â”€â”€
+  // ── Result banner ──
   stEl.innerHTML = `<div class="al al-s" style="margin-top:12px">
-    âœ… <strong>${total}</strong> employees loaded from Excel.
-    &nbsp;|&nbsp; ðŸ†• New accounts created: <strong>${created}</strong>
-    &nbsp;|&nbsp; ðŸ”„ Existing updated: <strong>${updated}</strong>
-    &nbsp;|&nbsp; ðŸ“… Shift codes set: <strong>${codesSet}</strong> across <strong>${Object.keys(dateCols).length}</strong> days.
-    ${created > 0 ? `<br><span style="font-size:12px;color:var(--t2)">New accounts use password <strong>123</strong> â€” employees must change on first login.</span>` : ''}
-    ${dedupCount.removed > 0 ? `<br><span style="font-size:12px;color:var(--t2)">ðŸ§¹ Removed <strong>${dedupCount.removed}</strong> duplicate user(s) with same name+area.</span>` : ''}
-    ${removedFromMonth > 0 ? `<br><span style="font-size:12px;color:var(--t2)">ðŸ—‘ï¸ Marked <strong>${removedFromMonth}</strong> user(s) as removed (no longer in this month's schedule).</span>` : ''}
+    ✅ <strong>${total}</strong> employees loaded from Excel.
+    &nbsp;|&nbsp; 🆕 New accounts created: <strong>${created}</strong>
+    &nbsp;|&nbsp; 🔄 Existing updated: <strong>${updated}</strong>
+    &nbsp;|&nbsp; 📅 Shift codes set: <strong>${codesSet}</strong> across <strong>${Object.keys(dateCols).length}</strong> days.
+    ${created > 0 ? `<br><span style="font-size:12px;color:var(--t2)">New accounts use password <strong>123</strong> — employees must change on first login.</span>` : ''}
+    ${dedupCount.removed > 0 ? `<br><span style="font-size:12px;color:var(--t2)">🧹 Removed <strong>${dedupCount.removed}</strong> duplicate user(s) with same name+area.</span>` : ''}
+    ${removedFromMonth > 0 ? `<br><span style="font-size:12px;color:var(--t2)">🗑️ Marked <strong>${removedFromMonth}</strong> user(s) as removed (no longer in this month's schedule).</span>` : ''}
   </div>`;
 
   if (preview.length) {
@@ -5073,11 +5072,11 @@ function parseXL(raw, stEl) {
       <table><thead><tr><th>Employee</th><th>Category</th><th>Area</th><th>Assigned Shift</th><th>Days</th><th>Status</th></tr></thead>
       <tbody>${preview.map(r=>`<tr>
         <td><strong>${r.name}</strong></td>
-        <td><span class="b bx" style="font-size:10.5px">${r.cat||'â€”'}</span></td>
+        <td><span class="b bx" style="font-size:10.5px">${r.cat||'—'}</span></td>
         <td>${AL[r.area]||r.area}</td>
-        <td>${r.shift?`<span class="b bb">${r.shift}</span>`:'â€”'}</td>
+        <td>${r.shift?`<span class="b bb">${r.shift}</span>`:'—'}</td>
         <td>${r.days}</td>
-        <td><span class="b ${r.isNew?'by':'bg'}" style="font-size:10.5px">${r.isNew?'ðŸ†• New':'âœ“ Updated'}</span></td>
+        <td><span class="b ${r.isNew?'by':'bg'}" style="font-size:10.5px">${r.isNew?'🆕 New':'✓ Updated'}</span></td>
       </tr>`).join('')}</tbody>
       </table></div>`);
   }
@@ -5088,18 +5087,18 @@ function parseXL(raw, stEl) {
   if (curPg && curPg.id !== 'pg-upload') renderPage(curPg.id);
 }
 
-/* â”€â”€ Close modals on overlay click â”€â”€ */
+/* ── Close modals on overlay click ── */
 document.querySelectorAll('.ov').forEach(el => {
   el.addEventListener('click', e => { if (e.target===el) el.classList.add('dn'); });
 });
 
-/* â”€â”€ Init date inputs â”€â”€ */
+/* ── Init date inputs ── */
 const _tv = today();
 ['si-date','ai-date','ov-date','adm-date'].forEach(id => { const el=document.getElementById(id); if(el) el.value=_tv; });
 const _mv = `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
 const ecm = document.getElementById('emp-cal-month'); if(ecm) ecm.value=_mv;
 
-/* â”€â”€ Backup & Restore â”€â”€ */
+/* ── Backup & Restore ── */
 function exportData() {
   const json = JSON.stringify(db, null, 2);
   const blob = new Blob([json], {type:'application/json'});
@@ -5110,7 +5109,7 @@ function exportData() {
   a.click();
   URL.revokeObjectURL(url);
   const msg = document.getElementById('backup-msg');
-  if (msg) { msg.textContent = 'âœ… Data exported successfully!'; setTimeout(() => msg.textContent = '', 3000); }
+  if (msg) { msg.textContent = '✅ Data exported successfully!'; setTimeout(() => msg.textContent = '', 3000); }
 }
 function importData(event) {
   const file = event.target.files[0];
@@ -5120,7 +5119,7 @@ function importData(event) {
     try {
       const data = JSON.parse(e.target.result);
       if (!data.users || !data.shifts || !data.attendance) {
-        document.getElementById('backup-msg').textContent = 'âŒ Invalid backup file!';
+        document.getElementById('backup-msg').textContent = '❌ Invalid backup file!';
         return;
       }
       showConfirm('Restore Backup', 'This will REPLACE all current data with the backup. Continue?', 'Restore', function() {
@@ -5132,7 +5131,7 @@ function importData(event) {
         db.quotas = data.quotas || [];
         db.monthlyGrids = data.monthlyGrids || {};
         saveDb();
-        document.getElementById('backup-msg').textContent = 'âœ… Data restored successfully!';
+        document.getElementById('backup-msg').textContent = '✅ Data restored successfully!';
         setTimeout(() => {
           document.getElementById('backup-msg').textContent = '';
           const cur = document.querySelector('.page.active');
@@ -5140,16 +5139,16 @@ function importData(event) {
         }, 1500);
       });
     } catch(err) {
-      document.getElementById('backup-msg').textContent = 'âŒ Error: ' + err.message;
+      document.getElementById('backup-msg').textContent = '❌ Error: ' + err.message;
     }
   };
   reader.readAsText(file);
   event.target.value = '';
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════════════
    SCHEDULE EDITOR (Handsontable)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════════════ */
 const seGrids = {};
 let seHot = null;
 let seActiveMonth = '';
@@ -5275,7 +5274,7 @@ function seUpdateStatus(){
   const el=document.getElementById('se-month-status');
   const grid=seGrids[seActiveMonth]; if(!grid){el.textContent='No data';return;}
   const n=grid.rows.length, days=grid.headers.length-5;
-  el.textContent=`${n} employees Ã— ${days} days (${seActiveMonth})${seDirty[seActiveMonth]?' âš ï¸ Unsaved':' ðŸ’¾ Saved'}`;
+  el.textContent=`${n} employees × ${days} days (${seActiveMonth})${seDirty[seActiveMonth]?' ⚠️ Unsaved':' 💾 Saved'}`;
   document.querySelectorAll('#se-month-tabs .se-tab').forEach(el=>{
     el.classList.toggle('saved',!seDirty[el.dataset.month]&&seGrids[el.dataset.month]?.rows.length>0);
   });
@@ -5301,7 +5300,7 @@ function seUploadExcel(){document.getElementById('se-file-input').click();}
 function seHandleFile(event){
   const file=event.target.files[0]; if(!file) return;
   const st=document.getElementById('se-status');
-  st.innerHTML=`<span class="al al-i" style="display:inline-block">â³ Reading ${file.name}â€¦</span>`;
+  st.innerHTML=`<span class="al al-i" style="display:inline-block">⏳ Reading ${file.name}…</span>`;
   const reader=new FileReader();
   reader.onload=e=>{
     try{
@@ -5309,8 +5308,8 @@ function seHandleFile(event){
       const ws=wb.Sheets[wb.SheetNames[0]];
       const raw=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
       sePopulateFromArray(raw);
-      st.innerHTML=`<span class="al al-s" style="display:inline-block">âœ… Loaded into ${seActiveMonth}. Click <b>Apply to System</b> when ready.</span>`;
-    }catch(err){st.innerHTML=`<span class="al al-e" style="display:inline-block">âŒ ${err.message}</span>`;}
+      st.innerHTML=`<span class="al al-s" style="display:inline-block">✅ Loaded into ${seActiveMonth}. Click <b>Apply to System</b> when ready.</span>`;
+    }catch(err){st.innerHTML=`<span class="al al-e" style="display:inline-block">❌ ${err.message}</span>`;}
   };
   reader.readAsArrayBuffer(file); event.target.value='';
 }
@@ -5382,13 +5381,13 @@ function seApplyToSystem(){
   });
 
   const st=document.getElementById('se-status');
-  st.innerHTML=`<span class="al al-i" style="display:inline-block">â³ Applyingâ€¦</span>`;
+  st.innerHTML=`<span class="al al-i" style="display:inline-block">⏳ Applying…</span>`;
   try{
     parseXL(raw,st);
     seSaveToDb(mk);
-    st.innerHTML=`<span class="al al-s" style="display:inline-block">âœ… Applied ${grid.rows.length} employees for ${mk}.</span>`;
-    showToast(`âœ… ${mk} applied.`,'ok');
-  }catch(err){st.innerHTML=`<span class="al al-e" style="display:inline-block">âŒ ${err.message}</span>`;}
+    st.innerHTML=`<span class="al al-s" style="display:inline-block">✅ Applied ${grid.rows.length} employees for ${mk}.</span>`;
+    showToast(`✅ ${mk} applied.`,'ok');
+  }catch(err){st.innerHTML=`<span class="al al-e" style="display:inline-block">❌ ${err.message}</span>`;}
 }
 
 function seExportExcel(){
@@ -5400,7 +5399,7 @@ function seExportExcel(){
   const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,seActiveMonth);
   ws['!cols']=grid.headers.map((h,i)=>({wch:Math.min(Math.max(String(h).length,...grid.rows.map(r=>String(r[i]||'').length))+3,30)}));
   XLSX.writeFile(wb,`schedule_${seActiveMonth}.xlsx`);
-  showToast(`â¬‡ï¸ Exported ${seActiveMonth}.`,'ok');
+  showToast(`⬇️ Exported ${seActiveMonth}.`,'ok');
 }
 
 function seDeleteMonth(){
@@ -5411,11 +5410,11 @@ function seDeleteMonth(){
     `Permanently remove the entire schedule for <strong>${mk}</strong>?<br><br>
      <span style="font-size:12px;color:var(--t2)">
      This will:<br>
-     â€¢ Remove all shift codes for this month<br>
-     â€¢ Remove all attendance records for this month<br>
-     â€¢ Remove the editor grid data<br>
-     â€¢ <strong>Preserve</strong> user accounts and leave requests</span>`,
-    'ðŸ—‘ Yes, Delete Month',
+     • Remove all shift codes for this month<br>
+     • Remove all attendance records for this month<br>
+     • Remove the editor grid data<br>
+     • <strong>Preserve</strong> user accounts and leave requests</span>`,
+    '🗑 Yes, Delete Month',
     () => {
       // 1. Collect all dates in this month
       const [y, m] = mk.split('-').map(Number);
@@ -5446,9 +5445,9 @@ function seDeleteMonth(){
         el.classList.toggle('saved', false);
       });
       seUpdateStatus();
-      showToast(`âœ… Schedule for ${mk} deleted.`, 'ok');
+      showToast(`✅ Schedule for ${mk} deleted.`, 'ok');
     },
-    'ðŸ—‘ï¸'
+    '🗑️'
   );
 }
 
@@ -5462,7 +5461,7 @@ function seSaveToDb(mk){
   seDirty[mk]=false; saveDb(); seUpdateStatus();
 }
 
-// Manual refresh button â€” sync data from server
+// Manual refresh button — sync data from server
 async function manualSync() {
   if (!IS_SERVER) { showToast('Not connected to server', 'warn'); return; }
   const active = getActivePage();
