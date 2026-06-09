@@ -175,6 +175,13 @@ tr:hover td{background:rgba(255,255,255,.013);}
 .fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;}
 .fg{margin-bottom:13px;}
 
+/* ── DATE PICKER (white calendar icon) ── */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.5);
+  cursor: pointer;
+}
+
 /* ── CALENDAR ───────────────────────── */
 .cal-wrap{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bdr);}
@@ -278,7 +285,7 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
       <div class="avt" id="tb-av">?</div>
       <div><div class="u-name" id="tb-name"></div><div class="u-role" id="tb-role"></div></div>
       <span class="tb-date" id="tb-date"></span>
-      <button class="btn bo2" style="padding:5px 9px;font-size:13px;line-height:1" onclick="manualSync()" title="Refresh data from server">⟳</button>
+      <button class="btn bg2" style="padding:5px 9px;font-size:13px;line-height:1" onclick="manualSync()" title="Refresh data from server">⟳</button>
       <button class="btn bo2" style="padding:5px 11px;font-size:12px" onclick="doLogout()">Sign out</button>
     </div>
   </div>
