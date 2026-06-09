@@ -2826,7 +2826,9 @@ function exportOverviewExcel() {
     const shiftCode = getEffectiveShiftCode(u.id, date);
     const att = getAtt(u.id, date);
     const status = att ? att.status : (!shiftCode || !['A','B','C','G'].includes(shiftCode) ? 'Not Scheduled' : 'Not Marked');
-    const markedBy = att?.markedBy || '';
+    const markerId = att?.markedBy;
+    const marker = markerId ? getUser(markerId) : null;
+    const markedByStr = marker ? `${marker.name} (${roleLabels[marker.role] || marker.role})` : '';
     wsData.push([
       i + 1,
       u.name,
@@ -2835,7 +2837,7 @@ function exportOverviewExcel() {
       roleLabels[u.role] || u.role,
       shiftCode || '',
       status,
-      markedBy
+      markedByStr
     ]);
   });
 
