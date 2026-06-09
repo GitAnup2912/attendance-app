@@ -1587,21 +1587,24 @@ async function doChangePw() {
 
 async function enterApp() {
   // Push local data to server first so it's available after reload
+  let loadedFromServer = false;
   if (authToken) {
-    const local = localStorage.getItem('att_app_db');
+    const local = localStorage.getItem(STORAGE_KEY);
     if (local) {
       const ld = JSON.parse(local);
       if (ld && ld.users && ld.users.length > 1) {
-        // Preserve server's bcrypt password before pushing local data
-        if (curUser && curUser.password && curUser.password.startsWith('$2')) {
-          const localUser = db.users.find(u => u.id === curUser.id);
-          if (localUser) localUser.password = curUser.password;
-        }
-        try { await saveDb(); } catch(e) { console.warn('Initial server push failed:', e); }
+        try {
+          const ok = await saveDb();
+          if (ok) {
+            await loadDb();
+            loadedFromServer = true;
+          }
+        } catch(e) { console.warn('Initial server push failed:', e); }
       }
     }
   }
-  await loadDb();
+  // If we didn't reload from server above, load from server (or localStorage fallback)
+  if (!loadedFromServer) await loadDb();
   // Re-sync curUser to the matching object in the new db.users array
   const fresh = db.users.find(u => u.id === curUser.id);
   if (fresh) curUser = fresh;
@@ -1653,22 +1656,25 @@ async function enterApp() {
     }, 60000);
   }
 
-  // Auto-sync from server every 30 seconds
+  // Auto-sync from server every 5 minutes (silent, no re-render)
   if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
   window._autoSyncInterval = setInterval(async () => {
-    const active = getActivePage();
-    if (!active) return;
+    const prev = JSON.stringify(db);
     await loadDb();
-    // Re-sync curUser
     const f = db.users.find(u => u.id === curUser.id);
     if (f) curUser = f;
-    if (active) goTo(active);
-  }, 30000);
+    // Only re-render if data actually changed (e.g. another user made changes)
+    const active = getActivePage();
+    if (active && JSON.stringify(db) !== prev) {
+      goTo(active);
+    }
+  }, 300000);
 }
 
 function doLogout() {
   const uid = curUser ? curUser.id : null;
   curUser = null;
+  authToken = null;
   document.getElementById('auth-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   showEl('pnl-login'); hideEl('pnl-chgpw');
