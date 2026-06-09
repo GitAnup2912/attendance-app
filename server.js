@@ -58,7 +58,7 @@ async function seedAdmin() {
   if (!exists) {
     const hashed = await bcrypt.hash('admin123', 10);
     users.push({
-      id: '1', name: 'System Admin', username: 'admin', password: hashed,
+      id: 1, name: 'System Admin', username: 'admin', password: hashed,
       role: 'admin', area: 'Office', assignedShift: 'G', category: 'Admin', mustChangePw: false
     });
     await AppData.updateOne({ type: 'users' }, { $set: { data: users } }, { upsert: true });
@@ -151,7 +151,7 @@ app.post('/api/repair', async (req, res) => {
     // Create admin if missing
     const hashed = await bcrypt.hash('admin123', 10);
     users.push({
-      id: '1', name: 'System Admin', username: 'admin', password: hashed,
+      id: 1, name: 'System Admin', username: 'admin', password: hashed,
       role: 'admin', area: 'Office', assignedShift: 'G', category: 'Admin', mustChangePw: false
     });
     await AppData.updateOne({ type: 'users' }, { $set: { data: users } }, { upsert: true });
@@ -180,7 +180,7 @@ app.get('/api/data', authenticate, async (req, res) => {
     const records = await AppData.find({});
     const result = {};
     for (const r of records) result[r.type] = r.data;
-    res.json({ users: [], shifts: [], attendance: [], requests: [], monthlyGrids: {}, ...result });
+    res.json({ users: [], shifts: [], attendance: [], requests: [], monthlyGrids: {}, siAssignments: [], quotas: [], ...result });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -189,25 +189,11 @@ app.get('/api/data', authenticate, async (req, res) => {
 app.post('/api/data', authenticate, async (req, res) => {
   try {
     const body = req.body;
-    const types = ['shifts', 'attendance', 'requests', 'monthlyGrids'];
+    const types = ['shifts', 'attendance', 'requests', 'monthlyGrids', 'siAssignments', 'quotas'];
 
-    // Handle users separately — protect bcrypt password hashes
+    // Handle users separately — hash plaintext passwords before saving
     if (body.users !== undefined) {
-      const existing = await AppData.findOne({ type: 'users' });
-      const existingData = existing?.data || [];
-      // Build lookup by id AND by username (covers edge cases where ids differ)
-      const existingById = {};
-      const existingByUser = {};
-      for (const u of existingData) {
-        if (u.id) existingById[u.id] = u;
-        if (u.username) existingByUser[u.username] = u;
-      }
       for (const u of body.users) {
-        const matched = existingById[u.id] || existingByUser[u.username];
-        if (u.password && !u.password.startsWith('$2') && matched && matched.password && matched.password.startsWith('$2')) {
-          u.password = matched.password;
-        }
-        // Final safety net: hash any plaintext that slipped through
         if (u.password && !u.password.startsWith('$2')) {
           u.password = await bcrypt.hash(u.password, 10);
         }
