@@ -1771,19 +1771,29 @@ async function enterApp() {
   // Auto-sync from server every 5 minutes (silent, no re-render)
   if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
   window._autoSyncInterval = setInterval(async () => {
-    const prev = JSON.stringify(db);
-    // First, load latest server data
-    await loadDb();
-    // Then, save local changes to server (if we have a token)
-    if (authToken && IS_SERVER) {
-      try { await saveDb(); } catch(e) { console.warn('Auto-sync save failed:', e); }
-    }
-    const f = db.users.find(u => u.id === curUser.id);
-    if (f) curUser = f;
-    // Only re-render if data actually changed (e.g. another user made changes)
-    const active = getActivePage();
-    if (active && JSON.stringify(db) !== prev) {
-      goTo(active);
+    try {
+      // First, save local changes to server (with merge - local wins)
+      if (authToken && IS_SERVER) {
+        const saveSuccess = await saveDb();
+        if (!saveSuccess) {
+          console.warn('Auto-sync save failed');
+        }
+      }
+      // Then, load latest server data to update local state
+      const loadSuccess = await loadDb();
+      if (!loadSuccess) {
+        console.warn('Auto-sync load failed');
+      }
+      // Update curUser reference in case it was modified during load
+      const f = db.users.find(u => u.id === curUser.id);
+      if (f) curUser = f;
+      // Re-render current page to reflect any updates
+      const active = getActivePage();
+      if (active) {
+        goTo(active);
+      }
+    } catch (e) {
+      console.error('Auto-sync error:', e);
     }
   }, 300000);
 }
