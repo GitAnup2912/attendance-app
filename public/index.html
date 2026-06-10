@@ -1270,13 +1270,13 @@ async function loadDb() {
       if (raw) data = JSON.parse(raw);
     }
     if (data) {
-      if (data.users && data.users.length) db.users = data.users;
-      if (data.shifts) db.shifts = data.shifts;
-      if (data.attendance) db.attendance = data.attendance;
-      if (data.siAssignments) db.siAssignments = data.siAssignments;
-      if (data.requests) db.requests = data.requests;
-      if (data.quotas) db.quotas = data.quotas;
-      if (data.monthlyGrids) db.monthlyGrids = data.monthlyGrids;
+      if (data.users !== undefined) db.users = data.users;
+      if (data.shifts !== undefined) db.shifts = data.shifts;
+      if (data.attendance !== undefined) db.attendance = data.attendance;
+      if (data.siAssignments !== undefined) db.siAssignments = data.siAssignments;
+      if (data.requests !== undefined) db.requests = data.requests;
+      if (data.quotas !== undefined) db.quotas = data.quotas;
+      if (data.monthlyGrids !== undefined) db.monthlyGrids = data.monthlyGrids;
       const mu = db.users.reduce((m,u)=>Math.max(m,u.id||0),0);
       if (mu >= 300) _uid = mu + 10;
       const mr = db.requests.reduce((m,r)=>Math.max(m,r.id||0),0);
@@ -1772,12 +1772,12 @@ async function enterApp() {
   if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
   window._autoSyncInterval = setInterval(async () => {
     const prev = JSON.stringify(db);
-    // First, save local changes to server (if we have a token)
+    // First, load latest server data
+    await loadDb();
+    // Then, save local changes to server (if we have a token)
     if (authToken && IS_SERVER) {
       try { await saveDb(); } catch(e) { console.warn('Auto-sync save failed:', e); }
     }
-    // Then load latest server data
-    await loadDb();
     const f = db.users.find(u => u.id === curUser.id);
     if (f) curUser = f;
     // Only re-render if data actually changed (e.g. another user made changes)
