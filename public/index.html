@@ -1156,7 +1156,8 @@ async function saveDb() {
     try {
       showToast('Syncing with server...', 'info');
       const gHdrs = {};
-      if (authToken) gHdrs['Authorization'] = 'Bearer ' + authToken;
+      const token = getAuthToken();
+      if (token) gHdrs['Authorization'] = 'Bearer ' + token;
       const serverRes = await fetch('/api/data?_=' + Date.now(), { headers: gHdrs });
       const serverData = await serverRes.json();
       // Extract server arrays/objects, fallback to empty
@@ -1231,7 +1232,8 @@ async function saveDb() {
       showToast('Saving to server...', 'info');
       showEl('save-spinner');
       const hdrs = {'Content-Type':'application/json'};
-      if (authToken) hdrs['Authorization'] = 'Bearer ' + authToken;
+      const token = getAuthToken();
+      if (token) hdrs['Authorization'] = 'Bearer ' + token;
       const res = await fetch('/api/data', { method:'POST', headers:hdrs, body:JSON.stringify(payload) });
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
@@ -1254,7 +1256,8 @@ async function loadDb() {
     if (IS_SERVER) {
       try {
         const gHdrs = {};
-        if (authToken) gHdrs['Authorization'] = 'Bearer ' + authToken;
+        const token = getAuthToken();
+        if (token) gHdrs['Authorization'] = 'Bearer ' + token;
         const res = await fetch('/api/data?_=' + Date.now(), { headers: gHdrs });
         data = await res.json();
       } catch(e) {
@@ -1309,9 +1312,22 @@ let _dbReady = false;
    STATE
 ══════════════════════════════════════════════════════ */
 let curUser = null;
-let authToken = null; // JWT token for server API calls
+let authToken = localStorage.getItem('authToken'); // JWT token for server API calls
 let editReqId = null, editAttKey = null, editUserId = null, editSIAIdx = null;
 let empCalYear = new Date().getFullYear(), empCalMonth = new Date().getMonth();
+
+function getAuthToken() {
+  return localStorage.getItem('authToken');
+}
+
+function setAuthToken(token) {
+  authToken = token;
+  if (token) {
+    localStorage.setItem('authToken', token);
+  } else {
+    localStorage.removeItem('authToken');
+  }
+}
 
 /* ══════════════════════════════════════════════════════
    HELPERS
@@ -1612,7 +1628,7 @@ async function doLogin() {
             const retryData = await retry.json();
             if (!retryData.ok) { hideEl('login-loader'); showErr('li-err', retryData.message || 'Login failed'); return; }
             // Retry succeeded
-            authToken = retryData.token;
+            setAuthToken(retryData.token);
             curUser = retryData.user;
             await enterApp();
             return;
@@ -1620,7 +1636,7 @@ async function doLogin() {
         } else { hideEl('login-loader'); showErr('li-err', lrData.message || 'Login failed'); return; }
       }
       // Server login succeeded — use server user data
-      authToken = lrData.token;
+      setAuthToken(lrData.token);
       curUser = lrData.user;
       await enterApp();
       return;
@@ -1685,7 +1701,7 @@ async function enterApp() {
     const local = localStorage.getItem(STORAGE_KEY);
     if (local) {
       const ld = JSON.parse(local);
-      if (ld && ld.users && ld.users.length > 1) {
+      if (ld) {
         try {
           const ok = await saveDb();
           if (ok) {
@@ -1745,7 +1761,10 @@ async function enterApp() {
   if (IS_SERVER) {
     if (window._hbInterval) clearInterval(window._hbInterval);
     window._hbInterval = setInterval(() => {
-      fetch('/api/heartbeat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userId:curUser.id}) }).catch(()=>{});
+      const token = getAuthToken();
+      const hdrs = {'Content-Type':'application/json'};
+      if (token) hdrs['Authorization'] = 'Bearer ' + token;
+      fetch('/api/heartbeat', { method:'POST', headers:hdrs, body:JSON.stringify({userId:curUser.id}) }).catch(()=>{});
     }, 60000);
   }
 
@@ -1753,6 +1772,11 @@ async function enterApp() {
   if (window._autoSyncInterval) clearInterval(window._autoSyncInterval);
   window._autoSyncInterval = setInterval(async () => {
     const prev = JSON.stringify(db);
+    // First, save local changes to server (if we have a token)
+    if (authToken && IS_SERVER) {
+      try { await saveDb(); } catch(e) { console.warn('Auto-sync save failed:', e); }
+    }
+    // Then load latest server data
     await loadDb();
     const f = db.users.find(u => u.id === curUser.id);
     if (f) curUser = f;
@@ -1768,7 +1792,7 @@ function doLogout() {
   hideEl('login-loader');
   const uid = curUser ? curUser.id : null;
   curUser = null;
-  authToken = null;
+  setAuthToken(null);
   document.getElementById('auth-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   showEl('pnl-login'); hideEl('pnl-chgpw');
