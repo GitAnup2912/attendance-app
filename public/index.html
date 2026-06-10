@@ -1146,21 +1146,93 @@ const db = {
   quotas:     [], // {userId, year, sl, cl, coff} — yearly leave quota
 };
 async function saveDb() {
+  // Show spinner
+  const spinner = document.getElementById('save-spinner');
+  if (spinner) spinner.classList.remove('dn');
+
+  // If server mode, fetch latest server data and merge with local (local wins)
+  let mergedDb = db;
+  if (IS_SERVER) {
+    try {
+      showToast('Syncing with server...', 'info');
+      const gHdrs = {};
+      if (authToken) gHdrs['Authorization'] = 'Bearer ' + authToken;
+      const serverRes = await fetch('/api/data?_=' + Date.now(), { headers: gHdrs });
+      const serverData = await serverRes.json();
+      // Extract server arrays/objects, fallback to empty
+      const serverUsers = serverData.users || [];
+      const serverShifts = serverData.shifts || [];
+      const serverAttendance = serverData.attendance || [];
+      const serverRequests = serverData.requests || [];
+      const serverSiAssignments = serverData.siAssignments || [];
+      const serverQuotas = serverData.quotas || [];
+      const serverMonthlyGrids = serverData.monthlyGrids || {};
+
+      // Helper: merge arrays with local wins
+      function mergeArrays(localArr, serverArr, keyFn) {
+        const serverMap = new Map();
+        (serverArr || []).forEach(item => {
+          const key = keyFn(item);
+          if (key !== undefined && key !== '') {
+            serverMap.set(key, item);
+          }
+        });
+        const result = [];
+        (localArr || []).forEach(item => {
+          const key = keyFn(item);
+          // local wins: use local item, ignoring server
+          result.push(item);
+          serverMap.delete(key);
+        });
+        // Add remaining server items (those not in local)
+        serverMap.forEach((value, key) => {
+          if (key !== '' && key !== undefined) {
+            result.push(value);
+          }
+        });
+        return result;
+      }
+
+      // Monthly grids: shallow merge, local wins
+      const mergedMonthlyGrids = { ...serverMonthlyGrids, ...(db.monthlyGrids || {}) };
+
+      mergedDb = {
+        users: mergeArrays(db.users, serverUsers, u => u.id),
+        shifts: mergeArrays(db.shifts, serverShifts, s => `${s.userId}|${s.date}`),
+        attendance: mergeArrays(db.attendance, serverAttendance, a => `${a.userId}|${a.date}`),
+        requests: mergeArrays(db.requests, serverRequests, r => r.id),
+        siAssignments: mergeArrays(db.siAssignments, serverSiAssignments, a => `${a.area}|${a.shift}`),
+        quotas: mergeArrays(db.quotas, serverQuotas, q => `${q.userId}|${q.year}`),
+        monthlyGrids: mergedMonthlyGrids
+      };
+    } catch (e) {
+      console.warn('Sync failed, proceeding with local data only:', e);
+      showToast('Sync failed! Using local data only.', 'warn');
+      mergedDb = db; // fallback
+    }
+  }
+
+  // Prepare payload from merged data
   const payload = {
-    users: db.users, shifts: db.shifts, attendance: db.attendance,
-    siAssignments: db.siAssignments, requests: db.requests,
-    quotas: db.quotas,
-    monthlyGrids: db.monthlyGrids || {}
+    users: mergedDb.users,
+    shifts: mergedDb.shifts,
+    attendance: mergedDb.attendance,
+    requests: mergedDb.requests,
+    monthlyGrids: mergedDb.monthlyGrids || {},
+    siAssignments: mergedDb.siAssignments || [],
+    quotas: mergedDb.quotas || []
   };
+
   // Always save to localStorage first
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch(e) { console.warn('localStorage save failed:', e); }
+
   if (IS_SERVER) {
     try {
       showToast('Saving to server...', 'info');
       showEl('save-spinner');
       const hdrs = {'Content-Type':'application/json'};
-if (authToken) hdrs['Authorization'] = 'Bearer ' + authToken;
-const res = await fetch('/api/data', { method:'POST', headers:hdrs, body:JSON.stringify(payload) });
+      if (authToken) hdrs['Authorization'] = 'Bearer ' + authToken;
+      const res = await fetch('/api/data', { method:'POST', headers:hdrs, body:JSON.stringify(payload) });
       const result = await res.json();
       if (!res.ok) throw new Error('Server returned ' + res.status);
       if (result.persisted === false) showToast('Data saved to server (MongoDB pending)', 'warn');
@@ -1231,105 +1303,6 @@ let _dbReady = false;
 (async () => {
   await loadDb();
   _dbReady = true;
-  // Only push localStorage to server if server has no real data (prevent overwriting other PC changes)
-  try {
-    // Merge localStorage and server data, with local winning on conflicts
-    try {
-      const lr = localStorage.getItem(STORAGE_KEY);
-      if (lr) {
-        const ld = JSON.parse(lr);
-        if (ld) {
-          // Merge local and server data (local wins)
-          const merged = {};
-          // Helper to merge arrays by key
-          function mergeArrayByKey(localArr, serverArr, keyFn) {
-            const serverMap = new Map();
-            (serverArr || []).forEach(item => {
-              const key = keyFn(item);
-              if (key !== undefined && key !== '') {
-                serverMap.set(key, item);
-              }
-            });
-            const result = [];
-            (localArr || []).forEach(item => {
-              const key = keyFn(item);
-              result.push(serverMap.has(key) && key !== '' && key !== undefined ? serverMap.get(key) : item);
-              serverMap.delete(key);
-            });
-            serverMap.forEach((value, key) => {
-              if (key !== '' && key !== undefined) {
-                result.push(value);
-              }
-            });
-            return result;
-          }
-          merged.users = mergeArrayByKey(ld.users || [], db.users || [], u => u.id);
-          merged.shifts = mergeArrayByKey(ld.shifts || [], db.shifts || [], s => `${s.userId}|${s.date}`);
-          merged.attendance = mergeArrayByKey(ld.attendance || [], db.attendance || [], a => `${a.userId}|${a.date}`);
-          merged.requests = mergeArrayByKey(ld.requests || [], db.requests || [], r => r.id);
-          // monthlyGrids: shallow merge (local overrides server)
-          merged.monthlyGrids = {...(db.monthlyGrids || {}), ...(ld.monthlyGrids || {})};
-          // siAssignments: merge by area+shift
-          function mergeSiAssignments(local, server) {
-            const serverMap = new Map();
-            (server || []).forEach(a => {
-              const key = `${a.area}|${a.shift}`;
-              serverMap.set(key, a);
-            });
-            const result = [];
-            (local || []).forEach(a => {
-              const key = `${a.area}|${a.shift}`;
-              result.push(serverMap.has(key) ? serverMap.get(key) : a);
-              serverMap.delete(key);
-            });
-            serverMap.forEach((value, key) => {
-              if (key) result.push(value);
-            });
-            return result;
-          }
-          merged.siAssignments = mergeSiAssignments(ld.siAssignments || [], db.siAssignments || []);
-          // quotas: merge by userId+year
-          function mergeQuotas(local, server) {
-            const serverMap = new Map();
-            (server || []).forEach(q => {
-              const key = `${q.userId}|${q.year}`;
-              serverMap.set(key, q);
-            });
-            const result = [];
-            (local || []).forEach(q => {
-              const key = `${q.userId}|${q.year}`;
-              result.push(serverMap.has(key) ? serverMap.get(key) : q);
-              serverMap.delete(key);
-            });
-            serverMap.forEach((value, key) => {
-              if (key) result.push(value);
-            });
-            return result;
-          }
-          merged.quotas = mergeQuotas(ld.quotas || [], db.quotas || []);
-          // Save merged data to server
-          const saveResponse = await fetch('/api/data', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            },
-            body: JSON.stringify(merged)
-          });
-          if (!saveResponse.ok) {
-            throw new Error(`Server error: ${saveResponse.status}`);
-          }
-          // Update localStorage and db with merged data
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-          Object.assign(db, merged);
-          console.log('Server sync complete with merge');
-          await loadDb(); // refresh
-        }
-      }
-    } catch(e) {
-      console.warn('Auto-sync error:', e);
-    }
-  }
 })();
 
 /* ══════════════════════════════════════════════════════
