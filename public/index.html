@@ -1801,6 +1801,9 @@ async function enterApp() {
 function doLogout() {
   hideEl('login-loader');
   const uid = curUser ? curUser.id : null;
+  // Clear intervals to prevent errors after logout
+  if (window._hbInterval) { clearInterval(window._hbInterval); window._hbInterval = null; }
+  if (window._autoSyncInterval) { clearInterval(window._autoSyncInterval); window._autoSyncInterval = null; }
   curUser = null;
   setAuthToken(null);
   document.getElementById('auth-screen').style.display = 'flex';
@@ -1811,7 +1814,6 @@ function doLogout() {
   empCalYear = new Date().getFullYear(); empCalMonth = new Date().getMonth();
   // Clear session on server
   if (IS_SERVER && uid) {
-    if (window._hbInterval) { clearInterval(window._hbInterval); window._hbInterval = null; }
     fetch('/api/logout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userId:uid}) }).catch(()=>{});
   }
 }
