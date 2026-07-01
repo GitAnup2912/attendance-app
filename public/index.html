@@ -403,6 +403,13 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
             <option value="">All Shifts</option><option value="G">G–General</option>
             <option value="A">A–Morning</option><option value="B">B–Afternoon</option><option value="C">C–Night</option>
           </select>
+          <select id="ov-category" onchange="syncOvFilters()">
+            <option value="">All Categories</option>
+            <option value="SR_ENG">Sr. Engg / Engg</option>
+            <option value="Highly Skilled">Highly Skilled</option>
+            <option value="Skilled">Skilled</option>
+            <option value="Un Skilled">Un Skilled</option>
+          </select>
           <input type="date" id="ov-date" onchange="renderOverview();renderAdminAtt()">
           <select id="ov-att-status" onchange="renderOverview();renderAdminAtt()">
             <option value="">All Status</option>
@@ -426,6 +433,13 @@ code{background:var(--s3);padding:1px 6px;border-radius:4px;font-size:12px;color
             <select id="adm-shift" onchange="syncOvFilters()">
               <option value="">All Shifts</option><option value="G">G–General</option>
               <option value="A">A–Morning</option><option value="B">B–Afternoon</option><option value="C">C–Night</option>
+            </select>
+            <select id="adm-category" onchange="syncOvFilters()">
+              <option value="">All Categories</option>
+              <option value="SR_ENG">Sr. Engg / Engg</option>
+              <option value="Highly Skilled">Highly Skilled</option>
+              <option value="Skilled">Skilled</option>
+              <option value="Un Skilled">Un Skilled</option>
             </select>
           </div>
           <table><thead><tr><th>Employee</th><th>Area</th><th>Shift</th>
@@ -2786,6 +2800,7 @@ function renderOverview() {
   const date = dateEl.value;
   const areaF  = getVal('ov-area');
   const shiftF = getVal('ov-shift');
+  const categoryF = getVal('ov-category');
 
   // Role-based scope — determines what this user is allowed to see
   let emps;
@@ -2817,6 +2832,13 @@ function renderOverview() {
   // Apply manual filter dropdowns within the role-based scope
   if (areaF)  emps = emps.filter(u => u.area === areaF);
   if (shiftF) emps = emps.filter(u => (getEffectiveShiftCode(u.id, date) || 'G') === shiftF);
+  if (categoryF) {
+    if (categoryF === 'SR_ENG') {
+      emps = emps.filter(u => u.category === 'Sr.Engg' || u.category === 'Engg');
+    } else {
+      emps = emps.filter(u => u.category === categoryF);
+    }
+  }
 
   // Save pre-filter base for stats (before attendance status filter)
   const baseEmps = emps;
@@ -2884,6 +2906,26 @@ function renderOverview() {
     ${notScheduled.length ? `<div class="sc" style="--ca:var(--grey)"><div class="sv">${notScheduled.length}</div><div class="sl">Not Scheduled</div></div>` : ''}
   `);
 
+  // Populate overview table body
+  const ovBody = document.getElementById('adm-att-body');
+  if (!emps.length) {
+    ovBody.innerHTML = emptyRow(6, 'No employees for selected filters.', '👤');
+    return;
+  }
+
+  ovBody.innerHTML = emps.map(u => {
+    const shiftCode  = getEffectiveShiftCode(u.id, date) || 'G';
+    const att       = getAtt(u.id, date);
+    const markerName = att?.markedBy ? (getUser(att.markedBy)?.name || '?') : '—';
+    return `<tr>
+      <td><div>${coloredName(u)}</div><div style="font-size:11px;color:var(--t2)">${u.username||''}</div></td>
+      <td style="font-size:12.5px">${AL[u.area]||u.area||'—'}</td>
+      <td>${sBadge(shiftCode)}</td>
+      <td>${aBadge(getEffectiveStatus(u.id, date) || '')}</td>
+      <td style="font-size:11.5px;color:var(--t2)">${markerName}</td>
+      <td><button class="btn bo2 bsm" onclick="openAdmAttModal(${u.id},'${date}')">✏️ Edit</button></td>
+    </tr>`;
+  }).join('');
 }
 
 function exportOverviewExcel() {
@@ -2891,6 +2933,7 @@ function exportOverviewExcel() {
   const date = dateEl?.value || today();
   const areaF  = getVal('ov-area');
   const shiftF = getVal('ov-shift');
+  const categoryF = getVal('ov-category');
 
   // Same role-based filtering as renderOverview
   let emps;
@@ -2911,9 +2954,16 @@ function exportOverviewExcel() {
     emps = db.users.filter(u => u.role !== 'admin' && u.role !== '__deleted__');
   }
 
-  // Filter by area and shift
+  // Filter by area, shift and category
   if (areaF)  emps = emps.filter(u => u.area === areaF);
   if (shiftF) emps = emps.filter(u => (getEffectiveShiftCode(u.id, date) || 'G') === shiftF);
+  if (categoryF) {
+    if (categoryF === 'SR_ENG') {
+      emps = emps.filter(u => u.category === 'Sr.Engg' || u.category === 'Engg');
+    } else {
+      emps = emps.filter(u => u.category === categoryF);
+    }
+  }
 
   // Build Excel data
   const wsData = [['#','Employee','Area','Category','Role','Shift Code','Attendance Status','Marked By']];
@@ -3242,7 +3292,7 @@ function renderApproveForRole() {
 // Sync overview + edit-attendance filters
 function syncOvFilters() {
   const src = document.activeElement;
-  ['area','shift'].forEach(k => {
+  ['area','shift','category'].forEach(k => {
     const ov = document.getElementById(`ov-${k}`);
     const adm = document.getElementById(`adm-${k}`);
     if (!ov || !adm) return;
@@ -3263,6 +3313,7 @@ function renderAdminAtt() {
   const date = getVal('ov-date') || today();
   const areaF   = getVal('adm-area');
   const shiftF  = getVal('adm-shift');
+  const categoryF = getVal('adm-category');
   const searchQ = (getVal('adm-search')||'').toLowerCase().trim();
 
   // All roles with edit-attendance access see all personnel
@@ -3277,6 +3328,13 @@ function renderAdminAtt() {
   });
   if (areaF)   emps = emps.filter(u => u.area === areaF);
   if (shiftF)  emps = emps.filter(u => (getEffectiveShiftCode(u.id, date) || 'G') === shiftF);
+  if (categoryF) {
+    if (categoryF === 'SR_ENG') {
+      emps = emps.filter(u => u.category === 'Sr.Engg' || u.category === 'Engg');
+    } else {
+      emps = emps.filter(u => u.category === categoryF);
+    }
+  }
   if (searchQ) emps = emps.filter(u =>
     u.name.toLowerCase().includes(searchQ) ||
     (u.username||'').toLowerCase().includes(searchQ) ||
